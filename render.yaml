@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: forge
+    runtime: ruby
+    buildCommand: "./bin/render-build.sh"
+    startCommand: "./bin/thrust ./bin/rails server"
+    envVars:
+      - key: RAILS_MASTER_KEY
+        sync: false

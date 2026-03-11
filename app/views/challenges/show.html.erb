@@ -1,0 +1,95 @@
+<div class="max-w-lg mx-auto px-4 py-10">
+
+  <%# Status badge %>
+  <div class="mb-6">
+    <% if @challenge.completed? %>
+      <span class="text-xs font-semibold bg-green-900/50 text-green-400 px-3 py-1 rounded-full">
+        ✓ Concluído
+      </span>
+    <% elsif @challenge.finished? %>
+      <span class="text-xs font-semibold bg-gray-800 text-gray-400 px-3 py-1 rounded-full">
+        Encerrado
+      </span>
+    <% else %>
+      <span class="text-xs font-semibold bg-indigo-900/50 text-indigo-400 px-3 py-1 rounded-full">
+        Em andamento
+      </span>
+    <% end %>
+  </div>
+
+  <h1 class="text-2xl font-bold text-white mb-1"><%= @challenge.title %></h1>
+
+  <% if @challenge.description.present? %>
+    <p class="text-gray-400 mb-6"><%= @challenge.description %></p>
+  <% end %>
+
+  <%# Progresso %>
+  <div class="bg-gray-900 rounded-2xl p-6 mb-4">
+    <div class="flex justify-between text-sm mb-3">
+      <span class="text-gray-400">Progresso</span>
+      <span class="text-white font-semibold">
+        <%= @challenge.progress %> de <%= @challenge.duration_days %> dias
+      </span>
+    </div>
+
+    <div class="w-full bg-gray-800 rounded-full h-2">
+      <div class="bg-indigo-500 h-2 rounded-full transition-all"
+           style="width: <%= @challenge.progress_percentage %>%"></div>
+    </div>
+  </div>
+
+  <%# Calendário de progresso %>
+  <div class="bg-gray-900 rounded-2xl p-6 mb-4">
+    <p class="text-sm text-gray-400 mb-4">Histórico</p>
+    <div class="flex flex-wrap gap-2">
+      <% (1..@challenge.duration_days).each do |day| %>
+        <% checked = @challenge.checkins.exists?(day_number: day) %>
+        <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs
+                    <%= checked ? 'bg-indigo-500 text-white' : 'bg-gray-800 text-gray-600' %>">
+          <%= day %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <%# Botão de check-in %>
+  <% if @challenge.active? %>
+    <% today_checkin = @challenge.checkins.find_by(day_number: @challenge.progress + 1) %>
+    <% if today_checkin.nil? %>
+      <%= link_to "Fazer check-in de hoje",
+          new_challenge_checkin_path(@challenge),
+          class: "block w-full text-center bg-indigo-600 hover:bg-indigo-500
+                  text-white font-semibold py-4 rounded-xl transition-colors" %>
+    <% else %>
+      <div class="w-full text-center bg-gray-800 text-gray-400
+                  font-semibold py-4 rounded-xl">
+        ✓ Check-in feito hoje
+      </div>
+    <% end %>
+  <% end %>
+
+  <%# Mensagem de conclusão %>
+  <% if @challenge.completed? %>
+    <div class="bg-green-900/30 border border-green-800 rounded-2xl p-6 text-center">
+      <p class="text-green-400 font-semibold text-lg mb-1">
+        <%= @challenge.duration_days %> de <%= @challenge.duration_days %> dias.
+      </p>
+      <p class="text-gray-400 text-sm">Você fez exatamente o que prometeu.</p>
+    </div>
+  <% end %>
+
+  <% if @challenge.finished? %>
+    <div class="bg-gray-900 border border-gray-700 rounded-2xl p-6 text-center">
+      <p class="text-white font-semibold text-lg mb-1">
+        Você fez <%= @challenge.progress %> de <%= @challenge.duration_days %> dias.
+      </p>
+      <p class="text-gray-400 text-sm mb-4">Isso é real. Isso aconteceu.</p>
+      <%= link_to "Recomeçar este desafio", new_challenge_path(restart_from: @challenge.id),
+          class: "inline-block bg-indigo-600 hover:bg-indigo-500 text-white
+                  text-sm font-semibold px-6 py-3 rounded-lg transition-colors" %>
+    </div>
+  <% end %>
+
+  <%= link_to "← Voltar", root_path, class: "block text-center text-gray-500 text-sm mt-6 hover:text-gray-300" %>
+
+</div>
