@@ -1,7 +1,7 @@
 <div class="min-h-screen flex items-center justify-center px-4">
   <div class="w-full max-w-lg">
 
-    <h1 class="text-2xl font-bold text-white mb-2">Nova Quest</h1>
+    <h1 class="text-2xl font-bold text-white mb-2 mt-4">Nova Quest</h1>
     <p class="text-gray-400 mb-8">Defina sua jornada de longo prazo</p>
 
     <%= form_with model: @quest, class: "space-y-6" do |f| %>
@@ -52,7 +52,7 @@
     <% end %>
 
     <%= link_to "← Voltar", quests_path,
-        class: "block text-center text-gray-500 text-sm mt-4 hover:text-gray-300" %>
+        class: "block text-center text-gray-500 text-sm mt-4 mb-6 hover:text-gray-300" %>
 
   </div>
 </div>

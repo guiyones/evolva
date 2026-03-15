@@ -13,6 +13,15 @@
           <% end %>
         </div>
       <% end %>
+      
+      <div class="mb-5">
+        <%= f.label :name, "Como você quer ser chamado?", class: "block text-sm text-gray-400 mb-2" %>
+        <%= f.text_field :name,
+          class: "w-full bg-gray-800 text-white rounded-lg px-4 py-3
+              border border-gray-700 focus:outline-none
+              focus:border-indigo-500",
+              placeholder: "ex: Gui" %>
+      </div>
 
       <div class="mb-5">
         <%= f.label :email_address, "Email", class: "block text-sm text-gray-400 mb-2" %>

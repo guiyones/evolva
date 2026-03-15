@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "history/index"
   get "quests/index"
   get "quests/show"
   get "quests/new"
@@ -26,6 +27,8 @@ Rails.application.routes.draw do
   end
 
   resources :quests, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+  
+  get "history", to: "history#index", as: :history
 
   get "up" => "rails/health#show", as: :rails_health_check
 end

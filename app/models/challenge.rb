@@ -54,6 +54,10 @@ class Challenge < ApplicationRecord
     end
   end
 
+  def checked_days
+    checkins.pluck(:day_number).to_set
+  end
+
   def complete!
     update!(status: "completed", completed_at: Time.current)
   end

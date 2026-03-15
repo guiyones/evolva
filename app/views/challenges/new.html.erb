@@ -1,7 +1,7 @@
 <div class="min-h-screen flex items-center justify-center px-4">
   <div class="w-full max-w-lg">
 
-    <h1 class="text-2xl font-bold text-white mb-2">Novo Challenge</h1>
+    <h1 class="text-2xl font-bold text-white mb-2 mt-4">Novo Challenge</h1>
     <p class="text-gray-400 mb-8">Defina seu desafio e comece agora</p>
 
     <%= form_with model: @challenge, class: "space-y-6" do |f| %>
@@ -17,47 +17,49 @@
       <div>
         <%= f.label :title, "Qual é o desafio?", class: "block text-sm text-gray-400 mb-2" %>
         <%= f.text_field :title,
-            class: "w-full bg-gray-800 text-white rounded-lg px-4 py-3
+          class: "w-full bg-gray-800 text-white rounded-lg px-4 py-3
                     border border-gray-700 focus:outline-none focus:border-indigo-500",
-            placeholder: "ex: 20 dias sem álcool" %>
+                    placeholder: "ex: 20 dias sem álcool" %>
       </div>
 
       <div>
         <%= f.label :duration_days, "Quantos dias?", class: "block text-sm text-gray-400 mb-2" %>
         <%= f.number_field :duration_days,
-            class: "w-full bg-gray-800 text-white rounded-lg px-4 py-3
+          class: "w-full bg-gray-800 text-white rounded-lg px-4 py-3
                     border border-gray-700 focus:outline-none focus:border-indigo-500",
-            placeholder: "ex: 20", min: 1 %>
+                    placeholder: "ex: 20", min: 1 %>
       </div>
 
       <div>
         <%= f.label :description, "Por que você está fazendo isso?", class: "block text-sm text-gray-400 mb-2" %>
         <%= f.text_area :description,
-            class: "w-full bg-gray-800 text-white rounded-lg px-4 py-3
+          class: "w-full bg-gray-800 text-white rounded-lg px-4 py-3
                     border border-gray-700 focus:outline-none focus:border-indigo-500
                     resize-none",
-            rows: 3,
-            placeholder: "opcional — mas ajuda nos dias difíceis" %>
+                    rows: 3,
+                    placeholder: "opcional — mas ajuda nos dias difíceis" %>
       </div>
-        
-      <div>
-        <%= f.label :reward, "Qual será sua recompensa?", class: "block text-sm text-gray-400 mb-2" %>
-        <%= f.fields_for :reward do |r| %>
-          <%= r.text_field :description,
-            class: "w-full bg-gray-800 text-white rounded-lg px-4 py-3
-                border border-gray-700 focus:outline-none focus:border-indigo-500",
-                placeholder: "ex: comprar aquele tênis que quero" %>
-            <% end %>
-            <p class="text-xs text-gray-600 mt-2">opcional — mas ajuda nos dias difíceis</p>
-      </div>
+
+      <% unless @challenge.quest_id.present? %>
+        <div>
+          <%= f.label :reward, "Qual será sua recompensa?", class: "block text-sm text-gray-400 mb-2" %>
+          <%= f.fields_for :reward do |r| %>
+            <%= r.text_field :description,
+              class: "w-full bg-gray-800 text-white rounded-lg px-4 py-3
+                  border border-gray-700 focus:outline-none focus:border-indigo-500",
+                  placeholder: "ex: comprar aquele tênis que quero" %>
+              <% end %>
+              <p class="text-xs text-gray-600 mt-2">opcional — mas ajuda nos dias difíceis</p>
+        </div>
+      <% end %>
 
       <%= f.submit "Começar desafio",
-          class: "w-full bg-indigo-600 hover:bg-indigo-500 text-white
+        class: "w-full bg-indigo-600 hover:bg-indigo-500 text-white
                   font-semibold py-3 rounded-lg cursor-pointer transition-colors" %>
 
-    <% end %>
-
-    <%= link_to "← Voltar", root_path, class: "block text-center text-gray-500 text-sm mt-4 hover:text-gray-300" %>
+              <% end %>
+             
+            <%= link_to "← Voltar", root_path, class: "block text-center text-gray-500 text-sm mt-4 mb-6 hover:text-gray-300" %>
 
   </div>
 </div>

@@ -15,7 +15,7 @@
     <div class="flex gap-3">
       <%= link_to "Editar", edit_quest_path(@quest),
           class: "text-sm text-gray-400 hover:text-white transition-colors" %>
-      <%= button_to "Apagar", quest_path(@quest),
+      <%= link_to "Apagar", quest_path(@quest),
           method: :delete,
           form: { data: { turbo_confirm: "Tem certeza? Isso apaga a quest e todos os challenges." } },
           class: "text-sm text-red-400 hover:text-red-300 transition-colors cursor-pointer" %>

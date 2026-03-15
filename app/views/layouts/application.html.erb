@@ -11,27 +11,39 @@
   </head>
 
   <body class="bg-gray-950 text-white min-h-screen">
-
+    
     <% if authenticated? %>
       <nav class="flex items-center justify-between px-6 py-4 border-b border-gray-800">
-        <span class="font-bold text-indigo-400 text-lg">Forge</span>
+        <%= link_to "Forge", root_path, class: "font-bold text-indigo-400 text-lg" %>
+        <div class="flex items-center gap-6">
+          <%= link_to "Home", root_path, class: "text-sm text-gray-400 hover:text-white transition-colors" %>
+          <%= link_to "Challenges", challenges_path, class: "text-sm text-gray-400 hover:text-white transition-colors" %>
+          <%= link_to "Quests", quests_path, class: "text-sm text-gray-400 hover:text-white transition-colors" %>
+          <%= link_to "Histórico", history_path, class: "text-sm text-gray-400 hover:text-white transition-colors" %>
+        </div>
         <%= button_to "Sair", session_path, method: :delete,
           class: "text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" %>
       </nav>
     <% end %>
     
     <% if notice %>
-      <div class="max-w-lg mx-auto px-4 mt-4">
-        <div class="bg-indigo-900/40 text-indigo-300 rounded-lg px-4 py-3 text-sm">
-          <%= notice %>
+      <div class="max-w-5xl mx-auto px-4 mt-4">
+        <div class="bg-indigo-900/40 text-indigo-300 rounded-lg px-4 py-3 text-sm flex items-center justify-between"
+             data-controller="dismissible">
+          <span><%= notice %></span>
+          <button data-action="click->dismissible#dismiss"
+                  class="text-indigo-300 hover:text-white ml-4 cursor-pointer">✕</button>
         </div>
       </div>
     <% end %>
 
     <% if alert %>
-      <div class="max-w-lg mx-auto px-4 mt-4">
-        <div class="bg-red-900/40 text-red-300 rounded-lg px-4 py-3 text-sm">
-          <%= alert %>
+      <div class="max-w-5xl mx-auto px-4 mt-4">
+        <div class="bg-red-900/40 text-red-300 rounded-lg px-4 py-3 text-sm flex items-center justify-between"
+             data-controller="dismissible">
+          <span><%= alert %></span>
+          <button data-action="click->dismissible#dismiss"
+                  class="text-red-300 hover:text-white ml-4 cursor-pointer">✕</button>
         </div>
       </div>
     <% end %>
