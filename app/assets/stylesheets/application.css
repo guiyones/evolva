@@ -1,10 +1,52 @@
-/*
- * This is a manifest file that'll be compiled into application.css.
- *
- * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
- * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
- * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
- * depending on specificity.
- *
- * Consider organizing styles into separate files for maintainability.
- */
+:root {
+  --evolva-purple: #6C4DFF;
+  --evolva-purple-hover: #5A3FE6;
+  --evolva-green: #22C55E;
+  --evolva-dark: #0F172A;
+  --evolva-card: #1F2937;
+  --evolva-border: #374151;
+  --evolva-text: #F3F4F6;
+  --evolva-muted: #6B7280;
+}
+
+/* Botões primários */
+.btn-primary {
+  background: var(--evolva-purple);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn-primary:hover { background: var(--evolva-purple-hover); }
+
+/* Cards */
+.evolva-card {
+  background: #1F2937;
+  border: 0.5px solid #374151;
+  border-radius: 12px;
+  padding: 16px;
+  display: block;
+  text-decoration: none;
+  transition: border-color 0.2s, transform 0.15s;
+}
+.evolva-card:hover {
+  border-color: #6C4DFF;
+  transform: translateY(-1px);
+}
+
+/* Inputs */
+input, textarea, select {
+  background: var(--evolva-card) !important;
+  border-color: var(--evolva-border) !important;
+  color: var(--evolva-text) !important;
+}
+input:focus, textarea:focus {
+  border-color: var(--evolva-purple) !important;
+  outline: none;
+}

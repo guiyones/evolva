@@ -18,7 +18,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Forge</title>
+    <title>Evolva</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="#0f172a">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -40,7 +40,7 @@
 
     <% if authenticated? %>
       <nav class="hidden md:flex items-center justify-between px-6 py-4 border-b border-gray-800">
-        <%= link_to "Forge", root_path, class: "font-bold text-indigo-400 text-lg" %>
+        <%= link_to "Evolva", root_path, class: "font-bold text-lg", style: "color: #6C4DFF;" %>
         <div class="flex items-center gap-6">
           <%= link_to "Home", root_path, class: "text-sm text-gray-400 hover:text-white transition-colors" %>
           <%= link_to "Desafios", challenges_path, class: "text-sm text-gray-400 hover:text-white transition-colors" %>
@@ -48,7 +48,7 @@
           <%= link_to "Histórico", history_path, class: "text-sm text-gray-400 hover:text-white transition-colors" %>
         </div>
         <%= button_to "Sair", session_path, method: :delete,
-            class: "text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" %>
+          class: "text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" %>
       </nav>
     <% end %>
 

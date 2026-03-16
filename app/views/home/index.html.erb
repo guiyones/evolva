@@ -1,30 +1,33 @@
 <style>
-  * { box-sizing: border-box; }
+* { box-sizing: border-box; }
   .forge-home { max-width: 480px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
+@media (min-width: 768px) {
+  .forge-home { max-width: 580px; }
+}
 
   /* Hero */
   .hero { margin-bottom: 1.5rem; }
-  .hero-name { font-size: 28px; font-weight: 700; color: #f9fafb; margin-bottom: 4px; }
+  .hero-name { font-size: 28px; font-weight: 700; color: #ffffff; margin-bottom: 4px; }
   .hero-tagline { font-size: 13px; color: #6b7280; margin-bottom: 1rem; }
   .hero-stats { display: flex; gap: 8px; flex-wrap: wrap; }
   .stat-pill { display: flex; align-items: center; gap: 6px; padding: 6px 12px;
                border-radius: 40px; border: 0.5px solid #1f2937;
-               background: #111827; font-size: 12px; font-weight: 500; }
+               background: #1f2937; font-size: 12px; font-weight: 500; }
   .stat-pill.streak { border-color: rgba(251,146,60,0.3); color: #fb923c; }
-  .stat-pill.challenges { border-color: rgba(99,102,241,0.3); color: #818cf8; }
-  .stat-pill.rewards { border-color: rgba(16,185,129,0.3); color: #34d399; }
+  .stat-pill.challenges { border-color: rgba(108,77,255,0.3); color: #6C4DFF; }
+  .stat-pill.rewards { border-color: rgba(34,197,94,0.3); color: #22C55E; }
 
   /* Day progress */
-  .day-progress-card { background: #111827; border: 0.5px solid #1f2937;
+  .day-progress-card { background: #1f2937; border: 0.5px solid #374151;
                        border-radius: 14px; padding: 14px 16px; margin-bottom: 1.5rem; }
   .day-progress-header { display: flex; justify-content: space-between;
                          align-items: center; margin-bottom: 10px; }
   .day-progress-label { font-size: 13px; font-weight: 500; color: #f3f4f6; }
-  .day-progress-pct { font-size: 13px; font-weight: 600;
-                      color: <%= @day_progress == 100 ? '#34d399' : '#818cf8' %>; }
-  .day-progress-track { height: 4px; background: #1f2937; border-radius: 4px; overflow: hidden; }
+  .day-progress-pct { font-size: 13px; font-weight: 600; color: #6C4DFF; }
+  .day-progress-pct.complete { color: #22C55E; }
+  .day-progress-track { height: 4px; background: #374151; border-radius: 4px; overflow: hidden; }
   .day-progress-fill { height: 100%; border-radius: 4px;
-                       background: <%= @day_progress == 100 ? 'linear-gradient(90deg, #10b981, #34d399)' : 'linear-gradient(90deg, #6366f1, #818cf8)' %>;
+                       background: linear-gradient(90deg, #6C4DFF, #22C55E);
                        transition: width 0.3s; }
 
   /* Section */
@@ -32,99 +35,113 @@
   .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
   .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
                    text-transform: uppercase; color: #6b7280; }
-  .section-action { font-size: 12px; color: #818cf8; text-decoration: none; }
-  .section-action:hover { color: #a5b4fc; }
+  .section-action { font-size: 12px; color: #6C4DFF; text-decoration: none; }
+  .section-action:hover { color: #5A3FE6; }
 
   /* Hoje card */
-  .hoje-card { background: #111827; border: 0.5px solid #1f2937; border-radius: 12px;
+  .hoje-card { background: #1f2937; border: 0.5px solid #374151; border-radius: 12px;
                padding: 12px 14px; display: flex; align-items: center;
                justify-content: space-between; gap: 12px; margin-bottom: 6px;
                transition: border-color 0.2s; }
-  .hoje-card:hover { border-color: #374151; }
+  .hoje-card:hover { border-color: #6C4DFF; }
   .hoje-card.done { opacity: 0.5; }
   .hoje-card-left { flex: 1; min-width: 0; }
   .hoje-card-title { font-size: 14px; font-weight: 500; color: #f3f4f6;
                      display: flex; align-items: center; gap: 6px; }
   .hoje-card-meta { font-size: 11px; color: #6b7280; margin-top: 3px; }
-  .hoje-card-meta span { color: #818cf8; }
+  .hoje-card-meta span { color: #6C4DFF; }
   .hoje-checkin-btn { flex-shrink: 0; padding: 5px 14px; border-radius: 8px;
-                      background: #059669; color: #fff; font-size: 11px; font-weight: 500;
+                      background: #6C4DFF; color: #fff; font-size: 11px; font-weight: 500;
                       text-decoration: none; white-space: nowrap; transition: background 0.15s; }
-  .hoje-checkin-btn:hover { background: #047857; }
+  .hoje-checkin-btn:hover { background: #5A3FE6; }
   .hoje-done-badge { flex-shrink: 0; font-size: 11px; color: #374151; }
 
   /* Quest card */
-  .quest-card { background: #0f172a; border: 0.5px solid #1e3a5f; border-radius: 14px;
-                padding: 14px 16px; text-decoration: none; display: block;
-                transition: border-color 0.2s, transform 0.15s; margin-bottom: 8px;
-                box-shadow: 0 4px 24px rgba(99,102,241,0.06); }
-  .quest-card:hover { border-color: #3b82f6; transform: translateY(-1px); }
+  .quest-card { background: #0F172A; border: 0.5px solid rgba(108,77,255,0.2);
+                border-radius: 14px; padding: 14px 16px; text-decoration: none;
+                display: block; transition: border-color 0.2s, transform 0.15s;
+                margin-bottom: 8px; box-shadow: 0 4px 24px rgba(108,77,255,0.06); }
+  .quest-card:hover { border-color: #6C4DFF; transform: translateY(-1px); }
   .quest-card-header { display: flex; align-items: flex-start;
                        justify-content: space-between; gap: 8px; margin-bottom: 6px; }
   .quest-icon { font-size: 18px; margin-right: 8px; }
   .quest-title { font-size: 15px; font-weight: 600; color: #f3f4f6; line-height: 1.3; }
   .quest-badge { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 20px;
                  white-space: nowrap; flex-shrink: 0;
-                 background: rgba(16,185,129,0.15); color: #34d399; }
+                 background: rgba(34,197,94,0.15); color: #22C55E; }
   .quest-sub { font-size: 12px; color: #6b7280; margin-bottom: 10px; line-height: 1.5; }
   .quest-sub span { color: #9ca3af; }
   .quest-progress-row { display: flex; justify-content: space-between;
                         font-size: 11px; color: #6b7280; margin-bottom: 5px; }
-  .quest-track { height: 3px; background: #1e3a5f; border-radius: 3px; overflow: hidden; }
+  .quest-track { height: 3px; background: #374151; border-radius: 3px; overflow: hidden; }
   .quest-fill { height: 100%; border-radius: 3px;
-                background: linear-gradient(90deg, #10b981, #34d399); }
+                background: linear-gradient(90deg, #6C4DFF, #22C55E); }
 
   /* Challenge card */
-  .challenge-card { background: #111827; border: 0.5px solid #1f2937; border-radius: 12px;
+  .challenge-card { background: #1f2937; border: 0.5px solid #374151; border-radius: 12px;
                     padding: 12px 14px; margin-bottom: 8px;
                     transition: border-color 0.2s, transform 0.15s; }
-  .challenge-card:hover { border-color: #374151; transform: translateY(-1px); }
+  .challenge-card:hover { border-color: #6C4DFF; transform: translateY(-1px); }
   .challenge-card-link { text-decoration: none; display: block; }
   .challenge-card-header { display: flex; align-items: flex-start;
                            justify-content: space-between; gap: 8px; margin-bottom: 4px; }
   .challenge-title { font-size: 14px; font-weight: 500; color: #f3f4f6; line-height: 1.3; }
   .challenge-badge { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 20px;
                      white-space: nowrap; flex-shrink: 0;
-                     background: rgba(99,102,241,0.15); color: #818cf8; }
+                     background: rgba(108,77,255,0.15); color: #6C4DFF; }
   .challenge-meta { font-size: 11px; color: #4b5563; margin-bottom: 8px; }
   .challenge-progress-row { display: flex; justify-content: space-between;
                              font-size: 11px; color: #6b7280; margin-bottom: 5px; }
-  .challenge-track { height: 2px; background: #1f2937; border-radius: 2px;
+  .challenge-track { height: 2px; background: #374151; border-radius: 2px;
                      overflow: hidden; margin-bottom: 8px; }
-  .challenge-fill { height: 100%; border-radius: 2px; background: #6366f1; }
+  .challenge-fill { height: 100%; border-radius: 2px;
+                    background: linear-gradient(90deg, #6C4DFF, #22C55E); }
   .challenge-checkin { font-size: 11px; color: #4b5563; }
-  .challenge-checkin-link { font-size: 11px; color: #818cf8; text-decoration: none; }
-  .challenge-checkin-link:hover { color: #a5b4fc; }
+  .challenge-checkin-link { font-size: 11px; color: #6C4DFF; text-decoration: none; }
+  .challenge-checkin-link:hover { color: #5A3FE6; }
 
   /* Reward card */
   .reward-card { border-radius: 12px; padding: 12px 14px; text-decoration: none;
                  display: block; margin-bottom: 8px;
                  transition: border-color 0.2s, transform 0.15s; }
   .reward-card:hover { transform: translateY(-1px); }
-  .reward-card.unlocked { background: #0a1f14; border: 0.5px solid rgba(16,185,129,0.3); }
-  .reward-card.locked { background: #111827; border: 0.5px solid #1f2937; }
+  .reward-card.unlocked { background: #0a1f14; border: 0.5px solid rgba(34,197,94,0.3); }
+  .reward-card.locked { background: #1f2937; border: 0.5px solid #374151; }
   .reward-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
   .reward-icon { width: 32px; height: 32px; border-radius: 8px; display: flex;
                  align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
-  .reward-icon.unlocked { background: rgba(16,185,129,0.2); }
-  .reward-icon.locked { background: #1f2937; }
+  .reward-icon.unlocked { background: rgba(34,197,94,0.2); }
+  .reward-icon.locked { background: #374151; }
   .reward-info { flex: 1; min-width: 0; }
   .reward-title { font-size: 13px; font-weight: 500; color: #f3f4f6; }
   .reward-title.locked { color: #9ca3af; }
   .reward-source { font-size: 11px; color: #6b7280; margin-top: 2px; }
-  .reward-divider { height: 0.5px; background: rgba(16,185,129,0.15); margin: 6px 0; }
-  .reward-status { font-size: 11px; font-weight: 500; color: #34d399; }
+  .reward-divider { height: 0.5px; background: rgba(34,197,94,0.15); margin: 6px 0; }
+  .reward-status { font-size: 11px; font-weight: 500; color: #22C55E; }
   .reward-progress-row { display: flex; justify-content: space-between;
                          font-size: 11px; color: #6b7280; margin-bottom: 5px; margin-top: 6px; }
-  .reward-track { height: 2px; background: #1f2937; border-radius: 2px; overflow: hidden; }
-  .reward-fill { height: 100%; border-radius: 2px; }
-  .reward-fill.locked { background: #374151; }
+  .reward-track { height: 2px; background: #374151; border-radius: 2px; overflow: hidden; }
+  .reward-fill.locked { height: 100%; border-radius: 2px; background: #4b5563; }
 
   /* Empty */
   .empty { text-align: center; padding: 24px 0; }
   .empty-text { font-size: 13px; color: #4b5563; margin-bottom: 8px; }
-  .empty-link { font-size: 12px; color: #818cf8; text-decoration: none; }
-  .empty-link:hover { color: #a5b4fc; }
+  .empty-link { font-size: 12px; color: #6C4DFF; text-decoration: none; }
+  .empty-link:hover { color: #5A3FE6; }
+
+  /* Bottom nav */
+  .bottom-nav { display: none; }
+  @media (max-width: 768px) {
+    .bottom-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0;
+                  background: #0F172A; border-top: 0.5px solid #1f2937;
+                  justify-content: space-around; padding: 10px 0 20px; z-index: 50; }
+  }
+  .nav-item { display: flex; flex-direction: column; align-items: center;
+              gap: 3px; text-decoration: none; color: #6b7280;
+              font-size: 10px; font-weight: 500; transition: color 0.15s; }
+  .nav-item:hover { color: #f3f4f6; }
+  .nav-item.active { color: #6C4DFF; }
+  .nav-icon { font-size: 18px; }
 </style>
 
 <div class="forge-home">
@@ -133,7 +150,7 @@
   <div class="hero">
     <% display_name = Current.user.name.present? ? Current.user.name : Current.user.email_address.split("@").first %>
     <p class="hero-name"><%= display_name.capitalize %></p>
-    <p class="hero-tagline">Pequenos progressos criam grandes mudanças.</p>
+    <p class="hero-tagline"> Bem-vindo ao Evolva, hoje é um novo passo na sua evolução.</p>
     <div class="hero-stats">
       <div class="stat-pill streak">
         <span>🔥</span>
@@ -197,7 +214,7 @@
           <% if done %>
             <span class="hoje-done-badge">✓ feito</span>
           <% else %>
-            <%= link_to "✔ Check-in", new_challenge_checkin_path(challenge), class: "hoje-checkin-btn" %>
+            <%= link_to "Concluir", new_challenge_checkin_path(challenge), class: "hoje-checkin-btn" %>
           <% end %>
         </div>
       <% end %>
@@ -345,6 +362,5 @@
       </div>
     <% end %>
   </div>
-
 </div>
 

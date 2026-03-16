@@ -1,128 +1,107 @@
 <div class="max-w-lg mx-auto px-4 py-10">
 
-  <%# Status badge %>
   <div class="flex items-center justify-between mb-6">
     <% if @challenge.completed? %>
-      <span class="text-xs font-semibold bg-green-900/50 text-green-400 px-3 py-1 rounded-full">
-        ✓ Concluído
-      </span>
+      <span class="text-xs font-semibold px-3 py-1 rounded-full" style="background: rgba(34,197,94,0.15); color: #22C55E;">✓ Concluído</span>
     <% elsif @challenge.finished? %>
-      <span class="text-xs font-semibold bg-gray-800 text-gray-400 px-3 py-1 rounded-full">
-        Encerrado
-      </span>
+      <span class="text-xs font-semibold px-3 py-1 rounded-full" style="background: #1F2937; color: #6b7280;">Encerrado</span>
     <% else %>
-      <span class="text-xs font-semibold bg-indigo-900/50 text-indigo-400 px-3 py-1 rounded-full">
-        Em andamento
-      </span>
+      <span class="text-xs font-semibold px-3 py-1 rounded-full" style="background: rgba(108,77,255,0.15); color: #6C4DFF;">Em andamento</span>
     <% end %>
-
     <div class="flex gap-3">
-      <%= link_to "Editar", edit_challenge_path(@challenge),
-        class: "text-sm text-gray-400 hover:text-white transition-colors" %>
+      <%= link_to "Editar", edit_challenge_path(@challenge), class: "text-sm text-gray-400 hover:text-white transition-colors" %>
       <%= link_to "Apagar", challenge_path(@challenge),
-        data: { turbo_method: :delete, turbo_confirm: "Tem certeza? Isso apaga o challenge e todo o histórico." },
-        class: "text-sm text-red-400 hover:text-red-300 transition-colors" %>
+          data: { turbo_method: :delete, turbo_confirm: "Tem certeza? Isso apaga o desafio e todo o histórico." },
+          class: "text-sm hover:text-red-300 transition-colors", style: "color: #f87171;" %>
     </div>
   </div>
 
   <h1 class="text-2xl font-bold text-white mb-1"><%= @challenge.title %></h1>
 
-  <% if @challenge.description.present? %>
-    <p class="text-gray-400 mb-6"><%= @challenge.description %></p>
-  <% end %>
-
   <% if @challenge.quest.present? %>
-    <div class="mb-6">
-      <%= link_to quest_path(@challenge.quest),
-        class: "inline-flex items-center gap-2 text-sm text-indigo-400 hover:text-indigo-300 transition-colors" do %>
-        <span>↑ Quest:</span>
-        <span class="font-semibold"><%= @challenge.quest.title %></span>
+    <div class="mb-4">
+      <%= link_to quest_path(@challenge.quest), class: "inline-flex items-center gap-2 text-sm transition-colors", style: "color: #6C4DFF;" do %>
+        <span>↑ Jornada: <%= @challenge.quest.title %></span>
       <% end %>
     </div>
   <% end %>
 
+  <% if @challenge.description.present? %>
+    <p class="text-gray-400 mb-6"><%= @challenge.description %></p>
+  <% end %>
+
   <%# Progresso %>
-  <div class="bg-gray-900 rounded-2xl p-6 mb-4">
+  <div class="rounded-2xl p-6 mb-4" style="background: #1F2937;">
     <div class="flex justify-between text-sm mb-3">
       <span class="text-gray-400">Progresso</span>
-      <span class="text-white font-semibold">
-        <%= @challenge.progress %> de <%= @challenge.duration_days %> dias
-      </span>
+      <span class="font-semibold text-white"><%= @challenge.progress %> de <%= @challenge.duration_days %> dias</span>
     </div>
-
-    <div class="w-full bg-gray-800 rounded-full h-2">
-      <div class="bg-indigo-500 h-2 rounded-full transition-all"
-           style="width: <%= @challenge.progress_percentage %>%"></div>
+    <div class="w-full rounded-full h-2" style="background: #374151;">
+      <div class="h-2 rounded-full transition-all" style="width: <%= @challenge.progress_percentage %>%; background: linear-gradient(90deg, #6C4DFF, #22C55E);"></div>
     </div>
   </div>
 
-  <%# Calendário de progresso %>
-  <div class="bg-gray-900 rounded-2xl p-6 mb-4">
+  <%# Calendário %>
+  <div class="rounded-2xl p-6 mb-4" style="background: #1F2937;">
     <p class="text-sm text-gray-400 mb-4">Histórico</p>
     <% checked = @challenge.checked_days %>
     <div class="flex flex-wrap gap-2">
       <% (1..@challenge.duration_days).each do |day| %>
-        <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs
-          <%= checked.include?(day) ? 'bg-indigo-500 text-white' : 'bg-gray-800 text-gray-600' %>">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs"
+             style="<%= checked.include?(day) ? 'background: #6C4DFF; color: white;' : 'background: #374151; color: #6b7280;' %>">
           <%= day %>
         </div>
       <% end %>
     </div>
   </div>
 
-  <%# Botão de check-in %>
+  <%# Check-in %>
   <% if @challenge.active? %>
     <% checked_today = @challenge.checkins.where(created_at: Date.today.all_day).exists? %>
     <% if checked_today %>
-      <div class="w-full text-center bg-gray-800 text-gray-400
-                  font-semibold py-4 rounded-xl">
+      <div class="w-full text-center font-semibold py-4 rounded-xl text-gray-400" style="background: #1F2937;">
         ✓ Check-in feito hoje
       </div>
     <% else %>
-      <%= link_to "Fazer check-in de hoje",
-        new_challenge_checkin_path(@challenge),
-        class: "block w-full text-center bg-indigo-600 hover:bg-indigo-500
-                text-white font-semibold py-4 rounded-xl transition-colors" %>
+      <%= link_to "Fazer check-in de hoje", new_challenge_checkin_path(@challenge),
+          class: "block w-full text-center text-white font-semibold py-4 rounded-xl transition-colors",
+          style: "background: #6C4DFF;" %>
     <% end %>
   <% end %>
 
-
   <%# Mensagem de conclusão %>
   <% if @challenge.completed? %>
-    <div class="bg-green-900/30 border border-green-800 rounded-2xl p-6 text-center">
-      <p class="text-green-400 font-semibold text-lg mb-1">
-        <%= @challenge.duration_days %> de <%= @challenge.duration_days %> dias.
-      </p>
+    <div class="rounded-2xl p-6 text-center mt-4" style="background: rgba(34,197,94,0.1); border: 0.5px solid rgba(34,197,94,0.3);">
+      <p class="font-semibold text-lg mb-1" style="color: #22C55E;"><%= @challenge.duration_days %> de <%= @challenge.duration_days %> dias.</p>
       <p class="text-gray-400 text-sm">Você fez exatamente o que prometeu.</p>
     </div>
   <% end %>
 
   <% if @challenge.finished? %>
-    <div class="bg-gray-900 border border-gray-700 rounded-2xl p-6 text-center">
-      <p class="text-white font-semibold text-lg mb-1">
-        Você fez <%= @challenge.progress %> de <%= @challenge.duration_days %> dias.
-      </p>
+    <div class="rounded-2xl p-6 text-center mt-4" style="background: #1F2937; border: 0.5px solid #374151;">
+      <p class="text-white font-semibold text-lg mb-1">Você fez <%= @challenge.progress %> de <%= @challenge.duration_days %> dias.</p>
       <p class="text-gray-400 text-sm mb-4">Isso é real. Isso aconteceu.</p>
       <%= link_to "Recomeçar este desafio", new_challenge_path(restart_from: @challenge.id),
-          class: "inline-block bg-indigo-600 hover:bg-indigo-500 text-white
-                  text-sm font-semibold px-6 py-3 rounded-lg transition-colors" %>
+          class: "inline-block text-white text-sm font-semibold px-6 py-3 rounded-lg transition-colors",
+          style: "background: #6C4DFF;" %>
     </div>
   <% end %>
-    
+
+  <%# Reward %>
   <% if @challenge.reward.present? %>
-    <div class="bg-gray-900 rounded-2xl p-5 mt-4">
-      <p class="text-xs text-gray-500 mb-1">Reward</p>
+    <div class="rounded-2xl p-5 mt-4" style="background: #1F2937;">
+      <p class="text-xs text-gray-500 mb-1">Recompensa</p>
       <%= link_to reward_path(@challenge.reward), class: "flex items-center justify-between" do %>
         <div>
           <p class="text-white font-semibold"><%= @challenge.reward.description %></p>
           <p class="text-xs text-gray-500 mt-1">
-          <% if @challenge.reward.locked? %>
-            🔒 Bloqueado — complete o desafio
-          <% elsif @challenge.reward.unlocked? %>
-            🎁 Desbloqueado — pronto para resgatar
-          <% else %>
-            ✅ Resgatado
-          <% end %>
+            <% if @challenge.reward.locked? %>
+              🔒 Bloqueado — complete o desafio
+            <% elsif @challenge.reward.unlocked? %>
+              🎁 Desbloqueado — pronto para resgatar
+            <% else %>
+              ✅ Resgatado
+            <% end %>
           </p>
         </div>
         <span class="text-gray-600">→</span>
@@ -131,5 +110,6 @@
   <% end %>
 
   <%= link_to "← Voltar", root_path, class: "block text-center text-gray-500 text-sm mt-6 hover:text-gray-300" %>
-
 </div>
+
+

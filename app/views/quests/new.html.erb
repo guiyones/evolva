@@ -1,13 +1,13 @@
 <div class="min-h-screen flex items-center justify-center px-4">
   <div class="w-full max-w-lg">
 
-    <h1 class="text-2xl font-bold text-white mb-2 mt-4">Nova Quest</h1>
+    <h1 class="text-2xl font-bold text-white mb-2">Nova Jornada</h1>
     <p class="text-gray-400 mb-8">Defina sua jornada de longo prazo</p>
 
     <%= form_with model: @quest, class: "space-y-6" do |f| %>
 
       <% if @quest.errors.any? %>
-        <div class="bg-red-900/40 text-red-300 rounded-lg px-4 py-3 text-sm">
+        <div class="rounded-lg px-4 py-3 text-sm" style="background: rgba(239,68,68,0.1); color: #f87171;">
           <% @quest.errors.full_messages.each do |msg| %>
             <p><%= msg %></p>
           <% end %>
@@ -17,43 +17,38 @@
       <div>
         <%= f.label :title, "Qual é a jornada?", class: "block text-sm text-gray-400 mb-2" %>
         <%= f.text_field :title,
-            class: "w-full bg-gray-800 text-white rounded-lg px-4 py-3
-                    border border-gray-700 focus:outline-none focus:border-indigo-500",
-            placeholder: "ex: Criar o hábito da leitura" %>
+            class: "w-full rounded-lg px-4 py-3 text-white",
+            style: "background: #1F2937; border: 0.5px solid #374151;",
+            placeholder: "ex: Criar hábito de leitura" %>
       </div>
 
       <div>
-        <%= f.label :description, "Por que essa jornada importa?",
-            class: "block text-sm text-gray-400 mb-2" %>
+        <%= f.label :description, "Por que essa jornada importa?", class: "block text-sm text-gray-400 mb-2" %>
         <%= f.text_area :description,
-            class: "w-full bg-gray-800 text-white rounded-lg px-4 py-3
-                    border border-gray-700 focus:outline-none focus:border-indigo-500
-                    resize-none",
+            class: "w-full rounded-lg px-4 py-3 text-white resize-none",
+            style: "background: #1F2937; border: 0.5px solid #374151;",
             rows: 3,
             placeholder: "opcional" %>
       </div>
 
       <div>
-        <%= f.label :reward, "Qual será sua recompensa final?",
-            class: "block text-sm text-gray-400 mb-2" %>
+        <%= f.label :reward, "Qual será sua recompensa final?", class: "block text-sm text-gray-400 mb-2" %>
         <%= f.fields_for :reward do |r| %>
           <%= r.text_field :description,
-              class: "w-full bg-gray-800 text-white rounded-lg px-4 py-3
-                      border border-gray-700 focus:outline-none focus:border-indigo-500",
+              class: "w-full rounded-lg px-4 py-3 text-white",
+              style: "background: #1F2937; border: 0.5px solid #374151;",
               placeholder: "ex: uma estante nova" %>
         <% end %>
-        <p class="text-xs text-gray-600 mt-2">opcional — mas ajuda nos dias difíceis</p>
+        <p class="text-xs text-gray-600 mt-2">opcional</p>
       </div>
 
-      <%= f.submit "Criar quest",
-          class: "w-full bg-indigo-600 hover:bg-indigo-500 text-white
-                  font-semibold py-3 rounded-lg cursor-pointer transition-colors" %>
+      <%= f.submit "Criar jornada",
+          class: "w-full text-white font-semibold py-3 rounded-lg cursor-pointer transition-colors",
+          style: "background: #6C4DFF;" %>
 
     <% end %>
 
-    <%= link_to "← Voltar", quests_path,
-        class: "block text-center text-gray-500 text-sm mt-4 mb-6 hover:text-gray-300" %>
-
+    <%= link_to "← Voltar", quests_path, class: "block text-center text-gray-500 text-sm mt-4 hover:text-gray-300" %>
   </div>
 </div>
 

@@ -1,23 +1,16 @@
 <div class="max-w-lg mx-auto px-4 py-10">
 
-  <%# Status badge e ações %>
   <div class="flex items-center justify-between mb-6">
     <% if @quest.completed? %>
-      <span class="text-xs font-semibold bg-green-900/50 text-green-400 px-3 py-1 rounded-full">
-        ✓ Concluída
-      </span>
+      <span class="text-xs font-semibold px-3 py-1 rounded-full" style="background: rgba(34,197,94,0.15); color: #22C55E;">✓ Concluída</span>
     <% else %>
-      <span class="text-xs font-semibold bg-indigo-900/50 text-indigo-400 px-3 py-1 rounded-full">
-        Em andamento
-      </span>
+      <span class="text-xs font-semibold px-3 py-1 rounded-full" style="background: rgba(108,77,255,0.15); color: #6C4DFF;">Em andamento</span>
     <% end %>
-
     <div class="flex gap-3">
-      <%= link_to "Editar", edit_quest_path(@quest),
-        class: "text-sm text-gray-400 hover:text-white transition-colors" %>
+      <%= link_to "Editar", edit_quest_path(@quest), class: "text-sm text-gray-400 hover:text-white transition-colors" %>
       <%= link_to "Apagar", quest_path(@quest),
-      data: { turbo_method: :delete, turbo_confirm: "Tem certeza? Isso apaga a quest e todos os challenges." },
-      class: "text-sm text-red-400 hover:text-red-300 transition-colors" %>
+          data: { turbo_method: :delete, turbo_confirm: "Tem certeza? Isso apaga a jornada e todos os desafios." },
+          class: "text-sm hover:text-red-300 transition-colors", style: "color: #f87171;" %>
     </div>
   </div>
 
@@ -27,76 +20,67 @@
     <p class="text-gray-400 mb-6"><%= @quest.description %></p>
   <% end %>
 
-  <%# Progresso geral %>
-  <div class="bg-gray-900 rounded-2xl p-6 mb-4">
+  <%# Progresso %>
+  <div class="rounded-2xl p-6 mb-4" style="background: #1F2937;">
     <div class="flex justify-between text-sm mb-3">
       <span class="text-gray-400">Progresso</span>
-      <span class="text-white font-semibold">
-        <%= @quest.progress %> de <%= @quest.total %> challenges
-      </span>
+      <span class="font-semibold text-white"><%= @quest.progress %> de <%= @quest.total %> desafios</span>
     </div>
-    <div class="w-full bg-gray-800 rounded-full h-2">
-      <div class="bg-indigo-500 h-2 rounded-full transition-all"
-           style="width: <%= @quest.progress_percentage %>%"></div>
+    <div class="w-full rounded-full h-2" style="background: #374151;">
+      <div class="h-2 rounded-full transition-all" style="width: <%= @quest.progress_percentage %>%; background: linear-gradient(90deg, #6C4DFF, #22C55E);"></div>
     </div>
   </div>
 
-  <%# Lista de challenges %>
-  <div class="bg-gray-900 rounded-2xl p-6 mb-4">
-    <p class="text-sm text-gray-400 mb-4">Challenges</p>
+  <%# Desafios %>
+  <div class="rounded-2xl p-6 mb-4" style="background: #1F2937;">
+    <p class="text-sm text-gray-400 mb-4">Desafios</p>
 
     <% if @quest.challenges.empty? %>
-      <p class="text-gray-600 text-sm">Nenhum challenge ainda.</p>
+      <p class="text-gray-600 text-sm">Nenhum desafio ainda.</p>
     <% else %>
       <div class="space-y-3">
         <% @quest.challenges.order(created_at: :asc).each do |challenge| %>
-          <% if challenge.active? || challenge.completed? || challenge.finished? %>
-            <%= link_to challenge_path(challenge),
-                class: "block rounded-xl p-4 transition-colors
-                        #{challenge.completed? ? 'bg-green-900/20 border border-green-900/30' :
-                          challenge.finished? ? 'bg-gray-800/50' : 'bg-gray-800 hover:bg-gray-700'}" do %>
-              <div class="flex items-center justify-between">
-                <span class="text-sm font-semibold
-                             #{challenge.completed? ? 'text-green-400' :
-                               challenge.finished? ? 'text-gray-500' : 'text-white'}">
-                  <%= challenge.title %>
-                </span>
-                <% if challenge.completed? %>
-                  <span class="text-xs text-green-400">✓</span>
-                <% elsif challenge.finished? %>
-                  <span class="text-xs text-gray-500">Encerrado</span>
-                <% else %>
-                  <span class="text-xs text-indigo-400">
-                    <%= challenge.progress %>/<%= challenge.duration_days %>
-                  </span>
-                <% end %>
-              </div>
-            <% end %>
+          <%= link_to challenge_path(challenge),
+              class: "block rounded-xl p-4 transition-colors",
+              style: challenge.completed? ? 'background: rgba(34,197,94,0.1); border: 0.5px solid rgba(34,197,94,0.2);' :
+                     challenge.finished? ? 'background: rgba(55,65,81,0.5);' :
+                     'background: #374151;' do %>
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-semibold"
+                    style="color: <%= challenge.completed? ? '#22C55E' : challenge.finished? ? '#6b7280' : '#f3f4f6' %>;">
+                <%= challenge.title %>
+              </span>
+              <% if challenge.completed? %>
+                <span class="text-xs" style="color: #22C55E;">✓</span>
+              <% elsif challenge.finished? %>
+                <span class="text-xs text-gray-500">Encerrado</span>
+              <% else %>
+                <span class="text-xs" style="color: #6C4DFF;"><%= challenge.progress %>/<%= challenge.duration_days %></span>
+              <% end %>
+            </div>
           <% end %>
         <% end %>
       </div>
     <% end %>
 
-    <%# Botão adicionar próximo challenge %>
     <% if @quest.next_challenge_available? %>
-      <div class="mt-4 pt-4 border-t border-gray-800">
-        <%= link_to "+ Adicionar próximo challenge",
-            new_challenge_path(quest_id: @quest.id),
-            class: "text-indigo-400 hover:text-indigo-300 text-sm transition-colors" %>
+      <div class="mt-4 pt-4" style="border-top: 0.5px solid #374151;">
+        <%= link_to "+ Adicionar próximo desafio", new_challenge_path(quest_id: @quest.id),
+            class: "text-sm transition-colors", style: "color: #6C4DFF;" %>
       </div>
     <% end %>
   </div>
 
   <%# Reward %>
   <% if @quest.reward.present? %>
-    <div class="bg-gray-900 rounded-2xl p-5 mb-4">
-      <p class="text-xs text-gray-500 mb-1">Reward da Quest</p>
+    <div class="rounded-2xl p-5 mb-4" style="background: #1F2937;">
+      <p class="text-xs text-gray-500 mb-1">Recompensa da Jornada</p>
       <%= link_to reward_path(@quest.reward), class: "flex items-center justify-between" do %>
         <div>
           <p class="text-white font-semibold"><%= @quest.reward.description %></p>
           <p class="text-xs text-gray-500 mt-1">
             <% if @quest.reward.locked? %>
-              🔒 Bloqueado — conclua todos os challenges
+              🔒 Bloqueado — conclua todos os desafios
             <% elsif @quest.reward.unlocked? %>
               🎁 Desbloqueado — pronto para resgatar
             <% else %>
@@ -109,8 +93,6 @@
     </div>
   <% end %>
 
-  <%= link_to "← Voltar", quests_path,
-      class: "block text-center text-gray-500 text-sm mt-6 hover:text-gray-300" %>
-
+  <%= link_to "← Voltar", quests_path, class: "block text-center text-gray-500 text-sm mt-6 hover:text-gray-300" %>
 </div>
 

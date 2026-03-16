@@ -1,40 +1,38 @@
 <div class="max-w-lg mx-auto px-4 py-10">
 
   <div class="flex items-center justify-between mb-8">
-    <h1 class="text-2xl font-bold text-white">Suas Quests</h1>
-    <%= link_to "Nova", new_quest_path,
-        class: "bg-indigo-600 hover:bg-indigo-500 text-white
-                text-sm font-semibold px-4 py-2 rounded-lg transition-colors" %>
+    <h1 class="text-2xl font-bold text-white">Jornadas</h1>
+    <%= link_to "+ Nova", new_quest_path,
+        class: "text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors",
+        style: "background: #6C4DFF;" %>
   </div>
 
   <% if @quests.empty? %>
     <div class="text-center py-20">
-      <p class="text-gray-500 mb-4">Nenhuma quest ainda.</p>
-      <%= link_to "Criar sua primeira quest", new_quest_path,
-          class: "text-indigo-400 hover:text-indigo-300" %>
+      <p class="text-gray-500 mb-4">Nenhuma jornada ainda.</p>
+      <%= link_to "Criar sua primeira jornada →", new_quest_path,
+          style: "color: #6C4DFF;" %>
     </div>
   <% else %>
     <div class="space-y-3">
       <% @quests.each do |quest| %>
-        <%= link_to quest_path(quest),
-            class: "block bg-gray-900 rounded-xl p-4 hover:bg-gray-800 transition-colors" do %>
+        <%= link_to quest_path(quest), class: "evolva-card" do %>
           <div class="flex items-center justify-between mb-2">
             <h2 class="text-white text-sm font-semibold"><%= quest.title %></h2>
             <% if quest.completed? %>
-              <span class="text-xs text-green-400">✓ Concluída</span>
+              <span class="text-xs" style="color: #22C55E;">✓ Concluída</span>
             <% else %>
-              <span class="text-xs text-indigo-400">Em andamento</span>
+              <span class="text-xs" style="color: #6C4DFF;">Em andamento</span>
             <% end %>
           </div>
 
           <div class="flex justify-between text-xs text-gray-500 mb-2">
-            <span><%= quest.progress %> de <%= quest.total %> challenges</span>
+            <span><%= quest.progress %> de <%= quest.total %> desafios</span>
             <span><%= quest.progress_percentage %>%</span>
           </div>
 
-          <div class="w-full bg-gray-800 rounded-full h-1">
-            <div class="bg-indigo-500 h-1 rounded-full"
-                 style="width: <%= quest.progress_percentage %>%"></div>
+          <div class="w-full rounded-full h-1" style="background: #374151;">
+            <div class="h-1 rounded-full" style="width: <%= quest.progress_percentage %>%; background: linear-gradient(90deg, #6C4DFF, #22C55E);"></div>
           </div>
         <% end %>
       <% end %>
