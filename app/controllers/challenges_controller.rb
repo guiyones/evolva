@@ -53,6 +53,6 @@ class ChallengesController < ApplicationController
   end
 
   def edit_params
-    params.require.(:challenge).permit(:title, :description)
+    params.require(:challenge).permit(:title, :description)
   end
 end
