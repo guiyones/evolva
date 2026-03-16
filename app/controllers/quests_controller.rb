@@ -41,6 +41,7 @@ class QuestsController < ApplicationController
     redirect_to quests_path, notice: "Quest removida."
   end
 
+
   private
 
   def set_quest
