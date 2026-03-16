@@ -41,7 +41,7 @@
       <div class="space-y-3">
         <% @quest.challenges.order(created_at: :asc).each do |challenge| %>
           <%= link_to challenge_path(challenge),
-              class: "block rounded-xl p-4 transition-colors",
+              class: "evolva-card",
               style: challenge.completed? ? 'background: rgba(34,197,94,0.1); border: 0.5px solid rgba(34,197,94,0.2);' :
                      challenge.finished? ? 'background: rgba(55,65,81,0.5);' :
                      'background: #374151;' do %>
