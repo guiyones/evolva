@@ -1,3 +1,20 @@
+<style>
+  /* Bottom nav */
+  .bottom-nav { display: none; }
+    @media (max-width: 768px) {
+      .bottom-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0;
+                background: #0a0f1a; border-top: 0.5px solid #1f2937;
+                justify-content: space-around; padding: 10px 0 20px;
+                z-index: 50; }
+     }
+  .nav-item { display: flex; flex-direction: column; align-items: center;
+              gap: 3px; text-decoration: none; color: #6b7280;
+              font-size: 10px; font-weight: 500; transition: color 0.15s; }
+  .nav-item:hover { color: #f3f4f6; }
+  .nav-item.active { color: #818cf8; }
+  .nav-icon { font-size: 18px; }
+</style>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -22,12 +39,12 @@
   <body class="bg-gray-950 text-white min-h-screen">
 
     <% if authenticated? %>
-      <nav class="flex items-center justify-between px-6 py-4 border-b border-gray-800">
+      <nav class="hidden md:flex items-center justify-between px-6 py-4 border-b border-gray-800">
         <%= link_to "Forge", root_path, class: "font-bold text-indigo-400 text-lg" %>
         <div class="flex items-center gap-6">
           <%= link_to "Home", root_path, class: "text-sm text-gray-400 hover:text-white transition-colors" %>
-          <%= link_to "Challenges", challenges_path, class: "text-sm text-gray-400 hover:text-white transition-colors" %>
-          <%= link_to "Quests", quests_path, class: "text-sm text-gray-400 hover:text-white transition-colors" %>
+          <%= link_to "Desafios", challenges_path, class: "text-sm text-gray-400 hover:text-white transition-colors" %>
+          <%= link_to "Jornadas", quests_path, class: "text-sm text-gray-400 hover:text-white transition-colors" %>
           <%= link_to "Histórico", history_path, class: "text-sm text-gray-400 hover:text-white transition-colors" %>
         </div>
         <%= button_to "Sair", session_path, method: :delete,
@@ -59,5 +76,27 @@
 
     <%= yield %>
   </body>
+
+  <%# Bottom nav mobile %>
+<% if authenticated? %>
+  <nav class="bottom-nav">
+    <%= link_to root_path, class: "nav-item active" do %>
+      <span class="nav-icon">🏠</span>
+      <span>Home</span>
+    <% end %>
+    <%= link_to challenges_path, class: "nav-item" do %>
+      <span class="nav-icon">⚔️</span>
+      <span>Desafios</span>
+    <% end %>
+    <%= link_to quests_path, class: "nav-item" do %>
+      <span class="nav-icon">📖</span>
+      <span>Jornadas</span>
+    <% end %>
+    <%= link_to history_path, class: "nav-item" do %>
+      <span class="nav-icon">📋</span>
+      <span>Histórico</span>
+    <% end %>
+  </nav>
+<% end %>
 </html>
 

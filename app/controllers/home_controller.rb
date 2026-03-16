@@ -24,7 +24,10 @@ class HomeController < ApplicationController
       challenge_id: @today_challenges.map(&:id),
       created_at: Date.today.all_day
     ).pluck(:challenge_id).to_set
+
+    total = @today_challenges.count
+    done = @today_checkins.count
+    @day_progress = total > 0 ? [(done.to_f / total * 100).round, 100].min : 0
   end
 end
-
 

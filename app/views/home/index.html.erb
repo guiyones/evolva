@@ -1,129 +1,127 @@
 <style>
-  .forge-home { max-width: 1000px; margin: 0 auto; padding: 2rem 1.5rem; }
+  * { box-sizing: border-box; }
+  .forge-home { max-width: 480px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
 
   /* Hero */
-  .hero { margin-bottom: 2rem; }
-  .hero-name { font-size: 22px; font-weight: 500; color: #f9fafb; margin-bottom: 1rem; }
-  .hero-stats { display: flex; gap: 10px; flex-wrap: wrap; }
-  .stat-pill { display: flex; align-items: center; gap: 8px; padding: 8px 16px;
+  .hero { margin-bottom: 1.5rem; }
+  .hero-name { font-size: 28px; font-weight: 700; color: #f9fafb; margin-bottom: 4px; }
+  .hero-tagline { font-size: 13px; color: #6b7280; margin-bottom: 1rem; }
+  .hero-stats { display: flex; gap: 8px; flex-wrap: wrap; }
+  .stat-pill { display: flex; align-items: center; gap: 6px; padding: 6px 12px;
                border-radius: 40px; border: 0.5px solid #1f2937;
-               background: #111827; font-size: 13px; font-weight: 500; }
+               background: #111827; font-size: 12px; font-weight: 500; }
   .stat-pill.streak { border-color: rgba(251,146,60,0.3); color: #fb923c; }
   .stat-pill.challenges { border-color: rgba(99,102,241,0.3); color: #818cf8; }
   .stat-pill.rewards { border-color: rgba(16,185,129,0.3); color: #34d399; }
-  .stat-icon { font-size: 14px; }
 
-  /* Header */
-  .forge-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
-  .forge-title { font-size: 13px; font-weight: 500; color: #6b7280; letter-spacing: 0.05em; text-transform: uppercase; }
-  .forge-actions { display: flex; gap: 8px; }
-  .forge-btn { font-size: 12px; padding: 5px 12px; border-radius: 8px;
-               border: 0.5px solid #374151; color: #9ca3af;
-               background: transparent; text-decoration: none;
-               transition: color 0.15s, border-color 0.15s; }
-  .forge-btn:hover { color: #f9fafb; border-color: #6b7280; }
+  /* Day progress */
+  .day-progress-card { background: #111827; border: 0.5px solid #1f2937;
+                       border-radius: 14px; padding: 14px 16px; margin-bottom: 1.5rem; }
+  .day-progress-header { display: flex; justify-content: space-between;
+                         align-items: center; margin-bottom: 10px; }
+  .day-progress-label { font-size: 13px; font-weight: 500; color: #f3f4f6; }
+  .day-progress-pct { font-size: 13px; font-weight: 600;
+                      color: <%= @day_progress == 100 ? '#34d399' : '#818cf8' %>; }
+  .day-progress-track { height: 4px; background: #1f2937; border-radius: 4px; overflow: hidden; }
+  .day-progress-fill { height: 100%; border-radius: 4px;
+                       background: <%= @day_progress == 100 ? 'linear-gradient(90deg, #10b981, #34d399)' : 'linear-gradient(90deg, #6366f1, #818cf8)' %>;
+                       transition: width 0.3s; }
 
-  /* Grid */
-  .forge-grid { display: grid; grid-template-columns: minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr); gap: 20px; align-items: start; }
-  .col-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em;
-               text-transform: uppercase; color: #6b7280; margin-bottom: 10px; }
-  .col-cards { display: flex; flex-direction: column; gap: 8px; }
+  /* Section */
+  .section { margin-bottom: 1.5rem; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+                   text-transform: uppercase; color: #6b7280; }
+  .section-action { font-size: 12px; color: #818cf8; text-decoration: none; }
+  .section-action:hover { color: #a5b4fc; }
+
+  /* Hoje card */
+  .hoje-card { background: #111827; border: 0.5px solid #1f2937; border-radius: 12px;
+               padding: 12px 14px; display: flex; align-items: center;
+               justify-content: space-between; gap: 12px; margin-bottom: 6px;
+               transition: border-color 0.2s; }
+  .hoje-card:hover { border-color: #374151; }
+  .hoje-card.done { opacity: 0.5; }
+  .hoje-card-left { flex: 1; min-width: 0; }
+  .hoje-card-title { font-size: 14px; font-weight: 500; color: #f3f4f6;
+                     display: flex; align-items: center; gap: 6px; }
+  .hoje-card-meta { font-size: 11px; color: #6b7280; margin-top: 3px; }
+  .hoje-card-meta span { color: #818cf8; }
+  .hoje-checkin-btn { flex-shrink: 0; padding: 5px 14px; border-radius: 8px;
+                      background: #059669; color: #fff; font-size: 11px; font-weight: 500;
+                      text-decoration: none; white-space: nowrap; transition: background 0.15s; }
+  .hoje-checkin-btn:hover { background: #047857; }
+  .hoje-done-badge { flex-shrink: 0; font-size: 11px; color: #374151; }
 
   /* Quest card */
-  .quest-card { background: #0f172a; border: 0.5px solid #1e3a5f;
-                border-radius: 14px; padding: 16px 18px;
-                text-decoration: none; display: block;
-                transition: border-color 0.2s, transform 0.2s;
-                box-shadow: 0 4px 24px rgba(99,102,241,0.08); }
-  .quest-card:hover { border-color: #3b82f6; transform: scale(1.02); }
-  .quest-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
-  .quest-title { font-size: 14px; font-weight: 500; color: #f3f4f6; line-height: 1.4; }
-  .quest-badge { font-size: 11px; font-weight: 500; padding: 2px 8px;
-                 border-radius: 20px; white-space: nowrap; flex-shrink: 0;
+  .quest-card { background: #0f172a; border: 0.5px solid #1e3a5f; border-radius: 14px;
+                padding: 14px 16px; text-decoration: none; display: block;
+                transition: border-color 0.2s, transform 0.15s; margin-bottom: 8px;
+                box-shadow: 0 4px 24px rgba(99,102,241,0.06); }
+  .quest-card:hover { border-color: #3b82f6; transform: translateY(-1px); }
+  .quest-card-header { display: flex; align-items: flex-start;
+                       justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .quest-icon { font-size: 18px; margin-right: 8px; }
+  .quest-title { font-size: 15px; font-weight: 600; color: #f3f4f6; line-height: 1.3; }
+  .quest-badge { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 20px;
+                 white-space: nowrap; flex-shrink: 0;
                  background: rgba(16,185,129,0.15); color: #34d399; }
-  .quest-objective { font-size: 12px; color: #6b7280; margin-bottom: 12px; line-height: 1.5; }
-  .quest-objective span { color: #9ca3af; }
-  .quest-progress-label { display: flex; justify-content: space-between;
-                          font-size: 11px; color: #6b7280; margin-bottom: 6px; }
+  .quest-sub { font-size: 12px; color: #6b7280; margin-bottom: 10px; line-height: 1.5; }
+  .quest-sub span { color: #9ca3af; }
+  .quest-progress-row { display: flex; justify-content: space-between;
+                        font-size: 11px; color: #6b7280; margin-bottom: 5px; }
   .quest-track { height: 3px; background: #1e3a5f; border-radius: 3px; overflow: hidden; }
   .quest-fill { height: 100%; border-radius: 3px;
                 background: linear-gradient(90deg, #10b981, #34d399); }
 
   /* Challenge card */
-  .card { background: #111827; border: 0.5px solid #1f2937; border-radius: 12px;
-          padding: 12px 14px; display: block;
-          transition: border-color 0.2s, transform 0.2s; }
-  .card:hover { border-color: #374151; transform: scale(1.02); }
-  .card-link { text-decoration: none; display: block; }
-  .card-row { display: flex; align-items: flex-start; justify-content: space-between;
-              gap: 8px; margin-bottom: 6px; }
-  .card-title { font-size: 13px; font-weight: 500; color: #f3f4f6; line-height: 1.4; }
-  .badge-challenge { font-size: 11px; font-weight: 500; padding: 2px 8px;
-                     border-radius: 20px; white-space: nowrap; flex-shrink: 0;
+  .challenge-card { background: #111827; border: 0.5px solid #1f2937; border-radius: 12px;
+                    padding: 12px 14px; margin-bottom: 8px;
+                    transition: border-color 0.2s, transform 0.15s; }
+  .challenge-card:hover { border-color: #374151; transform: translateY(-1px); }
+  .challenge-card-link { text-decoration: none; display: block; }
+  .challenge-card-header { display: flex; align-items: flex-start;
+                           justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+  .challenge-title { font-size: 14px; font-weight: 500; color: #f3f4f6; line-height: 1.3; }
+  .challenge-badge { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 20px;
+                     white-space: nowrap; flex-shrink: 0;
                      background: rgba(99,102,241,0.15); color: #818cf8; }
-  .progress-wrap { margin-bottom: 10px; }
-  .progress-meta { display: flex; justify-content: space-between;
-                   font-size: 11px; color: #6b7280; margin-bottom: 5px; }
-  .progress-track { height: 2px; background: #1f2937; border-radius: 2px; overflow: hidden; }
-  .progress-challenge { height: 100%; border-radius: 2px; background: #6366f1; transition: width 0.3s; }
-
-  /* Check-in button */
-  .checkin-btn { display: block; width: 70%; margin: 0 auto; padding: 6px 0; border-radius: 8px;
-    background: #059669; color: #fff; font-size: 11px; font-weight: 500;
-    text-align: center; text-decoration: none; border: none;
-    transition: background 0.15s, transform 0.15s; cursor: pointer; }
-  .checkin-btn:hover { background: #047857; transform: scale(1.01); }
-  .checkin-done { font-size: 12px; color: #374151; text-align: center;
-                  padding: 7px 0; display: block; }
+  .challenge-meta { font-size: 11px; color: #4b5563; margin-bottom: 8px; }
+  .challenge-progress-row { display: flex; justify-content: space-between;
+                             font-size: 11px; color: #6b7280; margin-bottom: 5px; }
+  .challenge-track { height: 2px; background: #1f2937; border-radius: 2px;
+                     overflow: hidden; margin-bottom: 8px; }
+  .challenge-fill { height: 100%; border-radius: 2px; background: #6366f1; }
+  .challenge-checkin { font-size: 11px; color: #4b5563; }
+  .challenge-checkin-link { font-size: 11px; color: #818cf8; text-decoration: none; }
+  .challenge-checkin-link:hover { color: #a5b4fc; }
 
   /* Reward card */
   .reward-card { border-radius: 12px; padding: 12px 14px; text-decoration: none;
-                 display: block; transition: border-color 0.2s, transform 0.2s; }
-  .reward-card:hover { transform: scale(1.02); }
+                 display: block; margin-bottom: 8px;
+                 transition: border-color 0.2s, transform 0.15s; }
+  .reward-card:hover { transform: translateY(-1px); }
   .reward-card.unlocked { background: #0a1f14; border: 0.5px solid rgba(16,185,129,0.3); }
-  .reward-card.unlocked:hover { border-color: rgba(16,185,129,0.6); }
-  .reward-card.locked { background: #111827; border: 0.5px solid #1f2937; opacity: 0.75; }
-  .reward-card.locked:hover { border-color: #374151; opacity: 1; }
+  .reward-card.locked { background: #111827; border: 0.5px solid #1f2937; }
   .reward-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-  .reward-icon { width: 28px; height: 28px; border-radius: 8px; display: flex;
-                 align-items: center; justify-content: center;
-                 font-size: 13px; flex-shrink: 0; }
+  .reward-icon { width: 32px; height: 32px; border-radius: 8px; display: flex;
+                 align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
   .reward-icon.unlocked { background: rgba(16,185,129,0.2); }
   .reward-icon.locked { background: #1f2937; }
+  .reward-info { flex: 1; min-width: 0; }
   .reward-title { font-size: 13px; font-weight: 500; color: #f3f4f6; }
   .reward-title.locked { color: #9ca3af; }
-  .reward-source { font-size: 11px; color: #6b7280; margin-top: 1px; }
+  .reward-source { font-size: 11px; color: #6b7280; margin-top: 2px; }
   .reward-divider { height: 0.5px; background: rgba(16,185,129,0.15); margin: 6px 0; }
   .reward-status { font-size: 11px; font-weight: 500; color: #34d399; }
-  .reward-progress-label { display: flex; justify-content: space-between;
-                            font-size: 11px; color: #6b7280; margin-bottom: 5px; margin-top: 8px; }
+  .reward-progress-row { display: flex; justify-content: space-between;
+                         font-size: 11px; color: #6b7280; margin-bottom: 5px; margin-top: 6px; }
   .reward-track { height: 2px; background: #1f2937; border-radius: 2px; overflow: hidden; }
-  .reward-fill { height: 100%; border-radius: 2px; background: #374151; }
-  
-  /* Hoje */
-  .hoje-section { margin-bottom: 3.2rem; }
-  .hoje-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; max-width:600px; margin-left: auto; margin-right: auto; }
-  .hoje-label { font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: #6b7280; }
-  .hoje-completo { font-size: 16px; color: #34d399; }
-  .hoje-cards { display: flex; flex-direction: column; gap: 6px; max-width: 600px; margin: 0 auto; }
-  .hoje-card { background: #111827; border: 0.5px solid #1f2937; border-radius: 10px;
-    padding: 16px 20px; display: flex; align-items: center;
-    justify-content: space-between; gap: 12px;
-    transition: border-color 0.2s; }
-  .hoje-card:hover { border-color: #374151; }
-  .hoje-card.done { opacity: 0.5; }
-  .hoje-card-title { font-size: 15px; font-weight: 500; color: #f3f4f6; }
-  .hoje-card-sub { font-size: 13px; color: #6b7280; margin-top: 2px; }
-  .hoje-checkin-btn { flex-shrink: 0; padding: 5px 14px; border-radius: 8px;
-    background: #059669; color: #fff; font-size: 13px; font-weight: 500;
-    text-decoration: none; white-space: nowrap;
-    transition: background 0.15s; }
-  .hoje-checkin-btn:hover { background: #047857; }
-  .hoje-done-badge { flex-shrink: 0; font-size: 11px; color: #374151; }
-  .hoje-empty { font-size: 13px; color: #34d399; padding: 12px 0; text-align: center; }
+  .reward-fill { height: 100%; border-radius: 2px; }
+  .reward-fill.locked { background: #374151; }
 
   /* Empty */
-  .empty { text-align: center; padding: 32px 0; }
+  .empty { text-align: center; padding: 24px 0; }
   .empty-text { font-size: 13px; color: #4b5563; margin-bottom: 8px; }
   .empty-link { font-size: 12px; color: #818cf8; text-decoration: none; }
   .empty-link:hover { color: #a5b4fc; }
@@ -135,220 +133,218 @@
   <div class="hero">
     <% display_name = Current.user.name.present? ? Current.user.name : Current.user.email_address.split("@").first %>
     <p class="hero-name"><%= display_name.capitalize %></p>
+    <p class="hero-tagline">Pequenos progressos criam grandes mudanças.</p>
     <div class="hero-stats">
       <div class="stat-pill streak">
-        <span class="stat-icon">🔥</span>
+        <span>🔥</span>
         <span><%= @streak %> <%= @streak == 1 ? "dia seguido" : "dias seguidos" %></span>
       </div>
       <div class="stat-pill challenges">
-        <span class="stat-icon">⚔️</span>
-        <span><%= @active_count %> <%= @active_count == 1 ? "challenge ativo" : "challenges ativos" %></span>
+        <span>⚔️</span>
+        <span><%= @active_count %> <%= @active_count == 1 ? "desafio ativo" : "desafios ativos" %></span>
       </div>
       <div class="stat-pill rewards">
-        <span class="stat-icon">🏆</span>
-        <span><%= @unlocked_count %> <%= @unlocked_count == 1 ? "reward disponível" : "rewards disponíveis" %></span>
+        <span>🏆</span>
+        <span><%= @unlocked_count %> <%= @unlocked_count == 1 ? "recompensa" : "recompensas" %></span>
       </div>
     </div>
   </div>
 
+  <%# Progresso do dia %>
+  <div class="day-progress-card">
+    <div class="day-progress-header">
+      <span class="day-progress-label">Progresso do dia</span>
+      <span class="day-progress-pct"><%= @day_progress %>%</span>
+    </div>
+    <div class="day-progress-track">
+      <div class="day-progress-fill" style="width: <%= @day_progress %>%"></div>
+    </div>
+  </div>
+
   <%# Hoje %>
-  <div class="hoje-section">
-    <div class="hoje-header">
-      <span class="hoje-label">Hoje</span>
+  <div class="section">
+    <div class="section-header">
+      <span class="section-label">Hoje</span>
       <% pendentes = @today_challenges.reject { |c| @today_checkins.include?(c.id) } %>
-      <% if pendentes.empty? %>
-        <span class="hoje-completo">✓ Dia completo</span>
-      <% else %>
+      <% if pendentes.empty? && @today_challenges.any? %>
+        <span style="font-size: 12px; color: #34d399;">✓ Dia completo</span>
+      <% elsif pendentes.any? %>
         <span style="font-size: 12px; color: #6b7280;"><%= pendentes.count %> pendente<%= pendentes.count == 1 ? "" : "s" %></span>
       <% end %>
     </div>
 
     <% if @today_challenges.empty? %>
-      <div class="hoje-empty">Nenhum challenge ativo hoje.</div>
+      <div class="empty">
+        <p class="empty-text">Nenhum desafio ativo hoje.</p>
+      </div>
     <% else %>
-      <div class="hoje-cards">
-        <% @today_challenges.each do |challenge| %>
-          <% done = @today_checkins.include?(challenge.id) %>
-          <div class="hoje-card <%= done ? 'done' : '' %>">
-            <div>
-              <p class="hoje-card-title">
+      <% @today_challenges.each do |challenge| %>
+        <% done = @today_checkins.include?(challenge.id) %>
+        <div class="hoje-card <%= done ? 'done' : '' %>">
+          <div class="hoje-card-left">
+            <p class="hoje-card-title">
               <%= done ? "✓" : "◦" %> <%= challenge.title %>
-              </p>
-              <p class="hoje-card-sub">
-              <%= challenge.progress %> / <%= challenge.duration_days %> dias
+            </p>
+            <p class="hoje-card-meta">
               <% if challenge.quest.present? %>
-                · <%= challenge.quest.title %>
-            <% end %>
-              </p>
-            </div>
-            <% if done %>
-              <span class="hoje-done-badge">feito hoje</span>
-            <% else %>
-              <%= link_to "✔ Check-in",
-                new_challenge_checkin_path(challenge),
-                class: "hoje-checkin-btn" %>
-            <% end %>
+                Jornada: <span><%= challenge.quest.title %></span> ·
+              <% else %>
+                Desafio pessoal ·
+              <% end %>
+              <%= challenge.progress %> / <%= challenge.duration_days %> dias
+            </p>
           </div>
+          <% if done %>
+            <span class="hoje-done-badge">✓ feito</span>
+          <% else %>
+            <%= link_to "✔ Check-in", new_challenge_checkin_path(challenge), class: "hoje-checkin-btn" %>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <%# Jornadas %>
+  <div class="section">
+    <div class="section-header">
+      <span class="section-label">Jornadas</span>
+      <%= link_to "+ Nova", new_quest_path, class: "section-action" %>
+    </div>
+
+    <% if @active_quests.any? %>
+      <% @active_quests.each do |quest| %>
+        <%= link_to quest_path(quest), class: "quest-card" do %>
+          <div class="quest-card-header">
+            <div style="display: flex; align-items: center;">
+              <span class="quest-icon">📖</span>
+              <span class="quest-title"><%= quest.title %></span>
+            </div>
+            <span class="quest-badge"><%= quest.progress %>/<%= quest.total %></span>
+          </div>
+          <% current = quest.current_challenge %>
+          <% if current %>
+            <p class="quest-sub">Agora: <span><%= current.title %></span> · <%= current.progress %>/<%= current.duration_days %> dias</p>
+          <% elsif quest.next_challenge_available? %>
+            <p class="quest-sub" style="color: #818cf8;">Pronto para o próximo desafio</p>
+          <% elsif quest.total == 0 %>
+            <p class="quest-sub">Crie seu primeiro desafio para começar</p>
+          <% else %>
+            <p class="quest-sub">Nenhum desafio ativo</p>
+          <% end %>
+          <% if quest.total > 0 %>
+            <div class="quest-progress-row">
+              <span>Progresso</span>
+              <span><%= quest.progress %> / <%= quest.total %> desafios</span>
+            </div>
+            <div class="quest-track">
+              <div class="quest-fill" style="width: <%= quest.progress_percentage %>%"></div>
+            </div>
+          <% end %>
         <% end %>
+      <% end %>
+    <% else %>
+      <div class="empty">
+        <p class="empty-text">Nenhuma jornada ativa.</p>
+        <%= link_to "Criar jornada →", new_quest_path, class: "empty-link" %>
       </div>
     <% end %>
   </div>
 
-  <%# Sub-header %>
-  <div class="forge-header">
-    <span class="forge-title">Seus desafios</span>
-    <div class="forge-actions">
-      <%= link_to "+ Challenge", new_challenge_path, class: "forge-btn" %>
-      <%= link_to "+ Quest", new_quest_path, class: "forge-btn" %>
-    </div>
-  </div>
-
-  <%# Grid %>
-  <div class="forge-grid">
-    <%# Quests %>
-    <div>
-      <p class="col-label">Quests</p>
-      <% if @active_quests.any? %>
-        <div class="col-cards">
-          <% @active_quests.each do |quest| %>
-            <%= link_to quest_path(quest), class: "quest-card" do %>
-              <div class="quest-card-header">
-                <span class="quest-title"><%= quest.title %></span>
-                <span class="quest-badge"><%= quest.progress %>/<%= quest.total %></span>
-              </div>
-              <% current = quest.current_challenge %>
-              <% if current %>
-                <p class="quest-objective">
-                  Agora: <span><%= current.title %></span><br>
-                  <%= current.progress %> / <%= current.duration_days %> dias
-                </p>
-              <% elsif quest.next_challenge_available? %>
-                <p class="quest-objective" style="color: #818cf8;">Pronto para o próximo challenge</p>
-              <% else %>
-                <p class="quest-objective">Nenhum challenge ativo</p>
-              <% end %>
-
-              <% if quest.total > 0 %>
-                <div class="quest-progress-label">
-                  <span>Progresso</span>
-                  <span><%= quest.progress %> / <%= quest.total %> challenges</span>
-                </div>
-                <div class="quest-track">
-                  <div class="quest-fill" style="width: <%= quest.progress_percentage %>%"></div>
-                </div>
-              <% else %>
-                <p style="font-size: 11px; color: #4b5563; margin-top: 4px;">
-                Crie seu primeiro challenge para começar
-                </p>
-              <% end %>
-            <% end %>
-          <% end %>
-        </div>
-      <% else %>
-        <div class="empty">
-          <p class="empty-text">Nenhuma quest ativa.</p>
-          <%= link_to "Criar quest →", new_quest_path, class: "empty-link" %>
-        </div>
-      <% end %>
+  <%# Desafios independentes %>
+  <div class="section">
+    <div class="section-header">
+      <span class="section-label">Desafios</span>
+      <%= link_to "+ Novo", new_challenge_path, class: "section-action" %>
     </div>
 
-    <%# Challenges %>
-    <div>
-      <p class="col-label">Challenges</p>
-      <% if @active_challenges.any? %>
-        <div class="col-cards">
-          <% @active_challenges.each do |challenge| %>
-            <% checked_today = challenge.checkins.where(created_at: Date.today.all_day).exists? %>
-            <div class="card">
-              <%= link_to challenge_path(challenge), class: "card-link" do %>
-                <div class="card-row">
-                  <span class="card-title"><%= challenge.title %></span>
-                  <span class="badge-challenge"><%= challenge.progress %> / <%= challenge.duration_days %></span>
-                </div>
-                <div class="progress-wrap">
-                  <div class="progress-meta">
-                    <span><%= challenge.progress %> / <%= challenge.duration_days %> dias</span>
-                    <span><%= challenge.progress_percentage %>%</span>
-                  </div>
-                  <div class="progress-track">
-                    <div class="progress-challenge" style="width: <%= challenge.progress_percentage %>%"></div>
-                  </div>
-                </div>
-              <% end %>
-              <% if checked_today %>
-                <span class="checkin-done">✓ feito hoje</span>
-              <% else %>
-                <%= link_to "check-in pendente →", new_challenge_checkin_path(challenge),
-                  style: "font-size: 11px; color: #4b5563; text-decoration: none;" %>
-              <% end %>
+    <% if @active_challenges.any? %>
+      <% @active_challenges.each do |challenge| %>
+        <% checked_today = @today_checkins.include?(challenge.id) %>
+        <div class="challenge-card">
+          <%= link_to challenge_path(challenge), class: "challenge-card-link" do %>
+            <div class="challenge-card-header">
+              <span class="challenge-title"><%= challenge.title %></span>
+              <span class="challenge-badge"><%= challenge.progress %> / <%= challenge.duration_days %></span>
+            </div>
+            <p class="challenge-meta">Desafio pessoal</p>
+            <div class="challenge-progress-row">
+              <span><%= challenge.progress %> / <%= challenge.duration_days %> dias</span>
+              <span><%= challenge.progress_percentage %>%</span>
+            </div>
+            <div class="challenge-track">
+              <div class="challenge-fill" style="width: <%= challenge.progress_percentage %>%"></div>
             </div>
           <% end %>
-        </div>
-      <% else %>
-        <div class="empty">
-          <p class="empty-text">Nenhum challenge ativo.</p>
-          <%= link_to "Criar challenge →", new_challenge_path, class: "empty-link" %>
-        </div>
-      <% end %>
-    </div>
-
-    <%# Rewards %>
-    <div>
-      <p class="col-label">Rewards</p>
-      <% all_rewards = @unlocked_rewards.to_a + @locked_rewards.to_a %>
-      <% if all_rewards.any? %>
-        <div class="col-cards">
-          <% @unlocked_rewards.each do |reward| %>
-            <%= link_to reward_path(reward), class: "reward-card unlocked" do %>
-              <div class="reward-row">
-                <div class="reward-icon unlocked">🎁</div>
-                <div>
-                  <p class="reward-title"><%= reward.description %></p>
-                  <p class="reward-source"><%= reward.challenge&.title || reward.quest&.title %></p>
-                </div>
-              </div>
-              <div class="reward-divider"></div>
-              <span class="reward-status">Pronto para resgatar</span>
-            <% end %>
-          <% end %>
-          <% @locked_rewards.each do |reward| %>
-            <% source = reward.challenge || reward.quest %>
-            <%= link_to reward_path(reward), class: "reward-card locked" do %>
-              <div class="reward-row">
-                <div class="reward-icon locked">🔒</div>
-                <div>
-                  <p class="reward-title locked"><%= reward.description %></p>
-                  <p class="reward-source"><%= source&.title %></p>
-                </div>
-              </div>
-              <% if source %>
-                <div class="reward-progress-label">
-                  <span>Progresso</span>
-                  <span>
-                    <% if reward.challenge %>
-                      <%= reward.challenge.progress %> / <%= reward.challenge.duration_days %> dias
-                    <% else %>
-                      <%= reward.quest.progress %> / <%= reward.quest.total %> challenges
-                    <% end %>
-                  </span>
-                </div>
-                <div class="reward-track">
-                  <div class="reward-fill"
-                       style="width: <%= source.progress_percentage %>%"></div>
-                </div>
-              <% end %>
-            <% end %>
+          <% if checked_today %>
+            <span class="challenge-checkin">✓ feito hoje</span>
+          <% else %>
+            <%= link_to "Check-in de hoje →", new_challenge_checkin_path(challenge), class: "challenge-checkin-link" %>
           <% end %>
         </div>
-      <% else %>
-        <div class="empty">
-          <p class="empty-text">Nenhum reward ainda.</p>
-          <p style="font-size: 11px; color: #374151;">Crie um challenge com recompensa.</p>
-        </div>
       <% end %>
-    </div>
-
+    <% else %>
+      <div class="empty">
+        <p class="empty-text">Nenhum desafio independente.</p>
+        <%= link_to "Criar desafio →", new_challenge_path, class: "empty-link" %>
+      </div>
+    <% end %>
   </div>
-</div>
 
+  <%# Recompensas %>
+  <div class="section">
+    <div class="section-header">
+      <span class="section-label">Recompensas</span>
+    </div>
+
+    <% all_rewards = @unlocked_rewards.to_a + @locked_rewards.to_a %>
+    <% if all_rewards.any? %>
+      <% @unlocked_rewards.each do |reward| %>
+        <%= link_to reward_path(reward), class: "reward-card unlocked" do %>
+          <div class="reward-row">
+            <div class="reward-icon unlocked">🎁</div>
+            <div class="reward-info">
+              <p class="reward-title"><%= reward.description %></p>
+              <p class="reward-source"><%= reward.challenge&.title || reward.quest&.title %></p>
+            </div>
+          </div>
+          <div class="reward-divider"></div>
+          <span class="reward-status">Pronto para resgatar</span>
+        <% end %>
+      <% end %>
+      <% @locked_rewards.each do |reward| %>
+        <% source = reward.challenge || reward.quest %>
+        <%= link_to reward_path(reward), class: "reward-card locked" do %>
+          <div class="reward-row">
+            <div class="reward-icon locked">🔒</div>
+            <div class="reward-info">
+              <p class="reward-title locked"><%= reward.description %></p>
+              <p class="reward-source"><%= source&.title %></p>
+            </div>
+          </div>
+          <% if source %>
+            <div class="reward-progress-row">
+              <span>Progresso</span>
+              <span>
+                <% if reward.challenge %>
+                  <%= reward.challenge.progress %> / <%= reward.challenge.duration_days %> dias
+                <% else %>
+                  <%= reward.quest.progress %> / <%= reward.quest.total %> desafios
+                <% end %>
+              </span>
+            </div>
+            <div class="reward-track">
+              <div class="reward-fill locked" style="width: <%= source.progress_percentage %>%"></div>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% else %>
+      <div class="empty">
+        <p class="empty-text">Nenhuma recompensa ainda.</p>
+        <p style="font-size: 11px; color: #374151;">Crie um desafio com recompensa.</p>
+      </div>
+    <% end %>
+  </div>
+
+</div>
 
