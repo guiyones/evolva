@@ -23,7 +23,7 @@
     <meta name="theme-color" content="#0f172a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Forge">
+    <meta name="apple-mobile-web-app-title" content="Evolva">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
@@ -40,7 +40,10 @@
 
     <% if authenticated? %>
       <nav class="hidden md:flex items-center justify-between px-6 py-4 border-b border-gray-800">
-        <%= link_to "Evolva", root_path, class: "font-bold text-lg", style: "color: #6C4DFF;" %>
+        <%= link_to root_path, class: "flex items-center gap-2" do %>
+          <img src="/icon.png" alt="Evolva" class="w-6 h-6 rounded-lg">
+          <span class="font-bold text-lg" style="color: #6C4DFF;">Evolva</span>
+        <% end %> 
         <div class="flex items-center gap-6">
           <%= link_to "Home", root_path, class: "text-sm text-gray-400 hover:text-white transition-colors" %>
           <%= link_to "Desafios", challenges_path, class: "text-sm text-gray-400 hover:text-white transition-colors" %>
@@ -78,12 +81,12 @@
   </body>
 
   <%# Bottom nav mobile %>
-<% if authenticated? %>
-  <nav class="bottom-nav">
-    <%= link_to root_path, class: "nav-item active" do %>
-      <span class="nav-icon">🏠</span>
-      <span>Home</span>
-    <% end %>
+  <% if authenticated? %>
+    <nav class="bottom-nav">
+      <%= link_to root_path, class: "nav-item active" do %>
+        <img src="/icon.png" alt="Evolva" style="width: 24px; height: 24px; border-radius: 6px;">
+        <span>Home</span>
+      <% end %>
     <%= link_to challenges_path, class: "nav-item" do %>
       <span class="nav-icon">⚔️</span>
       <span>Desafios</span>

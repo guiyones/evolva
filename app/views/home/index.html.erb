@@ -54,7 +54,7 @@
                       background: #6C4DFF; color: #fff; font-size: 11px; font-weight: 500;
                       text-decoration: none; white-space: nowrap; transition: background 0.15s; }
   .hoje-checkin-btn:hover { background: #5A3FE6; }
-  .hoje-done-badge { flex-shrink: 0; font-size: 11px; color: #374151; }
+  .hoje-done-badge { flex-shrink: 0; font-size: 12px; color: #6C4DFF; }
 
   /* Quest card */
   .quest-card { background: #0F172A; border: 0.5px solid rgba(108,77,255,0.2);
@@ -96,7 +96,7 @@
                      overflow: hidden; margin-bottom: 8px; }
   .challenge-fill { height: 100%; border-radius: 2px;
                     background: linear-gradient(90deg, #6C4DFF, #22C55E); }
-  .challenge-checkin { font-size: 11px; color: #4b5563; }
+  .challenge-checkin { font-size: 12px; color: #4b5563; }
   .challenge-checkin-link { font-size: 11px; color: #6C4DFF; text-decoration: none; }
   .challenge-checkin-link:hover { color: #5A3FE6; }
 
@@ -195,7 +195,9 @@
         <p class="empty-text">Nenhum desafio ativo hoje.</p>
       </div>
     <% else %>
-      <% @today_challenges.each do |challenge| %>
+      <% pending = @today_challenges.reject { |c| @today_checkins.include?(c.id) } %>
+      <% done = @today_challenges.select { |c| @today_checkins.include?(c.id) } %>
+      <% (pending + done).each do |challenge| %>
         <% done = @today_checkins.include?(challenge.id) %>
         <div class="hoje-card <%= done ? 'done' : '' %>">
           <div class="hoje-card-left">
