@@ -29,7 +29,7 @@ class HomeController < ApplicationController
     
     @today_checkins = Checkin.where(
       challenge_id: @today_challenges.map(&:id),
-      created_at: Date.today.all_day
+      created_at: Date.current.all_day
     ).pluck(:challenge_id).to_set
 
     total = @today_challenges.count

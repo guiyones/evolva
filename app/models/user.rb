@@ -9,7 +9,7 @@ class User < ApplicationRecord
 
   def current_streak
     streak = 0
-    date = Date.today
+    date = Date.current
 
     loop do
       has_checkin = challenges.joins(:checkins)

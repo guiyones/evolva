@@ -3,8 +3,7 @@
   <div class="flex items-center justify-between mb-8">
     <h1 class="text-2xl font-bold text-white">Desafios</h1>
     <%= link_to "+ Novo", new_challenge_path,
-        class: "text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors",
-        style: "background: #6C4DFF;" %>
+        class: "text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors bg-[#6C4DFF] hover:bg-[#5A3DE6]" %>
   </div>
 
   <% if @challenges.empty? %>

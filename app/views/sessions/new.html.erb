@@ -1,37 +1,50 @@
-<div class="mx-auto md:w-2/3 w-full">
-  <% if alert = flash[:alert] %>
-    <p class="py-2 px-3 bg-red-50 mb-5 text-red-500 font-medium rounded-lg inline-block" id="alert"><%= alert %></p>
-  <% end %>
+<div class="min-h-screen flex items-center justify-center">
+  <div class="w-full max-w-md px-8 py-10 rounded-2xl" style="background: #1F2937;">
 
-  <% if notice = flash[:notice] %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
-  <% end %>
+    <h1 class="text-2xl font-bold text-white mb-2">Entrar</h1>
+    <p class="text-gray-400 mb-8">Continue sua evolução</p>
 
-  <h1 class="font-bold text-4xl">Sign in</h1>
-  
-  <p class="text-center text-gray-500 text-sm mt-6">
-  Não tem conta?
-  <%= link_to "Criar conta", new_registration_path,
-    class: "text-indigo-400 hover:text-indigo-300" %>
-  </p>
+    <% if alert = flash[:alert] %>
+      <div class="rounded-lg px-4 py-3 mb-6 text-sm" style="background: rgba(239,68,68,0.1); color: #f87171;">
+        <p><%= alert %></p>
+      </div>
+    <% end %>
 
-  <%= form_with url: session_url, class: "contents" do |form| %>
-    <div class="my-5">
-      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address], class: "block shadow-sm rounded-md border border-gray-400 focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
-    </div>
+    <% if notice = flash[:notice] %>
+      <div class="rounded-lg px-4 py-3 mb-6 text-sm" style="background: rgba(34,197,94,0.1); color: #22C55E;">
+        <p><%= notice %></p>
+      </div>
+    <% end %>
 
-    <div class="my-5">
-      <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72, class: "block shadow-sm rounded-md border border-gray-400 focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
-    </div>
+    <%= form_with url: session_url, class: "space-y-5" do |form| %>
 
-    <div class="col-span-6 sm:flex sm:items-center sm:gap-4">
-      <div class="inline">
-        <%= form.submit "Sign in", class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+      <div>
+        <%= form.label :email_address, "Email", class: "block text-sm text-gray-400 mb-2" %>
+        <%= form.email_field :email_address,
+            required: true, autofocus: true, autocomplete: "username",
+            class: "w-full rounded-lg px-4 py-3 text-white",
+            style: "background: #111827; border: 0.5px solid #374151;",
+            placeholder: "seu@email.com",
+            value: params[:email_address] %>
       </div>
 
-      <div class="mt-4 text-sm text-gray-500 sm:mt-0">
-        <%= link_to "Forgot password?", new_password_path, class: "text-gray-700 underline hover:no-underline" %>
+      <div>
+        <%= form.label :password, "Senha", class: "block text-sm text-gray-400 mb-2" %>
+        <%= form.password_field :password,
+            required: true, autocomplete: "current-password", maxlength: 72,
+            class: "w-full rounded-lg px-4 py-3 text-white",
+            style: "background: #111827; border: 0.5px solid #374151;",
+            placeholder: "sua senha" %>
       </div>
-    </div>
-  <% end %>
+
+      <%= form.submit "Entrar",
+          class: "w-full text-white font-semibold py-3 rounded-lg cursor-pointer transition-colors bg-[#6C4DFF] hover:bg-[#5A3DE6]" %>
+
+    <% end %>
+
+    <p class="text-center text-gray-500 text-sm mt-6">
+      Não tem conta?
+      <%= link_to "Criar conta", new_registration_path, style: "color: #6C4DFF;" %>
+    </p>
+  </div>
 </div>

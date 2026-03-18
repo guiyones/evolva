@@ -30,7 +30,7 @@ class CheckinsController < ApplicationController
   private
 
   def already_checked_in_today?
-    @challenge.checkins.where(created_at: Date.today.all_day).exists?
+    @challenge.checkins.where(created_at: Date.current.all_day).exists?
   end
    
   def set_challenge

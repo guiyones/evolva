@@ -32,8 +32,7 @@
 
       <%= button_to "Marcar como resgatado", redeem_reward_path(@reward),
           method: :patch,
-          class: "text-white font-semibold px-8 py-3 rounded-xl transition-colors cursor-pointer",
-          style: "background: #6C4DFF;" %>
+          class: "text-white font-semibold px-8 py-3 rounded-xl transition-colors cursor-pointer bg-[#6C4DFF] hover:bg-[#5A3DE6]" %>
     </div>
 
   <% elsif @reward.redeemed? %>

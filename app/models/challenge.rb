@@ -42,7 +42,7 @@ class Challenge < ApplicationRecord
 
   def expired?
     return false unless end_date.present?
-    Date.today > end_date
+    Date.current > end_date
   end
 
   def check_status!

@@ -41,12 +41,12 @@
 }
 
 /* Inputs */
-input, textarea, select {
+input:not([type="submit"]), textarea, select {
   background: var(--evolva-card) !important;
   border-color: var(--evolva-border) !important;
   color: var(--evolva-text) !important;
 }
-input:focus, textarea:focus {
+input:not([type="submit"]):focus, textarea:focus {
   border-color: var(--evolva-purple) !important;
   outline: none;
 }

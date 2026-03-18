@@ -67,15 +67,14 @@
 
   <%# Check-in %>
   <% if @challenge.active? %>
-    <% checked_today = @challenge.checkins.where(created_at: Date.today.all_day).exists? %>
+    <% checked_today = @challenge.checkins.where(created_at: Date.current.all_day).exists? %>
     <% if checked_today %>
       <div class="w-full text-center font-semibold py-4 rounded-xl text-gray-400" style="background: #1F2937;">
         ✓ Check-in feito hoje
       </div>
     <% else %>
       <%= link_to "Fazer check-in de hoje", new_challenge_checkin_path(@challenge),
-          class: "block w-full text-center text-white font-semibold py-4 rounded-xl transition-colors",
-          style: "background: #6C4DFF;" %>
+          class: "block w-full text-center text-white font-semibold py-4 rounded-xl transition-colors bg-[#6C4DFF] hover:bg-[#5A3DE6]" %>
     <% end %>
   <% end %>
 
@@ -92,8 +91,7 @@
       <p class="text-white font-semibold text-lg mb-1">Você fez <%= @challenge.progress %> de <%= @challenge.duration_days %> dias.</p>
       <p class="text-gray-400 text-sm mb-4">Isso é real. Isso aconteceu.</p>
       <%= link_to "Recomeçar este desafio", new_challenge_path(restart_from: @challenge.id),
-          class: "inline-block text-white text-sm font-semibold px-6 py-3 rounded-lg transition-colors",
-          style: "background: #6C4DFF;" %>
+          class: "inline-block text-white text-sm font-semibold px-6 py-3 rounded-lg transition-colors bg-[#6C4DFF] hover:bg-[#5A3DE6]" %>
     </div>
   <% end %>
 
