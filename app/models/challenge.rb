@@ -34,15 +34,19 @@ class Challenge < ApplicationRecord
     status == "active"
   end
 
+  def current_day
+    return 1 unless started_at.present?
+    (Date.current - started_at.to_date).to_i + 1
+  end
+
   def end_date
-    first_checkin = checkins.minimum(:created_at)
-    return nil unless first_checkin.present?
-    first_checkin.to_date + duration_days 
+    return nil unless started_at.present?
+    started_at.to_date + duration_days
   end
 
   def expired?
     return false unless end_date.present?
-    Date.current > end_date
+    Date.current >= end_date
   end
 
   def check_status!
@@ -51,9 +55,9 @@ class Challenge < ApplicationRecord
     return if checkins.empty?
 
     if progress >= duration_days
-      update!(status:"completed", completed_at: Time.current)
+      update!(status: "completed", completed_at: Time.current)
       reward&.unlock!
-    elsif expired?
+    elsif expired? && progress < duration_days
       update!(status: "finished", completed_at: Time.current)
     end
   end
@@ -70,6 +74,5 @@ class Challenge < ApplicationRecord
 
   def set_defaults
     self.status ||= "active"
-    self.started_at ||= Time.current
   end
 end
