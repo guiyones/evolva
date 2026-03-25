@@ -51,6 +51,7 @@
           <%= link_to "Desafios", challenges_path, class: "text-sm text-gray-400 hover:text-white transition-colors" %>
           <%= link_to "Jornadas", quests_path, class: "text-sm text-gray-400 hover:text-white transition-colors" %>
           <%= link_to "Histórico", history_path, class: "text-sm text-gray-400 hover:text-white transition-colors" %>
+          <%= link_to "Como funciona", how_it_works_path, class: "text-sm text-gray-400 hover:text-white transition-colors" %>
         </div>
         <%= button_to "Sair", session_path, method: :delete,
           class: "text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" %>
@@ -102,6 +103,10 @@
     <%= link_to history_path, class: "nav-item" do %>
       <span class="nav-icon">📋</span>
       <span>Histórico</span>
+    <% end %>
+    <%= link_to how_it_works_path, class: "nav-item" do %>
+      <span class="nav-icon">❓</span>
+      <span>Guia</span>
     <% end %>
   </nav>
 <% end %>

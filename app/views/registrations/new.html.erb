@@ -1,4 +1,4 @@
-<div class="min-h-screen flex items-center justify-center">
+<div class="min-h-screen flex items-center justify-center py-8">
   <div class="w-full max-w-md px-8 py-10 rounded-2xl" style="background: #1F2937;">
 
     <h1 class="text-2xl font-bold text-white mb-2">Criar conta</h1>
@@ -54,6 +54,9 @@
     <p class="text-center text-gray-500 text-sm mt-6">
       Já tem conta?
       <%= link_to "Entrar", new_session_path, style: "color: #6C4DFF;" %>
+    </p>
+    <p class="text-center text-gray-500 text-sm mt-3">
+      <%= link_to "Como funciona?", how_it_works_path, style: "color: #6C4DFF;" %>
     </p>
   </div>
 </div>
