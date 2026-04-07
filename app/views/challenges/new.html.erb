@@ -7,6 +7,7 @@
     <%= form_with model: @challenge, class: "space-y-6" do |f| %>
 
       <%= f.hidden_field :quest_id %>
+      <%= f.hidden_field :challenge_type, value: @challenge.challenge_type %>
 
       <% if @challenge.errors.any? %>
         <div class="rounded-lg px-4 py-3 text-sm" style="background: rgba(239,68,68,0.1); color: #f87171;">
@@ -19,26 +20,26 @@
       <div>
         <%= f.label :title, "Qual é o desafio?", class: "block text-sm text-gray-400 mb-2" %>
         <%= f.text_field :title,
-            class: "w-full rounded-lg px-4 py-3 text-white",
-            style: "background: #1F2937; border: 0.5px solid #374151;",
-            placeholder: "ex: 20 dias sem álcool" %>
+          class: "w-full rounded-lg px-4 py-3 text-white",
+          style: "background: #1F2937; border: 0.5px solid #374151;",
+          placeholder: "ex: 20 dias sem álcool" %>
       </div>
 
       <div>
         <%= f.label :duration_days, "Quantos dias?", class: "block text-sm text-gray-400 mb-2" %>
         <%= f.number_field :duration_days,
-            class: "w-full rounded-lg px-4 py-3 text-white",
-            style: "background: #1F2937; border: 0.5px solid #374151;",
-            placeholder: "ex: 20", min: 1 %>
+          class: "w-full rounded-lg px-4 py-3 text-white",
+          style: "background: #1F2937; border: 0.5px solid #374151;",
+          placeholder: "ex: 20", min: 1 %>
       </div>
 
       <div>
         <%= f.label :description, "Por que você está fazendo isso?", class: "block text-sm text-gray-400 mb-2" %>
         <%= f.text_area :description,
-            class: "w-full rounded-lg px-4 py-3 text-white resize-none",
-            style: "background: #1F2937; border: 0.5px solid #374151;",
-            rows: 3,
-            placeholder: "opcional — mas ajuda nos dias difíceis" %>
+          class: "w-full rounded-lg px-4 py-3 text-white resize-none",
+          style: "background: #1F2937; border: 0.5px solid #374151;",
+          rows: 3,
+          placeholder: "opcional — mas ajuda nos dias difíceis" %>
       </div>
 
       <% unless @challenge.quest_id.present? %>
@@ -46,16 +47,48 @@
           <%= f.label :reward, "Qual será sua recompensa?", class: "block text-sm text-gray-400 mb-2" %>
           <%= f.fields_for :reward do |r| %>
             <%= r.text_field :description,
-                class: "w-full rounded-lg px-4 py-3 text-white",
-                style: "background: #1F2937; border: 0.5px solid #374151;",
-                placeholder: "ex: comprar aquele tênis que quero" %>
+              class: "w-full rounded-lg px-4 py-3 text-white",
+              style: "background: #1F2937; border: 0.5px solid #374151;",
+              placeholder: "ex: comprar aquele tênis que quero" %>
           <% end %>
           <p class="text-xs text-gray-600 mt-2">opcional — mas ajuda nos dias difíceis</p>
         </div>
       <% end %>
 
+      <div>
+        <p class="block text-sm text-gray-400 mb-3">Tipo de desafio</p>
+        <div style="display: flex; gap: 10px;" data-controller="challenge-type">
+          <label style="flex: 1; cursor: pointer;">
+            <input type="radio" name="challenge[challenge_type]" value="solo"
+            <%= @challenge.challenge_type == 'solo' ? 'checked' : '' %>
+                                                                 style="display: none;"
+                                                                 data-action="change->challenge-type#select">
+                                                                 <div id="type-solo"
+                                                                      style="border: 0.5px solid <%= @challenge.challenge_type == 'solo' ? '#6C4DFF' : '#374151' %>;
+                                                                             background: <%= @challenge.challenge_type == 'solo' ? 'rgba(108,77,255,0.1)' : '#1F2937' %>;
+                                                                             border-radius: 10px; padding: 12px; text-align: center;">
+                                                                             <p style="font-size: 13px; font-weight: 500; color: #f3f4f6; margin-bottom: 4px;">Solo</p>
+                                                                             <p style="font-size: 11px; color: #6b7280;">Só você</p>
+                                                                 </div>
+          </label>
+          <label style="flex: 1; cursor: pointer;">
+            <input type="radio" name="challenge[challenge_type]" value="shared"
+            <%= @challenge.challenge_type == 'shared' ? 'checked' : '' %>
+                                                                 style="display: none;"
+                                                                 data-action="change->challenge-type#select">
+                                                                 <div id="type-shared"
+                                                                      style="border: 0.5px solid <%= @challenge.challenge_type == 'shared' ? '#6C4DFF' : '#374151' %>;
+                                                                             background: <%= @challenge.challenge_type == 'shared' ? 'rgba(108,77,255,0.1)' : '#1F2937' %>;
+                                                                             border-radius: 10px; padding: 12px; text-align: center;">
+                                                                             <p style="font-size: 13px; font-weight: 500; color: #f3f4f6; margin-bottom: 4px;">Compartilhado</p>
+                                                                             <p style="font-size: 11px; color: #6b7280;">Com outras pessoas</p>
+                                                                 </div>
+          </label>
+        </div>
+      </div>
+
       <%= f.submit "Começar desafio",
-          class: "w-full text-white font-semibold py-3 rounded-lg cursor-pointer transition-colors bg-[#6C4DFF] hover:bg-[#5A3DE6]" %>
+        class: "w-full text-white font-semibold py-3 rounded-lg cursor-pointer transition-colors bg-[#6C4DFF] hover:bg-[#5A3DE6]" %>
 
     <% end %>
 

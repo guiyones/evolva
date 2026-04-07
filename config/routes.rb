@@ -1,12 +1,21 @@
 Rails.application.routes.draw do
+  get "challenge_participants/create"
+  get "challenge_participants/destroy"
   root "home#index"
 
   resource :session
   resource :registration, only: [:new, :create]
   resources :passwords, param: :token
+
   resources :challenges, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
-    resources :checkins, only: [:new, :create, :show]
+  resources :checkins, only: [:new, :create, :show]
+  member do
+      get :invite
+    end
   end
+
+  get "join/:token", to: "challenge_participants#create", as: :join_challenge
+  resources :challenge_participants, only: [:destroy]
 
   resources :rewards, only: [:show] do
     member do
@@ -14,7 +23,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :quests, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+  # resources :quests, only: [:index, :show, :new, :create, :edit, :update, :destroy]
   
   get "history", to: "history#index", as: :history
   

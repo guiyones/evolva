@@ -11,15 +11,22 @@ class ChallengesController < ApplicationController
 
   def new
     @challenge = Challenge.new
-    @challenge.quest_id = params[:quest_id] if params[:quest_id]
-    @challenge.build_reward unless @challenge.quest_id.present?
+    @challenge.challenge_type == params[:type] || "solo"
+    @challenge.build_reward
   end
 
   def create
     @challenge = Current.user.challenges.build(challenge_params)
+    @challenge.challenge_type ||= "solo"
     @challenge.reward.user = Current.user if @challenge.reward.present?
-
+    
     if @challenge.save
+      if @challenge.shared?
+        @challenge.challenge_participants.create!(
+          user: Current.user,
+          status: "active"
+        )
+      end
       redirect_to @challenge, notice: "Desafio criado!"
     else 
       render :new, status: :unprocessable_entity
@@ -49,7 +56,7 @@ class ChallengesController < ApplicationController
   end
 
   def challenge_params
-    params.require(:challenge).permit(:title, :description, :duration_days, :quest_id, reward_attributes: [:description])
+    params.require(:challenge).permit(:title, :description, :duration_days, :quest_id, :challenge_type, reward_attributes: [:description])
   end
 
   def edit_params

@@ -104,7 +104,8 @@
   .reward-card { border-radius: 12px; padding: 12px 14px; text-decoration: none;
                  display: block; margin-bottom: 8px;
                  transition: border-color 0.2s, transform 0.15s; }
-  .reward-card:hover { transform: translateY(-1px); }
+  .reward-card.unlocked:hover,
+  .reward-card.locked:hover { border-color: #6C4DFF; transform: translateY(-1px); }
   .reward-card.unlocked { background: #0a1f14; border: 0.5px solid rgba(34,197,94,0.3); }
   .reward-card.locked { background: #1f2937; border: 0.5px solid #374151; }
   .reward-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
@@ -205,11 +206,6 @@
               <%= done ? "✓" : "◦" %> <%= challenge.title %>
             </p>
             <p class="hoje-card-meta">
-              <% if challenge.quest.present? %>
-                Jornada: <span><%= challenge.quest.title %></span> ·
-              <% else %>
-                Desafio pessoal ·
-              <% end %>
               <%= challenge.progress %> / <%= challenge.duration_days %> dias
             </p>
           </div>
@@ -220,76 +216,6 @@
           <% end %>
         </div>
       <% end %>
-    <% end %>
-  </div>
-
-  <%# Jornadas %>
-  <div class="section">
-    <div class="section-header">
-      <span class="section-label">Jornadas</span>
-      <%= link_to "+ Nova", new_quest_path, class: "section-action" %>
-    </div>
-
-    <% if @active_quests.any? %>
-      <% @active_quests.each do |quest| %>
-        <div class="quest-card">
-          <%= link_to quest_path(quest), style: "text-decoration: none; display: block;" do %>
-            <div class="quest-card-header">
-              <div style="display: flex; align-items: center;">
-                <span class="quest-icon">📖</span>
-                <span class="quest-title"><%= quest.title %></span>
-              </div>
-              <span class="quest-badge"><%= quest.progress %>/<%= quest.total %></span>
-            </div>
-          <% end %>
-
-          <% current = quest.current_challenge %>
-          <% if current %>
-            <% checked_today = @today_checkins.include?(current.id) %>
-            <div class="challenge-card" style="margin-bottom: 10px;">
-              <%= link_to challenge_path(current), class: "challenge-card-link" do %>
-                <div class="challenge-card-header">
-                  <span class="challenge-title"><%= current.title %></span>
-                  <span class="challenge-badge"><%= current.progress %> / <%= current.duration_days %></span>
-                </div>
-                <div class="challenge-progress-row">
-                  <span><%= current.progress %> / <%= current.duration_days %> dias</span>
-                  <span><%= current.progress_percentage %>%</span>
-                </div>
-                <div class="challenge-track">
-                  <div class="challenge-fill" style="width: <%= current.progress_percentage %>%"></div>
-                </div>
-              <% end %>
-              <% if checked_today %>
-                <span class="challenge-checkin">✓ feito hoje</span>
-              <% else %>
-                <%= link_to "Check-in de hoje →", new_challenge_checkin_path(current), class: "challenge-checkin-link" %>
-              <% end %>
-            </div>
-          <% elsif quest.next_challenge_available? %>
-            <p class="quest-sub" style="color: #818cf8;">Pronto para o próximo desafio</p>
-          <% elsif quest.total == 0 %>
-            <p class="quest-sub">Crie seu primeiro desafio para começar</p>
-          <% else %>
-            <p class="quest-sub">Nenhum desafio ativo</p>
-          <% end %>
-
-          <% if quest.total > 0 %>
-            <div class="quest-progress-row">
-              <span>Progresso</span>
-              <span><%= quest.progress %> / <%= quest.total %> desafios</span>
-            </div>
-            <div class="quest-track">
-              <div class="quest-fill" style="width: <%= quest.progress_percentage %>%"></div>
-            </div>
-          <% end %>
-        </div>
-      <% end %>
-    <% else %>
-      <div class="empty">
-        <p class="empty-text">Nenhuma jornada ativa.</p>
-        <%= link_to "Criar jornada →", new_quest_path, class: "empty-link" %>
-      </div>
     <% end %>
   </div>
 
@@ -347,7 +273,7 @@
             <div class="reward-icon unlocked">🎁</div>
             <div class="reward-info">
               <p class="reward-title"><%= reward.description %></p>
-              <p class="reward-source"><%= reward.challenge&.title || reward.quest&.title %></p>
+              <p class="reward-source">Desafio: <%= reward.challenge&.title || reward.quest&.title %></p>
             </div>
           </div>
           <div class="reward-divider"></div>
@@ -361,7 +287,7 @@
             <div class="reward-icon locked">🔒</div>
             <div class="reward-info">
               <p class="reward-title locked"><%= reward.description %></p>
-              <p class="reward-source"><%= source&.title %></p>
+              <p class="reward-source">Desafio: <%= source&.title %></p>
             </div>
           </div>
           <% if source %>
@@ -370,8 +296,6 @@
               <span>
                 <% if reward.challenge %>
                   <%= reward.challenge.progress %> / <%= reward.challenge.duration_days %> dias
-                <% else %>
-                  <%= reward.quest.progress %> / <%= reward.quest.total %> desafios
                 <% end %>
               </span>
             </div>
@@ -401,10 +325,6 @@
     <%= link_to challenges_path, class: "nav-item" do %>
       <span class="nav-icon">⚔️</span>
       <span>Desafios</span>
-    <% end %>
-    <%= link_to quests_path, class: "nav-item" do %>
-      <span class="nav-icon">📖</span>
-      <span>Jornadas</span>
     <% end %>
     <%= link_to history_path, class: "nav-item" do %>
       <span class="nav-icon">📋</span>

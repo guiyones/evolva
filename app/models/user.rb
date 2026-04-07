@@ -4,6 +4,8 @@ class User < ApplicationRecord
   has_many :challenges, dependent: :destroy
   has_many :rewards, dependent: :destroy
   has_many :quests, dependent: :destroy
+  has_many :challenge_participants, dependent: :destroy
+  has_many :shared_challenges, through: :challenge_participants, source: :challenge
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 

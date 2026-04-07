@@ -1,8 +1,12 @@
 class Challenge < ApplicationRecord
   belongs_to :user
   belongs_to :quest, optional: true
+  belongs_to :parent_challenge, class_name: "Challenge", optional: true
 
   has_many :checkins, dependent: :destroy
+  has_many :challenge_participants, dependent: :destroy
+  has_many :participants, through: :challenge_participants, source: :user
+  has_many :child_challenges, class_name: "Challenge", foreign_key: :parent_challenge_id
   has_one :reward, dependent: :destroy
 
   accepts_nested_attributes_for :reward, reject_if: :all_blank
@@ -12,6 +16,25 @@ class Challenge < ApplicationRecord
   validates :status, inclusion: { in: %w[active completed finished] }
 
   before_validation :set_defaults, on: :create
+  before_create :generate_invite_token
+
+  def root_challenge
+    parent_challenge || self
+  end
+
+  def shared?
+    challenge_type == "shared"
+  end
+
+  def solo?
+    challenge_type == "solo"
+  end
+  
+  def all_participants_completed?
+    return completed? if solo?
+    challenges = [root_challenge] + root_challenge.child_challenges
+    challenges.all?(&:completed?)
+  end
 
   def progress
     checkins.count
@@ -56,7 +79,11 @@ class Challenge < ApplicationRecord
 
     if progress >= duration_days
       update!(status: "completed", completed_at: Time.current)
-      reward&.unlock!
+      if solo?
+        reward&.unlock!
+      else 
+        root_challenge.reward&.unlock! if root_challenge.all_participants_completed?
+      end
     elsif expired? && progress < duration_days
       update!(status: "finished", completed_at: Time.current)
     end
@@ -75,4 +102,9 @@ class Challenge < ApplicationRecord
   def set_defaults
     self.status ||= "active"
   end
+
+  def generate_invite_token
+    self.invite_token ||= SecureRandom.urlsafe_base64(8)
+  end
+
 end
