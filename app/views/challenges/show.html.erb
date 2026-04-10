@@ -65,7 +65,7 @@
   <div class="rounded-2xl p-6 mb-4" style="background: #1F2937;">
     <div class="flex justify-between text-sm mb-3">
       <span class="text-gray-400">Progresso</span>
-      <span class="font-semibold text-white"><%= @challenge.progress %> de <%= @challenge.duration_days %> dias</span>
+      <span class="font-semibold text-white"><%= @challenge.progress %> / <%= @challenge.duration_days %></span>
     </div>
     <div class="w-full rounded-full h-2 mb-5" style="background: #374151;">
       <div class="h-2 rounded-full transition-all" style="width: <%= @challenge.progress_percentage %>%; background: linear-gradient(90deg, #6C4DFF, #22C55E);"></div>
