@@ -1,6 +1,27 @@
 <style>
   .checkin-btn { background: #6C4DFF; }
   .checkin-btn:hover { background: #5A3FE6; }
+  .action-btn-edit { background: #1F2937; }
+  .action-btn-edit:hover { background: #374151; }
+  .action-btn-delete { background: rgba(239,68,68,0.1); }
+  .action-btn-delete:hover { background: rgba(239,68,68,0.2); }
+  .action-btn-share { background: rgba(108,77,255,0.15); position: relative; }
+  .action-btn-share:hover { background: rgba(108,77,255,0.3); }
+  .action-btn-share:hover::after {
+    content: "Compartilhar Desafio";
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1F2937;
+    color: #f3f4f6;
+    font-size: 14px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    pointer-events: none;
+    border: 0.5px solid #374151;
+  }
 </style>
 
 <div class="max-w-lg mx-auto px-4 py-10">
@@ -26,13 +47,47 @@
         <span style="font-size: 16px; color: #fb923c;">📍 Dia <%= @challenge.current_day %> de <%= @challenge.duration_days %></span>
       <% end %>
     </div>
-    <div class="flex gap-3">
-      <%= link_to "Editar", edit_challenge_path(@challenge), class: "text-gray-400 hover:text-white transition-colors" %>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <% if @challenge.solo? && @challenge.active? %>
+        <button onclick="document.getElementById('invite-section').style.display = document.getElementById('invite-section').style.display === 'none' ? 'block' : 'none'"
+                class="action-btn-share"
+                style="border: none; cursor: pointer; color: #6C4DFF; font-size: 13px;
+                       height: 32px; padding: 0 12px; border-radius: 20px; display: flex; align-items: center; justify-content: center;">
+                👥</button>
+      <% end %>
+      <%= link_to "Editar", edit_challenge_path(@challenge),
+          class: "action-btn-edit",
+          style: "height: 32px; padding: 0 14px; border-radius: 20px; display: flex; align-items: center;
+                  font-size: 13px; color: #9ca3af; text-decoration: none; transition: all 0.15s;" %>
       <%= link_to "Apagar", challenge_path(@challenge),
           data: { turbo_method: :delete, turbo_confirm: "Tem certeza? Isso apaga o desafio e todo o histórico." },
-          class: "text-red-400 hover:text-red-500 transition-colors" %>
+          class: "action-btn-delete",
+          style: "height: 32px; padding: 0 14px; border-radius: 20px; display: flex; align-items: center;
+                  font-size: 13px; color: #f87171; text-decoration: none; transition: all 0.15s;" %>
     </div>
   </div>
+
+  <%# Convite — solo ativo %>
+  <% if @challenge.solo? && @challenge.active? %>
+    <div id="invite-section" class="rounded-2xl p-4 mb-4" style="background: #1F2937; display: none;">
+      <p style="font-size: 12px; color: #6b7280; margin-bottom: 10px;">Compartilhe o link para convidar alguém:</p>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <div style="flex: 1; background: #0F172A; border: 0.5px solid #374151;
+                    border-radius: 8px; padding: 8px 12px; overflow: hidden;">
+          <p style="font-size: 11px; color: #6C4DFF; white-space: nowrap; overflow: hidden;
+                    text-overflow: ellipsis;" id="invite-link-solo">
+            <%= request.base_url %>/join/<%= @challenge.invite_token %>
+          </p>
+        </div>
+        <button onclick="navigator.clipboard.writeText(document.getElementById('invite-link-solo').innerText.trim()).then(() => this.innerText = 'Copiado!')"
+                style="flex-shrink: 0; padding: 8px 14px; border-radius: 8px;
+                       background: #6C4DFF; color: white; font-size: 11px;
+                       font-weight: 500; border: none; cursor: pointer;">
+          Copiar
+        </button>
+      </div>
+    </div>
+  <% end %>
 
   <h1 class="text-2xl font-bold text-white mb-2"><%= @challenge.title %></h1>
 

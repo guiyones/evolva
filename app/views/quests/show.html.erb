@@ -1,3 +1,10 @@
+<style>
+  .action-btn-edit { background: #1F2937; }
+  .action-btn-edit:hover { background: #374151; }
+  .action-btn-delete { background: rgba(239,68,68,0.1); }
+  .action-btn-delete:hover { background: rgba(239,68,68,0.2); }
+</style>
+
 <div class="max-w-lg mx-auto px-4 py-10">
 
   <div class="flex items-center justify-between mb-6">
@@ -6,11 +13,16 @@
     <% else %>
       <span class="text-md font-semibold px-3 py-1 rounded-full" style="background: rgba(108,77,255,0.15); color: #6C4DFF;">Em andamento</span>
     <% end %>
-    <div class="flex gap-3">
-      <%= link_to "Editar", edit_quest_path(@quest), class: "text-gray-400 hover:text-white transition-colors" %>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <%= link_to "Editar", edit_quest_path(@quest),
+          class: "action-btn-edit",
+          style: "height: 32px; padding: 0 14px; border-radius: 20px; display: flex; align-items: center;
+                  font-size: 13px; color: #9ca3af; text-decoration: none; transition: all 0.15s;" %>
       <%= link_to "Apagar", quest_path(@quest),
           data: { turbo_method: :delete, turbo_confirm: "Tem certeza? Isso apaga a jornada e todos os desafios." },
-          class: "text-red-400 hover:text-red-500 transition-colors" %>
+          class: "action-btn-delete",
+          style: "height: 32px; padding: 0 14px; border-radius: 20px; display: flex; align-items: center;
+                  font-size: 13px; color: #f87171; text-decoration: none; transition: all 0.15s;" %>
     </div>
   </div>
 

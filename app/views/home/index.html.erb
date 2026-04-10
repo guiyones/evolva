@@ -159,7 +159,11 @@
       </div>
       <div class="stat-pill challenges">
         <span>⚔️</span>
-        <span><%= @active_count %> <%= @active_count == 1 ? "desafio ativo" : "desafios ativos" %></span>
+        <% if @shared_count > 0 %>
+          <span><%= @solo_count %> solo · <%= @shared_count %> <%= @shared_count == 1 ? "compartilhado" : "compartilhados" %></span>
+        <% else %>
+          <span><%= @active_count %> <%= @active_count == 1 ? "desafio ativo" : "desafios ativos" %></span>
+        <% end %>
       </div>
       <div class="stat-pill rewards">
         <span>🏆</span>

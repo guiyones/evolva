@@ -19,6 +19,9 @@ class ChallengeParticipantsController < ApplicationController
       started_at: Time.current
     )
 
+    # Marca o original como compartilhado se ainda for solo
+    @original.update!(challenge_type: "shared") if @original.solo?
+
     # Vincula o convidado como participante do desafio original
     @original.challenge_participants.create!(
       user: Current.user,

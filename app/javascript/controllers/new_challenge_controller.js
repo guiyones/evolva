@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["durationInput", "durationCustom", "questSection", "questSelect", "questIdField", "summary", "summaryText", "submitBtn"]
+  static targets = ["durationInput", "durationCustom", "questSection", "questSelect", "questIdField", "challengeTypeField", "summary", "summaryText", "submitBtn"]
 
   connect() {
     this.selectedDuration = null
@@ -89,6 +89,23 @@ export default class extends Controller {
     } else {
       this.submitBtnTarget.value = "Começar agora"
     }
+  }
+
+  selectType(event) {
+    const btn = event.currentTarget
+    const value = btn.dataset.type
+
+    this.element.querySelectorAll("[data-type-btn]").forEach(b => {
+      b.style.borderColor = "#374151"
+      b.style.background = "#1F2937"
+      b.style.color = "#6b7280"
+    })
+
+    btn.style.borderColor = "#6C4DFF"
+    btn.style.background = "rgba(108,77,255,0.1)"
+    btn.style.color = "#f3f4f6"
+
+    this.challengeTypeFieldTarget.value = value
   }
 
   customDuration(event) {

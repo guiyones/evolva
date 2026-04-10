@@ -61,7 +61,7 @@
   <p class="nc-subtitle">Pequenas mudanças criam grandes resultados.</p>
 
   <%= form_with model: @challenge, class: "space-y-0" do |f| %>
-    <%= f.hidden_field :challenge_type, value: "solo" %>
+    <%= f.hidden_field :challenge_type, data: { "new-challenge-target": "challengeTypeField" } %>
     <%= f.hidden_field :quest_id, data: { "new-challenge-target": "questIdField" } %>
 
     <% if @challenge.errors.any? %>
@@ -84,23 +84,10 @@
     <%# Duração %>
     <div class="nc-section">
       <label class="nc-label">Por quanto tempo?</label>
-      <div class="nc-duration-grid">
-        <button type="button" class="nc-duration-btn" data-duration-btn data-days="7"
-                data-action="click->new-challenge#selectDuration">7 dias</button>
-        <button type="button" class="nc-duration-btn" data-duration-btn data-days="14"
-                data-action="click->new-challenge#selectDuration">14 dias</button>
-        <button type="button" class="nc-duration-btn" data-duration-btn data-days="21"
-                data-action="click->new-challenge#selectDuration">21 dias</button>
-        <button type="button" class="nc-duration-btn" data-duration-btn data-days="30"
-                data-action="click->new-challenge#selectDuration">30 dias</button>
-        <button type="button" class="nc-duration-btn" data-duration-btn data-days="custom"
-                data-action="click->new-challenge#selectDuration">Personalizado</button>
-      </div>
-      <%= f.hidden_field :duration_days, data: { "new-challenge-target": "durationInput" } %>
-      <div style="display: none; margin-top: 10px;" data-new-challenge-target="durationCustom">
-        <input type="number" class="nc-input" placeholder="Quantos dias?" min="1"
-               data-action="input->new-challenge#customDuration">
-      </div>
+      <%= f.number_field :duration_days,
+          class: "nc-input",
+          placeholder: "Quantos dias?", min: 1,
+          data: { "new-challenge-target": "durationInput", action: "input->new-challenge#updateSummary" } %>
     </div>
 
     <%# Motivação %>

@@ -20,6 +20,8 @@ class HomeController < ApplicationController
     @streak = Current.user.current_streak
     
     @active_count = Current.user.active_challenges_count
+    @solo_count = Current.user.challenges.where(status: "active", challenge_type: ["solo", nil]).where(quest_id: nil).count
+    @shared_count = Current.user.challenges.where(status: "active", challenge_type: "shared").count
     
     @unlocked_count = Current.user.unlocked_rewards_count
 
