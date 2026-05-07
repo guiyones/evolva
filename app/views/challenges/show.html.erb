@@ -34,8 +34,6 @@
         <span class="text-xs font-semibold px-3 py-1 rounded-full" style="background: #1F2937; color: #6b7280;">Encerrado</span>
       <% elsif @challenge.planned? %>
         <span class="text-xs font-semibold px-3 py-1 rounded-full" style="background: #1F2937; color: #6b7280;">Planejado</span>
-      <% elsif @challenge.paused? %>
-        <span class="text-xs font-semibold px-3 py-1 rounded-full" style="background: rgba(251,146,60,0.15); color: #fb923c;">⏸ Pausado</span>
       <% elsif @challenge.focused? %>
         <span class="text-xs font-semibold px-3 py-1 rounded-full" style="background: rgba(108,77,255,0.15); color: #6C4DFF;">🔵 Foco</span>
       <% else %>
@@ -214,20 +212,16 @@
 
 
   <%# Check-in %>
-  <% if @challenge.active? || @challenge.planned? || @challenge.paused? %>
+  <% if @challenge.active? || @challenge.planned? %>
     <% checked_today = @challenge.checkins.where(created_at: Date.today.all_day).exists? %>
     <% if checked_today %>
       <div class="w-full text-center font-semibold py-4 rounded-xl text-gray-400" style="background: #1F2937;">
         ✓ Hoje já concluído
       </div>
     <% elsif @challenge.planned? %>
-      <%= link_to "Fazer primeiro check-in e ativar foco", new_challenge_checkin_path(@challenge),
+      <%= link_to "Fazer primeiro check-in e iniciar", new_challenge_checkin_path(@challenge),
           class: "block w-full text-center text-white font-semibold py-4 rounded-xl transition-colors checkin-btn" %>
-      <p class="text-center text-xs text-gray-500 mt-2">O primeiro check-in ativa esse desafio como seu foco</p>
-    <% elsif @challenge.paused? %>
-      <%= link_to "Retomar e fazer check-in", new_challenge_checkin_path(@challenge),
-          class: "block w-full text-center text-white font-semibold py-4 rounded-xl transition-colors checkin-btn" %>
-      <p class="text-center text-xs text-gray-500 mt-2">Isso vai pausar o desafio em foco atual</p>
+      <p class="text-center text-xs text-gray-500 mt-2">O primeiro check-in inicia a contagem de dias do desafio</p>
     <% else %>
       <%= link_to "Marcar hoje como concluído", new_challenge_checkin_path(@challenge),
           class: "block w-full text-center text-white font-semibold py-4 rounded-xl transition-colors checkin-btn" %>
@@ -246,7 +240,9 @@
     <div class="rounded-2xl p-6 text-center mt-4" style="background: #1F2937; border: 0.5px solid #374151;">
       <p class="text-white font-semibold text-lg mb-1">Você fez <%= @challenge.progress %> de <%= @challenge.duration_days %> dias.</p>
       <p class="text-gray-400 text-sm mb-4">Isso é real. Isso aconteceu.</p>
-      <%= link_to "Recomeçar este desafio", new_challenge_path(restart_from: @challenge.id),
+      <%= button_to "Recomeçar este desafio", restart_challenge_path(@challenge),
+          method: :post,
+          data: { turbo_confirm: "Recomeçar este desafio? Seu progresso será zerado." },
           class: "inline-block text-white text-sm font-semibold px-6 py-3 rounded-lg transition-colors",
           style: "background: #6C4DFF;" %>
     </div>

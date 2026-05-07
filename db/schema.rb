@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_08_181740) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_06_010843) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -42,12 +42,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_08_181740) do
     t.string "invite_token"
     t.integer "parent_challenge_id"
     t.bigint "quest_id"
+    t.bigint "restarted_from_id"
     t.datetime "started_at"
     t.string "status"
     t.string "title"
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["quest_id"], name: "index_challenges_on_quest_id"
+    t.index ["restarted_from_id"], name: "index_challenges_on_restarted_from_id"
     t.index ["user_id"], name: "index_challenges_on_user_id"
   end
 
@@ -116,6 +118,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_08_181740) do
   add_foreign_key "challenge_participants", "users"
   add_foreign_key "challenge_tags", "challenges"
   add_foreign_key "challenge_tags", "tags"
+  add_foreign_key "challenges", "challenges", column: "restarted_from_id", on_delete: :nullify
   add_foreign_key "challenges", "quests"
   add_foreign_key "challenges", "users"
   add_foreign_key "checkins", "challenges"

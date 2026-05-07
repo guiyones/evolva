@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :checkins, only: [ :new, :create, :show ]
   member do
       get :invite
+      post :restart
     end
   end
 

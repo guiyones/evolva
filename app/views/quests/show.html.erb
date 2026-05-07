@@ -25,7 +25,7 @@
       class: "action-btn-edit",
       style:
         "height: 32px; padding: 0 14px; border-radius: 20px; display: flex; align-items: center;
-                                                                              font-size: 13px; color: #9ca3af; text-decoration: none; transition: all 0.15s;" %>
+                                                                                          font-size: 13px; color: #9ca3af; text-decoration: none; transition: all 0.15s;" %>
       <%= link_to "Apagar",
       quest_path(@quest),
       data: {
@@ -35,7 +35,7 @@
       class: "action-btn-delete",
       style:
         "height: 32px; padding: 0 14px; border-radius: 20px; display: flex; align-items: center;
-                                                                              font-size: 13px; color: #f87171; text-decoration: none; transition: all 0.15s;" %>
+                                                                                          font-size: 13px; color: #f87171; text-decoration: none; transition: all 0.15s;" %>
     </div>
   </div>
 
@@ -75,7 +75,6 @@
               class: "evolva-card",
               style: challenge.completed? ? 'background: rgba(34,197,94,0.1); border: 0.5px solid rgba(34,197,94,0.2);' :
                      challenge.active? ? 'background: rgba(108,77,255,0.1); border: 0.5px solid rgba(108,77,255,0.3);' :
-                     challenge.paused? ? 'background: #1F2937; border: 0.5px solid #374151;' :
                      challenge.finished? ? 'background: rgba(55,65,81,0.5);' :
                      'background: #374151;' do %>
             <div class="flex items-center justify-between" style="gap: 12px;">
@@ -87,13 +86,13 @@
               </span>
               <% if challenge.completed? %>
                 <span class="text-xs" style="color: #22C55E;">✓</span>
-              <% elsif challenge.active? %>
+              <% elsif challenge.focused? %>
                 <span
                   class="text-xs font-semibold px-2 py-0.5 rounded-full"
                   style="background: rgba(108,77,255,0.15); color: #6C4DFF; white-space: nowrap; flex-shrink: 0;"
-                >Foco</span>
-              <% elsif challenge.paused? %>
-                <span class="text-xs text-gray-500">⏸ Pausado</span>
+                >🔵 Foco</span>
+              <% elsif challenge.active? %>
+                <span class="text-xs text-gray-500">Em andamento</span>
               <% elsif challenge.planned? %>
                 <span class="text-xs text-gray-500">Planejado</span>
               <% elsif challenge.finished? %>

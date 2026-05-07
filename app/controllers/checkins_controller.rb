@@ -12,9 +12,7 @@ class CheckinsController < ApplicationController
     end
 
     if @challenge.planned?
-      @challenge.activate_as_focus!
-    elsif @challenge.paused?
-      @challenge.activate_as_focus!
+     @challenge.update!(status: "active", started_at: Time.current)
     elsif @challenge.started_at.nil?
       @challenge.update_column(:started_at, Time.current)
     end
@@ -25,11 +23,11 @@ class CheckinsController < ApplicationController
     if @checkin.save
       @challenge.check_status!
       redirect_to @challenge, notice: checkin_message
-    else 
+    else
       render :new, status: :unprocessable_entity
     end
   end
-  
+
   def show
     @checkin = @challenge.checkins.find(params[:id])
   end
@@ -40,7 +38,7 @@ class CheckinsController < ApplicationController
   def already_checked_in_today?
     @challenge.checkins.where(created_at: Date.current.all_day).exists?
   end
-   
+
   def set_challenge
     @challenge = Current.user.challenges.find(params[:challenge_id])
   end
@@ -52,7 +50,7 @@ class CheckinsController < ApplicationController
   def checkin_message
     if @challenge.completed?
       "#{@challenge.duration_days} de #{@challenge.duration_days} dias. Você fez examentamente o que prometeu. 🎉"
-    else 
+    else
       "Dia #{@checkin.day_number} registrado"
     end
   end

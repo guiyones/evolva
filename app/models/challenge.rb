@@ -2,11 +2,13 @@ class Challenge < ApplicationRecord
   belongs_to :user
   belongs_to :quest, optional: true
   belongs_to :parent_challenge, class_name: "Challenge", optional: true
+  belongs_to :restarted_from, class_name: "Challenge", optional: true
 
   has_many :checkins, dependent: :destroy
   has_many :challenge_participants, dependent: :destroy
   has_many :participants, through: :challenge_participants, source: :user
   has_many :child_challenges, class_name: "Challenge", foreign_key: :parent_challenge_id
+  has_many :restarts, class_name: "Challenge", foreign_key: :restarted_from_id, dependent: :nullify
   has_many :challenge_tags, dependent: :destroy
   has_many :tags, through: :challenge_tags
   has_one :reward, dependent: :destroy
@@ -14,8 +16,8 @@ class Challenge < ApplicationRecord
   accepts_nested_attributes_for :reward, reject_if: :all_blank
 
   validates :title, presence: true
-  validates :duration_days, presence: true, numericality: { greater_than: 0}
-  validates :status, inclusion: { in: %w[planned active paused completed finished] }
+  validates :duration_days, presence: true, numericality: { greater_than: 0 }
+  validates :status, inclusion: { in: %w[planned active completed finished] }
 
   before_validation :set_defaults, on: :create
   before_create :generate_invite_token
@@ -31,10 +33,10 @@ class Challenge < ApplicationRecord
   def solo?
     challenge_type == "solo"
   end
-  
+
   def all_participants_completed?
     return completed? if solo?
-    challenges = [root_challenge] + root_challenge.child_challenges
+    challenges = [ root_challenge ] + root_challenge.child_challenges
     challenges.all?(&:completed?)
   end
 
@@ -44,7 +46,7 @@ class Challenge < ApplicationRecord
 
   def progress_percentage
     return 0 if duration_days.zero?
-    [(progress.to_f / duration_days * 100).round, 100].min 
+    [ (progress.to_f / duration_days * 100).round, 100 ].min
   end
 
   def completed?
@@ -63,20 +65,13 @@ class Challenge < ApplicationRecord
     status == "planned"
   end
 
-  def paused?
-    status == "paused"
+  def focused_today?
+    checkins.where(created_at: Date.current.all_day).exists?
   end
 
   def focused?
-    active? && quest_id.present?
-  end
-
-  def activate_as_focus!
-    return unless quest.present?
-    quest.challenges.where(status: "active").each do |c|
-      c.update!(status: "paused")
-    end
-    update!(status: "active", started_at: Time.current)
+    return false unless quest_id.present?
+    quest.focused_challenge&.id == id
   end
 
   def current_day
@@ -119,7 +114,11 @@ class Challenge < ApplicationRecord
     update!(status: "completed", completed_at: Time.current)
   end
 
-  private 
+  def restarted?
+    restarts.exists?
+  end
+
+  private
 
   def set_defaults
     self.status ||= quest_id.present? ? "planned" : "active"
@@ -128,5 +127,4 @@ class Challenge < ApplicationRecord
   def generate_invite_token
     self.invite_token ||= SecureRandom.urlsafe_base64(8)
   end
-
 end

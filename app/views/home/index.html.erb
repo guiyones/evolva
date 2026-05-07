@@ -248,33 +248,35 @@
             </div>
           <% end %>
 
-          <% focused = quest.focused_challenge %>
-          <% if focused %>
-            <% checked_today = @today_checkins.include?(focused.id) %>
-            <div class="challenge-card" style="margin-bottom: 10px; border-color: rgba(108,77,255,0.3);">
-              <%= link_to challenge_path(focused), class: "challenge-card-link" do %>
-                <div class="challenge-card-header">
-                  <span class="challenge-title">🔵 <%= focused.title %></span>
-                  <span class="challenge-badge"><%= focused.progress %> / <%= focused.duration_days %></span>
-                </div>
-                <div class="challenge-progress-row">
-                  <span><%= focused.progress %> / <%= focused.duration_days %> dias</span>
-                  <span><%= focused.progress_percentage %>%</span>
-                </div>
-                <div class="challenge-track">
-                  <div class="challenge-fill" style="width: <%= focused.progress_percentage %>%"></div>
-                </div>
-              <% end %>
-              <% if checked_today %>
-                <span class="challenge-checkin">✓ feito hoje</span>
-              <% else %>
-                <%= link_to "Check-in de hoje →", new_challenge_checkin_path(focused), class: "challenge-checkin-link" %>
-              <% end %>
-            </div>
+          <% actives = quest.active_challenges %>
+          <% if actives.any? %>
+            <% actives.each do |c| %>
+              <% checked_today = @today_checkins.include?(c.id) %>
+              <div class="challenge-card" style="margin-bottom: 10px; border-color: rgba(108,77,255,0.3);">
+                <%= link_to challenge_path(c), class: "challenge-card-link" do %>
+                  <div class="challenge-card-header">
+                    <span class="challenge-title"><%= c.focused? ? "🔵 " : "" %><%= c.title %></span>
+                    <span class="challenge-badge"><%= c.progress %> / <%= c.duration_days %></span>
+                  </div>
+                  <div class="challenge-progress-row">
+                    <span><%= c.progress %> / <%= c.duration_days %> dias</span>
+                    <span><%= c.progress_percentage %>%</span>
+                  </div>
+                  <div class="challenge-track">
+                    <div class="challenge-fill" style="width: <%= c.progress_percentage %>%"></div>
+                  </div>
+                <% end %>
+                <% if checked_today %>
+                  <span class="challenge-checkin">✓ feito hoje</span>
+                <% else %>
+                  <%= link_to "Check-in de hoje →", new_challenge_checkin_path(c), class: "challenge-checkin-link" %>
+                <% end %>
+              </div>
+            <% end %>
           <% elsif quest.total == 0 %>
             <p class="quest-sub">Crie seu primeiro desafio para começar</p>
           <% else %>
-            <p class="quest-sub">Nenhum desafio em foco — faça check-in em um para ativá-lo</p>
+            <p class="quest-sub">Nenhum desafio em andamento — faça check-in em um planejado para começar</p>
           <% end %>
 
           <% if quest.total > 0 %>

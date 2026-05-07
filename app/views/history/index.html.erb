@@ -31,6 +31,9 @@
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-sm font-semibold" style="color: #22C55E;">✓ <%= challenge.title %></p>
+                <% if (label = quest_label(challenge)) %>
+                  <p class="text-xs mt-1" style="color: #6C4DFF;"><%= label %></p>
+                <% end %>
                 <p class="text-xs text-gray-500 mt-1">
                   <%= challenge.duration_days %> de <%= challenge.duration_days %> dias
                   · <%= challenge.completed_at.strftime("%d/%m/%Y") %>
@@ -48,17 +51,23 @@
 
   <% if @finished_challenges.any? %>
     <div class="mb-8">
-      <h2 class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3">Recomeçados</h2>
+      <h2 class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3">Encerrados</h2>
       <div class="space-y-3">
         <% @finished_challenges.each do |challenge| %>
           <%= link_to challenge_path(challenge), class: "block rounded-xl p-4 transition-colors opacity-70", style: "background: #1F2937;" do %>
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-sm font-semibold text-gray-400">↩ <%= challenge.title %></p>
+                <% if (label = quest_label(challenge)) %>
+                  <p class="text-xs mt-1" style="color: #6C4DFF;"><%= label %></p>
+                <% end %>
                 <p class="text-xs text-gray-500 mt-1">
                   <%= challenge.progress %> de <%= challenge.duration_days %> dias
                   · <%= challenge.completed_at&.strftime("%d/%m/%Y") %>
                 </p>
+                <% if (label = restart_label(challenge)) %>
+                  <p class="text-xs text-gray-500 mt-1"><%= label %></p>
+                <% end %>
               </div>
             </div>
           <% end %>

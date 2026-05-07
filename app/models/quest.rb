@@ -31,8 +31,12 @@ class Quest < ApplicationRecord
     status == "completed"
   end
 
+  def active_challenges
+    challenges.where(status: "active").order(created_at: :asc)
+  end
+
   def focused_challenge
-    challenges.find_by(status: "active")
+    challenges.joins(:checkins).order("checkins.created_at DESC").first
   end
 
   def can_add_challenge?
