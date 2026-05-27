@@ -25,6 +25,7 @@ class Challenge < ApplicationRecord
 
   before_validation :set_defaults, on: :create
   before_create :generate_invite_token
+  after_create :add_owner_as_participant, if: :shared?
 
   def root_challenge
     parent_challenge || self
@@ -102,6 +103,45 @@ class Challenge < ApplicationRecord
     update!(status: :completed, completed_at: Time.current)
   end
 
+  def share_with(user)
+    copy = user.challenges.create!(
+      title: title,
+      description: description,
+      duration_days: duration_days,
+      challenge_type: "shared",
+      parent_challenge_id: id,
+      status: :active,
+      started_at: Time.current
+    )
+    update!(challenge_type: "shared") if solo?
+    challenge_participants.create!(user: user, status: :active)
+    copy
+  end
+
+  def start!
+    return if active? && started_at.present?
+
+    if planned?
+      update!(status: :active, started_at: Time.current)
+    else
+      update!(started_at: Time.current)
+    end
+  end
+
+  def restart!
+    user.challenges.create!(
+      title: title,
+      description: description,
+      duration_days: duration_days,
+      quest_id: quest_id,
+      challenge_type: challenge_type,
+      restarted_from_id: id,
+      status: :active,
+      started_at: Time.current,
+      tag_ids: tag_ids
+    )
+  end
+
   def restarted?
     restarts.exists?
   end
@@ -114,5 +154,9 @@ class Challenge < ApplicationRecord
 
   def generate_invite_token
     self.invite_token ||= SecureRandom.urlsafe_base64(8)
+  end
+
+  def add_owner_as_participant
+    challenge_participants.create!(user: user, status: :active)
   end
 end

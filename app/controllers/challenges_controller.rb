@@ -23,12 +23,6 @@ class ChallengesController < ApplicationController
     @challenge.reward.user = Current.user if @challenge.reward.present?
 
     if @challenge.save
-      if @challenge.shared?
-        @challenge.challenge_participants.create!(
-          user: Current.user,
-          status: :active
-        )
-      end
       redirect_to @challenge, notice: "Desafio criado!"
     else
       @active_quests = Current.user.quests.active.recent
@@ -53,18 +47,7 @@ class ChallengesController < ApplicationController
   end
 
   def restart
-    new_challenge = Current.user.challenges.create!(
-      title: @challenge.title,
-      description: @challenge.description,
-      duration_days: @challenge.duration_days,
-      quest_id: @challenge.quest_id,
-      challenge_type: @challenge.challenge_type,
-      restarted_from_id: @challenge.id,
-      status: :active,
-      started_at: Time.current,
-      tag_ids: @challenge.tag_ids
-    )
-    redirect_to new_challenge, notice: "Desafio recomeçado!"
+    redirect_to @challenge.restart!, notice: "Desafio recomeçado!"
   end
 
   private
