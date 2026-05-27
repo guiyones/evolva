@@ -1,0 +1,10 @@
+<%= link_to quest_path(quest), class: "history-card" do %>
+  <div class="history-card-row">
+    <div>
+      <p class="history-card-title">✓ <%= quest.title %></p>
+      <p class="history-card-meta">
+        <%= quest.total %> desafios · <%= quest.completed_at.strftime("%d/%m/%Y") %>
+      </p>
+    </div>
+  </div>
+<% end %>
