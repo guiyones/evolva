@@ -1,17 +1,14 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
+leitura:
   user: one
-  title: MyString
-  description: MyText
-  status: MyString
-  started_at: 2026-03-13 14:29:13
-  completed_at: 2026-03-13 14:29:13
+  title: Ler mais livros
+  description: Habito de leitura
+  status: active
+  started_at: <%= 7.days.ago %>
 
-two:
-  user: two
-  title: MyString
-  description: MyText
-  status: MyString
-  started_at: 2026-03-13 14:29:13
-  completed_at: 2026-03-13 14:29:13
+completada:
+  user: one
+  title: Quest concluida
+  description: Ja terminei
+  status: completed
+  started_at: <%= 30.days.ago %>
+  completed_at: <%= 2.days.ago %>

@@ -131,7 +131,7 @@
         </div>
 
         <%# Lista de desafios disponíveis %>
-        <% available = Current.user.challenges.where(quest_id: nil, status: "active") %>
+        <% available = Current.user.challenges.active.independent %>
         <div style="display: none; margin-top: 12px;">
           <% if available.any? %>
             <div class="space-y-2">

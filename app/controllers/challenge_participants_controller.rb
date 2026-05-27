@@ -15,7 +15,7 @@ class ChallengeParticipantsController < ApplicationController
       duration_days: @original.duration_days,
       challenge_type: "shared",
       parent_challenge_id: @original.id,
-      status: "active",
+      status: :active,
       started_at: Time.current
     )
 
@@ -25,7 +25,7 @@ class ChallengeParticipantsController < ApplicationController
     # Vincula o convidado como participante do desafio original
     @original.challenge_participants.create!(
       user: Current.user,
-      status: "active"
+      status: :active
     )
 
     redirect_to @copy, notice: "Você entrou no desafio! Bora lá 🔥"

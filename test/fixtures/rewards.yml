@@ -1,15 +1,18 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
+locked_one:
   user: one
-  challenge: one
-  description: MyString
-  status: MyString
-  completed_at: 2026-03-12 14:55:29
+  challenge: active_solo
+  description: Tenis novo
+  status: locked
 
-two:
-  user: two
-  challenge: two
-  description: MyString
-  status: MyString
-  completed_at: 2026-03-12 14:55:29
+unlocked_one:
+  user: one
+  challenge: completed_solo
+  description: Jantar especial
+  status: unlocked
+
+redeemed_one:
+  user: one
+  challenge: finished_solo
+  description: Ja resgatei
+  status: redeemed
+  completed_at: <%= 2.days.ago %>

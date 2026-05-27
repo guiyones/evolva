@@ -2,7 +2,7 @@ class ChallengesController < ApplicationController
   before_action :set_challenge, only: [ :show, :edit, :update, :destroy, :restart ]
 
   def index
-    @challenges = Current.user.challenges.where(quest_id: nil).order(created_at: :desc)
+    @challenges = Current.user.challenges.independent.recent
   end
 
   def show
@@ -14,7 +14,7 @@ class ChallengesController < ApplicationController
     @challenge.quest_id = params[:quest_id] if params[:quest_id]
     @challenge.challenge_type = params[:type] || "solo"
     @challenge.build_reward
-    @active_quests = Current.user.quests.where(status: "active").order(created_at: :desc)
+    @active_quests = Current.user.quests.active.recent
   end
 
   def create
@@ -26,7 +26,7 @@ class ChallengesController < ApplicationController
       if @challenge.shared?
         @challenge.challenge_participants.create!(
           user: Current.user,
-          status: "active"
+          status: :active
         )
       end
       redirect_to @challenge, notice: "Desafio criado!"
@@ -59,7 +59,7 @@ class ChallengesController < ApplicationController
       quest_id: @challenge.quest_id,
       challenge_type: @challenge.challenge_type,
       restarted_from_id: @challenge.id,
-      status: "active",
+      status: :active,
       started_at: Time.current,
       tag_ids: @challenge.tag_ids
     )

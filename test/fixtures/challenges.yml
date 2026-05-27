@@ -1,19 +1,46 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
+active_solo:
   user: one
-  title: MyString
-  description: MyText
-  duration_days: 1
-  status: MyString
-  started_at: 2026-03-11 15:21:03
-  completed_at: 2026-03-11 15:21:03
+  title: 30 dias de corrida
+  description: Correr todo dia
+  duration_days: 30
+  status: active
+  challenge_type: solo
+  started_at: <%= 5.days.ago %>
 
-two:
+planned_in_quest:
+  user: one
+  quest: leitura
+  title: Ler 10 paginas por dia
+  description: Habito de leitura
+  duration_days: 30
+  status: planned
+  challenge_type: solo
+
+completed_solo:
+  user: one
+  title: Meditacao 7 dias
+  description: Meditar diariamente
+  duration_days: 7
+  status: completed
+  challenge_type: solo
+  started_at: <%= 10.days.ago %>
+  completed_at: <%= 3.days.ago %>
+
+finished_solo:
+  user: one
+  title: Diario 21 dias
+  description: Escrever todo dia
+  duration_days: 21
+  status: finished
+  challenge_type: solo
+  started_at: <%= 30.days.ago %>
+  completed_at: <%= 5.days.ago %>
+
+active_other_user:
   user: two
-  title: MyString
-  description: MyText
-  duration_days: 1
-  status: MyString
-  started_at: 2026-03-11 15:21:03
-  completed_at: 2026-03-11 15:21:03
+  title: Outro usuario
+  description: Nao meu
+  duration_days: 10
+  status: active
+  challenge_type: solo
+  started_at: <%= 2.days.ago %>

@@ -12,7 +12,7 @@ class CheckinsController < ApplicationController
     end
 
     if @challenge.planned?
-     @challenge.update!(status: "active", started_at: Time.current)
+     @challenge.update!(status: :active, started_at: Time.current)
     elsif @challenge.started_at.nil?
       @challenge.update_column(:started_at, Time.current)
     end

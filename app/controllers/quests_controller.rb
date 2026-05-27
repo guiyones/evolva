@@ -45,7 +45,7 @@ class QuestsController < ApplicationController
     @quest = Current.user.quests.find(params[:id])
     @challenge = Current.user.challenges.find(params[:challenge_id])
 
-    if @challenge.update(quest_id: @quest.id, status: "planned")
+    if @challenge.update(quest_id: @quest.id, status: :planned)
       redirect_to @quest, notice: "Desafio adicionada a jornada"
     else
       redirect_to @quest, alert: "Não foi possivel adicionar o desafio"

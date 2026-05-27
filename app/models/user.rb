@@ -26,10 +26,10 @@ class User < ApplicationRecord
   end
 
   def active_challenges_count
-    challenges.where(status: "active").count
+    challenges.active.count
   end
 
   def unlocked_rewards_count
-    rewards.where(status: "unlocked").count
+    rewards.unlocked.count
   end
 end

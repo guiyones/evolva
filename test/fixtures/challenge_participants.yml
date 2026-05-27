@@ -1,11 +1,4 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  challenge: one
+one_active:
   user: one
-  status: MyString
-
-two:
-  challenge: two
-  user: two
-  status: MyString
+  challenge: active_solo
+  status: active

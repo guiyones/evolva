@@ -15,9 +15,13 @@ class Challenge < ApplicationRecord
 
   accepts_nested_attributes_for :reward, reject_if: :all_blank
 
+  enum :status, { planned: "planned", active: "active", completed: "completed", finished: "finished" }
+
+  scope :independent, -> { where(quest_id: nil) }
+  scope :recent, -> { order(created_at: :desc) }
+
   validates :title, presence: true
   validates :duration_days, presence: true, numericality: { greater_than: 0 }
-  validates :status, inclusion: { in: %w[planned active completed finished] }
 
   before_validation :set_defaults, on: :create
   before_create :generate_invite_token
@@ -47,22 +51,6 @@ class Challenge < ApplicationRecord
   def progress_percentage
     return 0 if duration_days.zero?
     [ (progress.to_f / duration_days * 100).round, 100 ].min
-  end
-
-  def completed?
-    status == "completed"
-  end
-
-  def finished?
-    status == "finished"
-  end
-
-  def active?
-    status == "active"
-  end
-
-  def planned?
-    status == "planned"
   end
 
   def focused_today?
@@ -95,14 +83,14 @@ class Challenge < ApplicationRecord
     return if checkins.empty?
 
     if progress >= duration_days
-      update!(status: "completed", completed_at: Time.current)
-      reward&.unlock!
+      update!(status: :completed, completed_at: Time.current)
+      reward&.unlocked!
       if shared?
-        root_challenge.reward&.unlock! if root_challenge.all_participants_completed?
+        root_challenge.reward&.unlocked! if root_challenge.all_participants_completed?
       end
       quest&.check_status!
     elsif expired? && progress < duration_days
-      update!(status: "finished", completed_at: Time.current)
+      update!(status: :finished, completed_at: Time.current)
     end
   end
 
@@ -111,7 +99,7 @@ class Challenge < ApplicationRecord
   end
 
   def complete!
-    update!(status: "completed", completed_at: Time.current)
+    update!(status: :completed, completed_at: Time.current)
   end
 
   def restarted?

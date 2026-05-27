@@ -5,13 +5,16 @@ class Quest < ApplicationRecord
   has_one :reward, dependent: :destroy
   accepts_nested_attributes_for :reward, reject_if: :all_blank
 
-  validates :title, presence: true 
-  validates :status, inclusion: { in: %w[active completed] }
+  enum :status, { active: "active", completed: "completed" }
+
+  scope :recent, -> { order(created_at: :desc) }
+
+  validates :title, presence: true
 
   before_validation :set_defaults, on: :create
 
-  def progress 
-    challenges.where(status: "completed").count
+  def progress
+    challenges.completed.count
   end
 
   def total
@@ -23,16 +26,8 @@ class Quest < ApplicationRecord
     [(progress.to_f / total * 100).round, 100].min
   end
 
-  def active?
-    status == "active"
-  end
-
-  def completed?
-    status == "completed"
-  end
-
   def active_challenges
-    challenges.where(status: "active").order(created_at: :asc)
+    challenges.active.order(created_at: :asc)
   end
 
   def focused_challenge
@@ -46,8 +41,8 @@ class Quest < ApplicationRecord
   def check_status!
     return if completed?
     if total > 0 && progress == total 
-      update!(status: "completed", completed_at: Time.current)
-      reward&.unlock!
+      update!(status: :completed, completed_at: Time.current)
+      reward&.unlocked!
     end
   end
 

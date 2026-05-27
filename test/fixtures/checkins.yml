@@ -1,13 +1,5 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  challenge: one
+first_day:
+  challenge: active_solo
   day_number: 1
-  feeling: MyString
-  note: MyText
-
-two:
-  challenge: two
-  day_number: 1
-  feeling: MyString
-  note: MyText
+  feeling: ok
+  note: Primeiro dia
