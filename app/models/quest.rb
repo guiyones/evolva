@@ -23,7 +23,7 @@ class Quest < ApplicationRecord
 
   def progress_percentage
     return 0 if total.zero?
-    [(progress.to_f / total * 100).round, 100].min
+    [ (progress.to_f / total * 100).round, 100 ].min
   end
 
   def active_challenges
@@ -40,7 +40,7 @@ class Quest < ApplicationRecord
 
   def check_status!
     return if completed?
-    if total > 0 && progress == total 
+    if total > 0 && progress == total
       update!(status: :completed, completed_at: Time.current)
       reward&.unlocked!
     end

@@ -4,16 +4,16 @@ class RewardsController < ApplicationController
   def show
   end
 
-  def redeem 
+  def redeem
     if @reward.unlocked?
       @reward.redeem!
       redirect_to @reward, notice: "Reward resgatado! Você merece. 🎉"
-    else 
+    else
       redirect_to @reward, alert: "Reward ainda não disponível"
     end
   end
 
-  private 
+  private
 
   def set_reward
     @reward = Current.user.rewards.find(params[:id])

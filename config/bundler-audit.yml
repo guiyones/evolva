@@ -2,4 +2,7 @@
 # CVEs that are not relevant to the application can be enumerated on the ignore list below.
 
 ignore:
-  - CVE-THAT-DOES-NOT-APPLY
+  # action_text-trix vem como dependência transitiva do railties (action_text).
+  # A app não usa Action Text / rich text editor, então o XSS no Trix não nos afeta.
+  - GHSA-53p3-c7vp-4mcc
+  - GHSA-qmpg-8xg6-ph5q

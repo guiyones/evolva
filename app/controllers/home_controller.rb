@@ -27,4 +27,3 @@ class HomeController < ApplicationController
     @day_progress = total > 0 ? [ (done.to_f / total * 100).round, 100 ].min : 0
   end
 end
-
