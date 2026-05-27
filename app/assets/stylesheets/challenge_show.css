@@ -1,0 +1,324 @@
+/* Challenge show page */
+.challenge-show { max-width: 32rem; margin: 0 auto; padding: 2.5rem 1rem; }
+
+.challenge-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+.challenge-header-meta { display: flex; align-items: center; gap: 8px; }
+.challenge-header-actions { display: flex; align-items: center; gap: 8px; }
+.challenge-day-indicator { font-size: 16px; color: #fb923c; }
+
+/* Status badge */
+.challenge-status {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 9999px;
+}
+.challenge-status-completed { background: rgba(34, 197, 94, 0.15); color: var(--evolva-green); }
+.challenge-status-finished,
+.challenge-status-planned { background: var(--evolva-card); color: var(--evolva-muted); }
+.challenge-status-focused,
+.challenge-status-active { background: rgba(108, 77, 255, 0.15); color: var(--evolva-purple); }
+
+/* Action buttons */
+.action-btn {
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.action-btn-edit { background: var(--evolva-card); color: #9ca3af; }
+.action-btn-edit:hover { background: var(--evolva-border); }
+.action-btn-delete { background: rgba(239, 68, 68, 0.1); color: #f87171; }
+.action-btn-delete:hover { background: rgba(239, 68, 68, 0.2); }
+.action-btn-share {
+  background: rgba(108, 77, 255, 0.15);
+  color: var(--evolva-purple);
+  position: relative;
+  padding: 0 12px;
+}
+.action-btn-share:hover { background: rgba(108, 77, 255, 0.3); }
+.action-btn-share:hover::after {
+  content: "Compartilhar Desafio";
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--evolva-card);
+  color: var(--evolva-text);
+  font-size: 14px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  border: 0.5px solid var(--evolva-border);
+}
+
+/* Invite panel */
+.invite-panel {
+  background: var(--evolva-card);
+  border-radius: 1rem;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.invite-panel.is-hidden { display: none; }
+.invite-panel-label { font-size: 12px; color: var(--evolva-muted); margin-bottom: 10px; }
+.invite-row { display: flex; align-items: center; gap: 8px; }
+.invite-link {
+  flex: 1;
+  background: var(--evolva-dark);
+  border: 0.5px solid var(--evolva-border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  overflow: hidden;
+}
+.invite-link p {
+  font-size: 11px;
+  color: var(--evolva-purple);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.invite-copy-btn {
+  flex-shrink: 0;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: var(--evolva-purple);
+  color: white;
+  font-size: 11px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+}
+.invite-copy-btn:hover { background: var(--evolva-purple-hover); }
+
+/* Title/quest backlink/tags */
+.challenge-title-h1 { font-size: 1.5rem; font-weight: 700; color: var(--evolva-text); margin-bottom: 0.5rem; }
+.challenge-quest-backlink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--evolva-purple);
+  margin-bottom: 1rem;
+}
+.challenge-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.challenge-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  border: 0.5px solid rgba(108, 77, 255, 0.3);
+  color: var(--evolva-purple);
+  background: rgba(108, 77, 255, 0.1);
+}
+.challenge-description { color: #9ca3af; margin-bottom: 1.5rem; }
+
+/* Progress block */
+.progress-block {
+  background: var(--evolva-card);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+.progress-block-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 0.75rem;
+}
+.progress-block-bar {
+  width: 100%;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: var(--evolva-border);
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+}
+.progress-block-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, var(--evolva-purple), var(--evolva-green));
+  transition: width 0.3s;
+}
+.progress-days { display: flex; flex-wrap: wrap; gap: 8px; }
+.progress-day {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+.progress-day.done { background: var(--evolva-purple); color: white; }
+.progress-day.done:hover { opacity: 0.8; }
+.progress-day.pending { background: var(--evolva-border); color: var(--evolva-muted); }
+.progress-day.today { box-shadow: 0 0 0 3px rgba(108, 77, 255, 0.4); }
+.progress-day.today.pending { color: var(--evolva-text); }
+
+/* Participants */
+.participants-block {
+  background: var(--evolva-card);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+.participants-label { font-size: 12px; color: #6b7280; margin-bottom: 1rem; }
+.participants-list > * + * { margin-top: 1rem; }
+.participant { }
+.participant-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.participant-info { display: flex; align-items: center; gap: 8px; }
+.participant-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(108, 77, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--evolva-purple);
+  flex-shrink: 0;
+}
+.participant-name { font-size: 13px; font-weight: 500; color: var(--evolva-text); }
+.participant-name-suffix { font-size: 11px; color: var(--evolva-muted); }
+.participant-progress-meta { font-size: 11px; color: var(--evolva-muted); }
+.participant-track {
+  height: 3px;
+  background: var(--evolva-border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.participant-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--evolva-purple), var(--evolva-green));
+}
+.invite-footer {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 0.5px solid var(--evolva-border);
+}
+.invite-toggle {
+  font-size: 12px;
+  color: var(--evolva-purple);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Check-in CTA */
+.checkin-cta {
+  display: block;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-weight: 600;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: var(--evolva-purple);
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.checkin-cta:hover { background: var(--evolva-purple-hover); }
+.checkin-cta-done {
+  background: var(--evolva-card);
+  color: var(--evolva-muted);
+  cursor: default;
+}
+.checkin-cta-hint { text-align: center; font-size: 12px; color: var(--evolva-muted); margin-top: 0.5rem; }
+
+/* Completion/finished panels */
+.completion-panel {
+  border-radius: 1rem;
+  padding: 1.5rem;
+  text-align: center;
+  margin-top: 1rem;
+}
+.completion-panel-success {
+  background: rgba(34, 197, 94, 0.1);
+  border: 0.5px solid rgba(34, 197, 94, 0.3);
+}
+.completion-panel-success p:first-child {
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 4px;
+  color: var(--evolva-green);
+}
+.completion-panel-success p:last-child {
+  color: var(--evolva-muted);
+  font-size: 14px;
+}
+.completion-panel-finished {
+  background: var(--evolva-card);
+  border: 0.5px solid var(--evolva-border);
+}
+.completion-panel-finished p.title {
+  color: var(--evolva-text);
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+.completion-panel-finished p.subtitle {
+  color: var(--evolva-muted);
+  font-size: 14px;
+  margin-bottom: 1rem;
+}
+.completion-panel-finished .restart-btn {
+  display: inline-block;
+  background: var(--evolva-purple);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Reward block */
+.reward-block {
+  background: var(--evolva-card);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  margin-top: 1rem;
+}
+.reward-block-label { font-size: 12px; color: var(--evolva-muted); margin-bottom: 4px; }
+.reward-block-link { display: flex; align-items: center; justify-content: space-between; text-decoration: none; }
+.reward-block-title { color: var(--evolva-text); font-weight: 600; }
+.reward-block-meta { font-size: 12px; color: var(--evolva-muted); margin-top: 4px; }
+.reward-block-arrow { color: #4b5563; }
+
+.challenge-back-link {
+  display: block;
+  text-align: center;
+  color: var(--evolva-muted);
+  font-size: 14px;
+  margin-top: 1.5rem;
+  text-decoration: none;
+}
+.challenge-back-link:hover { color: #d1d5db; }

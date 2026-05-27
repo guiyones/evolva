@@ -1,0 +1,15 @@
+<% if challenge.completed? %>
+  <div class="completion-panel completion-panel-success">
+    <p><%= challenge.duration_days %> de <%= challenge.duration_days %> dias.</p>
+    <p>Você fez exatamente o que prometeu.</p>
+  </div>
+<% elsif challenge.finished? %>
+  <div class="completion-panel completion-panel-finished">
+    <p class="title">Você fez <%= challenge.progress %> de <%= challenge.duration_days %> dias.</p>
+    <p class="subtitle">Isso é real. Isso aconteceu.</p>
+    <%= button_to "Recomeçar este desafio", restart_challenge_path(challenge),
+        method: :post,
+        data: { turbo_confirm: "Recomeçar este desafio? Seu progresso será zerado." },
+        class: "restart-btn" %>
+  </div>
+<% end %>

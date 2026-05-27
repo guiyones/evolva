@@ -1,0 +1,18 @@
+<div class="quest-reward-block">
+  <p class="quest-reward-label">Recompensa da Jornada</p>
+  <%= link_to reward_path(reward), class: "quest-reward-link" do %>
+    <div>
+      <p class="quest-reward-title"><%= reward.description %></p>
+      <p class="quest-reward-meta">
+        <% if reward.locked? %>
+          🔒 Bloqueado — conclua todos os desafios
+        <% elsif reward.unlocked? %>
+          🎁 Desbloqueado — pronto para resgatar
+        <% else %>
+          ✅ Resgatado
+        <% end %>
+      </p>
+    </div>
+    <span class="quest-reward-arrow">→</span>
+  <% end %>
+</div>

@@ -1,276 +1,47 @@
-<style>
-  .checkin-btn { background: #6C4DFF; }
-  .checkin-btn:hover { background: #5A3FE6; }
-  .action-btn-edit { background: #1F2937; }
-  .action-btn-edit:hover { background: #374151; }
-  .action-btn-delete { background: rgba(239,68,68,0.1); }
-  .action-btn-delete:hover { background: rgba(239,68,68,0.2); }
-  .action-btn-share { background: rgba(108,77,255,0.15); position: relative; }
-  .action-btn-share:hover { background: rgba(108,77,255,0.3); }
-  .action-btn-share:hover::after {
-    content: "Compartilhar Desafio";
-    position: absolute;
-    bottom: 110%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #1F2937;
-    color: #f3f4f6;
-    font-size: 14px;
-    padding: 4px 10px;
-    border-radius: 6px;
-    white-space: nowrap;
-    pointer-events: none;
-    border: 0.5px solid #374151;
-  }
-</style>
+<% reward = @challenge.shared? ? @challenge.root_challenge.reward : @challenge.reward %>
 
-<div class="max-w-lg mx-auto px-4 py-10">
+<div class="challenge-show" data-controller="invite">
+  <%= render "header", challenge: @challenge %>
 
-  <div class="flex items-center justify-between mb-6">
-    <div style="display: flex; align-items: center; gap: 8px;">
-      <% if @challenge.completed? %>
-        <span class="text-xs font-semibold px-3 py-1 rounded-full" style="background: rgba(34,197,94,0.15); color: #22C55E;">✓ Concluído</span>
-      <% elsif @challenge.finished? %>
-        <span class="text-xs font-semibold px-3 py-1 rounded-full" style="background: #1F2937; color: #6b7280;">Encerrado</span>
-      <% elsif @challenge.planned? %>
-        <span class="text-xs font-semibold px-3 py-1 rounded-full" style="background: #1F2937; color: #6b7280;">Planejado</span>
-      <% elsif @challenge.focused? %>
-        <span class="text-xs font-semibold px-3 py-1 rounded-full" style="background: rgba(108,77,255,0.15); color: #6C4DFF;">🔵 Foco</span>
-      <% else %>
-        <span class="text-md font-semibold px-3 py-1 rounded-full" style="background: rgba(108,77,255,0.15); color: #6C4DFF;">
-          <%= @challenge.shared? ? "Compartilhado" : "Em andamento" %>
-        </span>
-      <% end %>
-      <% if @challenge.active? && @challenge.started_at.present? %>
-        <span style="font-size: 16px; color: #fb923c;">📍 Dia <%= @challenge.current_day %> de <%= @challenge.duration_days %></span>
-      <% end %>
-    </div>
-    <div style="display: flex; align-items: center; gap: 8px;">
-      <% if @challenge.solo? && @challenge.active? %>
-        <button onclick="document.getElementById('invite-section').style.display = document.getElementById('invite-section').style.display === 'none' ? 'block' : 'none'"
-                class="action-btn-share"
-                style="border: none; cursor: pointer; color: #6C4DFF; font-size: 13px;
-                       height: 32px; padding: 0 12px; border-radius: 20px; display: flex; align-items: center; justify-content: center;">
-                👥</button>
-      <% end %>
-      <%= link_to "Editar", edit_challenge_path(@challenge),
-          class: "action-btn-edit",
-          style: "height: 32px; padding: 0 14px; border-radius: 20px; display: flex; align-items: center;
-                  font-size: 13px; color: #9ca3af; text-decoration: none; transition: all 0.15s;" %>
-      <%= link_to "Apagar", challenge_path(@challenge),
-          data: { turbo_method: :delete, turbo_confirm: "Tem certeza? Isso apaga o desafio e todo o histórico." },
-          class: "action-btn-delete",
-          style: "height: 32px; padding: 0 14px; border-radius: 20px; display: flex; align-items: center;
-                  font-size: 13px; color: #f87171; text-decoration: none; transition: all 0.15s;" %>
-    </div>
-  </div>
-
-  <%# Convite — solo ativo %>
   <% if @challenge.solo? && @challenge.active? %>
-    <div id="invite-section" class="rounded-2xl p-4 mb-4" style="background: #1F2937; display: none;">
-      <p style="font-size: 12px; color: #6b7280; margin-bottom: 10px;">Compartilhe o link para convidar alguém:</p>
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <div style="flex: 1; background: #0F172A; border: 0.5px solid #374151;
-                    border-radius: 8px; padding: 8px 12px; overflow: hidden;">
-          <p style="font-size: 11px; color: #6C4DFF; white-space: nowrap; overflow: hidden;
-                    text-overflow: ellipsis;" id="invite-link-solo">
-            <%= request.base_url %>/join/<%= @challenge.invite_token %>
-          </p>
-        </div>
-        <button onclick="navigator.clipboard.writeText(document.getElementById('invite-link-solo').innerText.trim()).then(() => this.innerText = 'Copiado!')"
-                style="flex-shrink: 0; padding: 8px 14px; border-radius: 8px;
-                       background: #6C4DFF; color: white; font-size: 11px;
-                       font-weight: 500; border: none; cursor: pointer;">
-          Copiar
-        </button>
-      </div>
-    </div>
+    <%= render "invite_panel", challenge: @challenge %>
   <% end %>
 
-  <h1 class="text-2xl font-bold text-white mb-2"><%= @challenge.title %></h1>
+  <h1 class="challenge-title-h1"><%= @challenge.title %></h1>
 
   <% if @challenge.quest.present? %>
-    <div class="mb-4">
-      <%= link_to quest_path(@challenge.quest), class: "inline-flex items-center gap-2 text-sm transition-colors", style: "color: #6C4DFF;" do %>
-        <span>↑ Jornada: <%= @challenge.quest.title %></span>
-      <% end %>
-    </div>
+    <%= link_to quest_path(@challenge.quest), class: "challenge-quest-backlink" do %>
+      ↑ Jornada: <%= @challenge.quest.title %>
+    <% end %>
   <% end %>
-    
+
   <% if @challenge.tags.any? %>
-    <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px;">
+    <div class="challenge-tags">
       <% @challenge.tags.each do |tag| %>
-        <span style="display: inline-flex; align-items: center; gap: 4px;
-                     padding: 4px 10px; border-radius: 20px; font-size: 11px;
-                     border: 0.5px solid rgba(108,77,255,0.3); color: #6C4DFF;
-                     background: rgba(108,77,255,0.1);">
-          <%= tag.icon %> <%= tag.name %>
-        </span>
+        <span class="challenge-tag"><%= tag.icon %> <%= tag.name %></span>
       <% end %>
     </div>
   <% end %>
 
   <% if @challenge.description.present? %>
-    <p class="text-gray-400 mb-6"><%= @challenge.description %></p>
+    <p class="challenge-description"><%= @challenge.description %></p>
   <% end %>
-    
-  <%# Progresso %>
-  <div class="rounded-2xl p-6 mb-4" style="background: #1F2937;">
-    <div class="flex justify-between text-sm mb-3">
-      <span class="text-gray-400">Progresso</span>
-      <span class="font-semibold text-white"><%= @challenge.progress %> / <%= @challenge.duration_days %></span>
-    </div>
-    <div class="w-full rounded-full h-2 mb-5" style="background: #374151;">
-      <div class="h-2 rounded-full transition-all" style="width: <%= @challenge.progress_percentage %>%; background: linear-gradient(90deg, #6C4DFF, #22C55E);"></div>
-    </div>
-    <div class="flex flex-wrap gap-2">
-      <% checkins_by_day = @challenge.checkins.index_by(&:day_number) %>
-      <% today_day = @challenge.started_at.present? ? (Date.current - @challenge.started_at.to_date).to_i + 1 : nil %>
-      <% (1..@challenge.duration_days).each do |day| %>
-        <% checkin = checkins_by_day[day] %>
-        <% is_today = today_day == day %>
-        <% if checkin %>
-          <%= link_to challenge_checkin_path(@challenge, checkin),
-              class: "w-10 h-10 rounded-full flex items-center justify-center text-sm transition-opacity hover:opacity-80",
-              style: "background: #6C4DFF; color: white;#{' box-shadow: 0 0 0 3px rgba(108,77,255,0.4);' if is_today}" do %>
-            <%= day %>
-          <% end %>
-        <% else %>
-          <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm"
-               style="background: #374151; color: #6b7280;#{' box-shadow: 0 0 0 3px rgba(108,77,255,0.4); color: #f3f4f6;' if is_today}">
-            <%= day %>
-          </div>
-        <% end %>
-      <% end %>
-    </div>
-  </div>
 
-  <%# Participantes — só para desafios compartilhados %>
+  <%= render "progress_grid", challenge: @challenge %>
+
   <% if @challenge.shared? %>
-    <% root = @challenge.root_challenge %>
-    <% all_challenges = [root] + root.child_challenges.includes(:user) %>
-    <div class="rounded-2xl p-5 mb-4" style="background: #1F2937;">
-      <p class="text-xs text-gray-500 mb-4">Participantes</p>
-      <div class="space-y-4">
-        <% all_challenges.each do |c| %>
-          <div>
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <div style="width: 28px; height: 28px; border-radius: 50%;
-                            background: rgba(108,77,255,0.2); display: flex;
-                            align-items: center; justify-content: center;
-                            font-size: 12px; font-weight: 600; color: #6C4DFF; flex-shrink: 0;">
-                  <%= c.user.name&.first&.upcase || c.user.email_address.first.upcase %>
-                </div>
-                <span style="font-size: 13px; font-weight: 500; color: #f3f4f6;">
-                  <%= c.user.name.present? ? c.user.name : c.user.email_address.split("@").first %>
-                  <% if c.user == Current.user %>
-                    <span style="font-size: 11px; color: #6b7280;">(você)</span>
-                  <% end %>
-                </span>
-              </div>
-              <span style="font-size: 11px; color: #6b7280;">
-                <%= c.progress %> / <%= c.duration_days %> dias
-              </span>
-            </div>
-            <div style="height: 3px; background: #374151; border-radius: 3px; overflow: hidden;">
-              <div style="height: 100%; border-radius: 3px;
-                          background: linear-gradient(90deg, #6C4DFF, #22C55E);
-                          width: <%= c.progress_percentage %>%;"></div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-
-      <%# Link de convite %>
-      <% if @challenge.root_challenge == @challenge || @challenge.parent_challenge_id.nil? %>
-        <div style="margin-top: 16px; padding-top: 16px; border-top: 0.5px solid #374151;">
-          <button onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'flex' : 'none'"
-                  style="font-size: 12px; color: #6C4DFF; background: none; border: none;
-                         cursor: pointer; padding: 0; display: flex; align-items: center; gap: 6px;">
-            <span>+ Convidar alguém</span>
-          </button>
-          <div style="display: none; align-items: center; gap: 8px; margin-top: 10px;">
-            <div style="flex: 1; background: #0F172A; border: 0.5px solid #374151;
-                        border-radius: 8px; padding: 8px 12px; overflow: hidden;">
-              <p style="font-size: 11px; color: #6C4DFF; white-space: nowrap; overflow: hidden;
-                        text-overflow: ellipsis;" id="invite-link">
-              <%= request.base_url %>/join/<%= @challenge.invite_token %>
-              </p>
-            </div>
-            <button onclick="navigator.clipboard.writeText(document.getElementById('invite-link').innerText).then(() => this.innerText = 'Copiado!')"
-                    style="flex-shrink: 0; padding: 8px 14px; border-radius: 8px;
-                           background: #6C4DFF; color: white; font-size: 11px;
-                           font-weight: 500; border: none; cursor: pointer;">
-                           Copiar
-            </button>
-          </div>
-        </div>
-      <% end %>
-    </div>
+    <%= render "participants", challenge: @challenge %>
   <% end %>
 
-
-  <%# Check-in %>
   <% if @challenge.active? || @challenge.planned? %>
-    <% checked_today = @challenge.checkins.where(created_at: Date.today.all_day).exists? %>
-    <% if checked_today %>
-      <div class="w-full text-center font-semibold py-4 rounded-xl text-gray-400" style="background: #1F2937;">
-        ✓ Hoje já concluído
-      </div>
-    <% elsif @challenge.planned? %>
-      <%= link_to "Fazer primeiro check-in e iniciar", new_challenge_checkin_path(@challenge),
-          class: "block w-full text-center text-white font-semibold py-4 rounded-xl transition-colors checkin-btn" %>
-      <p class="text-center text-xs text-gray-500 mt-2">O primeiro check-in inicia a contagem de dias do desafio</p>
-    <% else %>
-      <%= link_to "Marcar hoje como concluído", new_challenge_checkin_path(@challenge),
-          class: "block w-full text-center text-white font-semibold py-4 rounded-xl transition-colors checkin-btn" %>
-    <% end %>
+    <%= render "checkin_cta", challenge: @challenge %>
   <% end %>
 
-  <%# Mensagem de conclusão %>
-  <% if @challenge.completed? %>
-    <div class="rounded-2xl p-6 text-center mt-4" style="background: rgba(34,197,94,0.1); border: 0.5px solid rgba(34,197,94,0.3);">
-      <p class="font-semibold text-lg mb-1" style="color: #22C55E;"><%= @challenge.duration_days %> de <%= @challenge.duration_days %> dias.</p>
-      <p class="text-gray-400 text-sm">Você fez exatamente o que prometeu.</p>
-    </div>
-  <% end %>
+  <%= render "completion", challenge: @challenge %>
 
-  <% if @challenge.finished? %>
-    <div class="rounded-2xl p-6 text-center mt-4" style="background: #1F2937; border: 0.5px solid #374151;">
-      <p class="text-white font-semibold text-lg mb-1">Você fez <%= @challenge.progress %> de <%= @challenge.duration_days %> dias.</p>
-      <p class="text-gray-400 text-sm mb-4">Isso é real. Isso aconteceu.</p>
-      <%= button_to "Recomeçar este desafio", restart_challenge_path(@challenge),
-          method: :post,
-          data: { turbo_confirm: "Recomeçar este desafio? Seu progresso será zerado." },
-          class: "inline-block text-white text-sm font-semibold px-6 py-3 rounded-lg transition-colors",
-          style: "background: #6C4DFF;" %>
-    </div>
-  <% end %>
-
-  <%# Reward %>
-  <% reward = @challenge.shared? ? @challenge.root_challenge.reward : @challenge.reward %>
   <% if reward.present? %>
-    <div class="rounded-2xl p-5 mt-4" style="background: #1F2937;">
-      <p class="text-xs text-gray-500 mb-1">Recompensa</p>
-      <%= link_to reward_path(reward), class: "flex items-center justify-between" do %>
-        <div>
-          <p class="text-white font-semibold"><%= reward.description %></p>
-          <p class="text-xs text-gray-500 mt-1">
-            <% if reward.locked? %>
-              🔒 <%= @challenge.shared? ? "Aguardando todos completarem" : "Complete o desafio" %>
-            <% elsif reward.unlocked? %>
-              🎁 Desbloqueado — pronto para resgatar
-            <% else %>
-              ✅ Resgatado
-            <% end %>
-          </p>
-        </div>
-        <span class="text-gray-600">→</span>
-      <% end %>
-    </div>
+    <%= render "reward_block", reward: reward, shared: @challenge.shared? %>
   <% end %>
 
-  <%= link_to "← Voltar", root_path, class: "block text-center text-gray-500 text-sm mt-6 hover:text-gray-300" %>
+  <%= link_to "← Voltar", root_path, class: "challenge-back-link" %>
 </div>
-

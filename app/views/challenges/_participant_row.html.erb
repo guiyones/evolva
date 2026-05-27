@@ -1,0 +1,19 @@
+<div class="participant">
+  <div class="participant-row">
+    <div class="participant-info">
+      <div class="participant-avatar"><%= participant_challenge.user.initials %></div>
+      <span class="participant-name">
+        <%= participant_challenge.user.display_name %>
+        <% if participant_challenge.user == Current.user %>
+          <span class="participant-name-suffix">(você)</span>
+        <% end %>
+      </span>
+    </div>
+    <span class="participant-progress-meta">
+      <%= participant_challenge.progress %> / <%= participant_challenge.duration_days %> dias
+    </span>
+  </div>
+  <div class="participant-track">
+    <div class="participant-fill" style="width: <%= participant_challenge.progress_percentage %>%"></div>
+  </div>
+</div>

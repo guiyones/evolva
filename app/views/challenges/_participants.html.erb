@@ -1,0 +1,23 @@
+<% root = challenge.root_challenge %>
+<% all_challenges = [ root ] + root.child_challenges.includes(:user) %>
+
+<div class="participants-block" data-controller="invite">
+  <p class="participants-label">Participantes</p>
+  <div class="participants-list">
+    <% all_challenges.each do |participant_challenge| %>
+      <%= render "challenges/participant_row", participant_challenge: participant_challenge %>
+    <% end %>
+  </div>
+
+  <% if challenge.root_challenge == challenge || challenge.parent_challenge_id.nil? %>
+    <div class="invite-footer">
+      <button data-action="invite#toggle" class="invite-toggle">+ Convidar alguém</button>
+      <div class="invite-row is-hidden" data-invite-target="panel" style="margin-top: 10px;">
+        <div class="invite-link">
+          <p data-invite-target="link"><%= request.base_url %>/join/<%= challenge.invite_token %></p>
+        </div>
+        <button data-action="invite#copy" data-invite-target="copyButton" class="invite-copy-btn">Copiar</button>
+      </div>
+    </div>
+  <% end %>
+</div>
