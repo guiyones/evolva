@@ -1,23 +1,48 @@
 require "test_helper"
 
 class QuestsControllerTest < ActionDispatch::IntegrationTest
-  test "should get index" do
-    get quests_index_url
+  setup { sign_in_as users(:one) }
+
+  test "index renders" do
+    get quests_path
     assert_response :success
   end
 
-  test "should get show" do
-    get quests_show_url
+  test "show renders own quest" do
+    get quest_path(quests(:leitura))
     assert_response :success
   end
 
-  test "should get new" do
-    get quests_new_url
+  test "new renders form" do
+    get new_quest_path
     assert_response :success
   end
 
-  test "should get create" do
-    get quests_create_url
-    assert_response :success
+  test "create with valid params" do
+    assert_difference -> { Current.user.quests.count }, 1 do
+      post quests_path, params: { quest: { title: "Nova jornada" } }
+    end
+  end
+
+  test "create with invalid params re-renders" do
+    assert_no_difference -> { Quest.count } do
+      post quests_path, params: { quest: { title: "" } }
+    end
+    assert_response :unprocessable_entity
+  end
+
+  test "attach_challenge links a challenge to the quest" do
+    quest = quests(:leitura)
+    challenge = challenges(:active_solo)
+    post attach_challenge_quest_path(quest), params: { challenge_id: challenge.id }
+    assert_equal quest.id, challenge.reload.quest_id
+    assert challenge.planned?
+  end
+
+  test "destroy removes quest" do
+    quest = quests(:completada)
+    assert_difference -> { Quest.count }, -1 do
+      delete quest_path(quest)
+    end
   end
 end

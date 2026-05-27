@@ -6,6 +6,7 @@ active_solo:
   status: active
   challenge_type: solo
   started_at: <%= 5.days.ago %>
+  invite_token: token-active-solo
 
 planned_in_quest:
   user: one

@@ -31,6 +31,7 @@ class ChallengesController < ApplicationController
       end
       redirect_to @challenge, notice: "Desafio criado!"
     else
+      @active_quests = Current.user.quests.active.recent
       render :new, status: :unprocessable_entity
     end
   end
