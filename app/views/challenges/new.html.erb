@@ -1,78 +1,13 @@
-<style>
-  .new-challenge { max-width: 480px; margin: 0 auto; padding: 2rem 1rem 4rem; }
-  @media (min-width: 768px) { .new-challenge { max-width: 520px; } }
-
-  .nc-title { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 4px; }
-  .nc-subtitle { font-size: 13px; color: #6b7280; margin-bottom: 2rem; }
-
-  .nc-section { margin-bottom: 1.5rem; }
-  .nc-label { font-size: 13px; font-weight: 500; color: #9ca3af; margin-bottom: 8px; display: block; }
-
-  .nc-input { width: 100%; border-radius: 10px; padding: 12px 16px; font-size: 14px;
-              color: #fff; background: #1F2937; border: 0.5px solid #374151;
-              outline: none; transition: border-color 0.2s; }
-  .nc-input:focus { border-color: #6C4DFF; }
-  .nc-input::placeholder { color: #4b5563; }
-
-  .nc-textarea { resize: none; min-height: 70px; }
-
-  .nc-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-  .nc-chip { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 500;
-             background: #1F2937; border: 0.5px solid #374151; color: #6b7280;
-             cursor: pointer; transition: all 0.15s; white-space: nowrap; }
-  .nc-chip:hover { border-color: #6C4DFF; color: #f3f4f6; }
-
-  .nc-duration-grid { display: flex; gap: 8px; }
-  .nc-duration-btn { flex: 1; padding: 7px 6px; border-radius: 8px; font-size: 12px;
-                     font-weight: 500; text-align: center; background: #1F2937;
-                     border: 0.5px solid #374151; color: #6b7280; cursor: pointer;
-                     transition: all 0.15s; }
-  .nc-duration-btn:hover { border-color: #6C4DFF; color: #f3f4f6; }
-
-  .nc-radio-group { display: flex; flex-direction: column; gap: 8px; }
-  .nc-radio-label { display: flex; align-items: center; gap: 10px; padding: 12px 14px;
-                    border-radius: 10px; background: #1F2937; border: 0.5px solid #374151;
-                    cursor: pointer; transition: border-color 0.2s; font-size: 13px; color: #f3f4f6; }
-  .nc-radio-label:hover { border-color: #6C4DFF; }
-  .nc-radio-label input[type="radio"] { accent-color: #6C4DFF; }
-
-  .nc-quest-select { margin-top: 12px; padding: 14px; border-radius: 10px;
-                     background: #1F2937; border: 0.5px solid #374151; display: none; }
-  .nc-quest-label { font-size: 12px; color: #6b7280; margin-bottom: 8px; display: block; }
-
-  .nc-summary { background: #1F2937; border: 0.5px solid #374151; border-radius: 10px;
-                padding: 14px 16px; margin-bottom: 1.5rem; display: none; }
-  .nc-summary-label { font-size: 11px; color: #6b7280; margin-bottom: 4px; }
-  .nc-summary-text { font-size: 14px; font-weight: 500; color: #f3f4f6; }
-
-  .nc-submit { width: 100%; padding: 14px; border-radius: 12px; font-size: 15px;
-               font-weight: 600; color: #fff; background: #6C4DFF; border: none;
-               cursor: pointer; transition: background 0.15s; }
-  .nc-submit:hover { background: #5A3FE6; }
-
-  .nc-back { display: block; text-align: center; font-size: 13px; color: #6b7280;
-             text-decoration: none; margin-top: 16px; transition: color 0.15s; }
-  .nc-back:hover { color: #f3f4f6; }
-</style>
-
 <div class="new-challenge" data-controller="new-challenge">
-
   <h1 class="nc-title">Comece algo novo hoje</h1>
   <p class="nc-subtitle">Pequenas mudanças criam grandes resultados.</p>
 
-  <%= form_with model: @challenge, class: "space-y-0" do |f| %>
+  <%= form_with model: @challenge do |f| %>
     <%= f.hidden_field :challenge_type, data: { "new-challenge-target": "challengeTypeField" } %>
     <%= f.hidden_field :quest_id, data: { "new-challenge-target": "questIdField" } %>
 
-    <% if @challenge.errors.any? %>
-      <div style="background: rgba(239,68,68,0.1); color: #f87171; border-radius: 10px; padding: 12px 16px; margin-bottom: 1.5rem; font-size: 13px;">
-        <% @challenge.errors.full_messages.each do |msg| %>
-          <p><%= msg %></p>
-        <% end %>
-      </div>
-    <% end %>
+    <%= render "shared/form_errors", record: @challenge %>
 
-    <%# Título %>
     <div class="nc-section">
       <label class="nc-label">O que você quer começar?</label>
       <%= f.text_field :title,
@@ -81,7 +16,6 @@
           data: { field: "title", action: "input->new-challenge#updateSummary" } %>
     </div>
 
-    <%# Duração %>
     <div class="nc-section">
       <label class="nc-label">Por quanto tempo?</label>
       <%= f.number_field :duration_days,
@@ -90,18 +24,16 @@
           data: { "new-challenge-target": "durationInput", action: "input->new-challenge#updateSummary" } %>
     </div>
 
-    <%# Motivação %>
     <div class="nc-section">
-      <label class="nc-label">O que te motivou? <span style="color: #4b5563; font-weight: 400;"> (opcional)</span></label>
+      <label class="nc-label">O que te motivou? <span class="nc-label-hint">(opcional)</span></label>
       <%= f.text_area :description,
           class: "nc-input nc-textarea",
           placeholder: "Quero ter mais energia no dia a dia...",
           rows: 2 %>
     </div>
 
-    <%# Recompensa %>
     <div class="nc-section">
-      <label class="nc-label">Como você quer se recompensar? <span style="color: #4b5563; font-weight: 400;"> (opcional)</span></label>
+      <label class="nc-label">Como você quer se recompensar? <span class="nc-label-hint">(opcional)</span></label>
       <%= f.fields_for :reward do |r| %>
         <%= r.text_field :description,
             class: "nc-input",
@@ -109,8 +41,14 @@
       <% end %>
     </div>
 
-    <%# Jornada %>
-    <% unless @challenge.quest_id.present? %>
+    <% if @challenge.quest_id.present? %>
+      <div class="nc-section">
+        <div class="nc-quest-badge">
+          <p class="nc-quest-badge-label">Jornada</p>
+          <p class="nc-quest-badge-name"><%= @challenge.quest&.title %></p>
+        </div>
+      </div>
+    <% else %>
       <div class="nc-section">
         <label class="nc-label">Isso faz parte de uma jornada?</label>
         <div class="nc-radio-group">
@@ -136,26 +74,17 @@
                 <%= quest.title %>
               </button>
             <% end %>
-            <%= link_to "+ Criar nova jornada", new_quest_path, class: "nc-chip", style: "color: #6C4DFF; border-color: rgba(108,77,255,0.3);" %>
+            <%= link_to "+ Criar nova jornada", new_quest_path, class: "nc-chip nc-chip-create" %>
           </div>
-        </div>
-      </div>
-    <% else %>
-      <div class="nc-section">
-        <div style="background: rgba(108,77,255,0.08); border: 0.5px solid rgba(108,77,255,0.2); border-radius: 10px; padding: 12px 16px;">
-          <p style="font-size: 11px; color: #6b7280; margin-bottom: 2px;">Jornada</p>
-          <p style="font-size: 14px; font-weight: 500; color: #f3f4f6;"><%= @challenge.quest&.title %></p>
         </div>
       </div>
     <% end %>
 
-    <%# Resumo %>
     <div class="nc-summary" data-new-challenge-target="summary">
       <p class="nc-summary-label">Resumo</p>
       <p class="nc-summary-text" data-new-challenge-target="summaryText"></p>
     </div>
 
-    <%# Submit %>
     <%= f.submit @challenge.quest_id.present? ? "Planejar desafio" : "Começar agora",
         class: "nc-submit",
         data: { "new-challenge-target": "submitBtn" } %>

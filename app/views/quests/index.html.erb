@@ -1,41 +1,17 @@
-<div class="max-w-lg mx-auto px-4 py-10">
-
-  <div class="flex items-center justify-between mb-8">
-    <h1 class="text-2xl font-bold text-white">Jornadas</h1>
-    <%= link_to "+ Nova", new_quest_path,
-        class: "text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors bg-[#6C4DFF] hover:bg-[#5A3DE6]" %>
+<div class="list-page">
+  <div class="list-page-header">
+    <h1 class="list-page-title">Jornadas</h1>
+    <%= link_to "+ Nova", new_quest_path, class: "list-action-new" %>
   </div>
 
   <% if @quests.empty? %>
-    <div class="text-center py-20">
-      <p class="text-gray-500 mb-4">Nenhuma jornada ainda.</p>
-      <%= link_to "Criar sua primeira jornada →", new_quest_path,
-          style: "color: #6C4DFF;" %>
+    <div class="list-empty">
+      <p>Nenhuma jornada ainda.</p>
+      <%= link_to "Criar sua primeira jornada →", new_quest_path %>
     </div>
   <% else %>
-    <div class="space-y-3">
-      <% @quests.each do |quest| %>
-        <%= link_to quest_path(quest), class: "evolva-card" do %>
-          <div class="flex items-center justify-between mb-2">
-            <h2 class="text-white text-sm font-semibold"><%= quest.title %></h2>
-            <% if quest.completed? %>
-              <span class="text-xs" style="color: #22C55E;">✓ Concluída</span>
-            <% else %>
-              <span class="text-xs" style="color: #6C4DFF;">Em andamento</span>
-            <% end %>
-          </div>
-
-          <div class="flex justify-between text-xs text-gray-500 mb-2">
-            <span><%= quest.progress %> de <%= quest.total %> desafios</span>
-            <span><%= quest.progress_percentage %>%</span>
-          </div>
-
-          <div class="w-full rounded-full h-1" style="background: #374151;">
-            <div class="h-1 rounded-full" style="width: <%= quest.progress_percentage %>%; background: linear-gradient(90deg, #6C4DFF, #22C55E);"></div>
-          </div>
-        <% end %>
-      <% end %>
+    <div class="list-items">
+      <%= render partial: "list_item", collection: @quests, as: :quest %>
     </div>
   <% end %>
 </div>
-

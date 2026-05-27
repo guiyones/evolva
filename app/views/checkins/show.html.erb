@@ -1,45 +1,33 @@
-<div class="max-w-lg mx-auto px-4 py-10">
+<div class="checkin-show">
+  <%= link_to "← Voltar", challenge_path(@challenge), class: "reward-back" %>
 
-  <%= link_to "← Voltar", challenge_path(@challenge),
-      class: "text-gray-500 text-sm hover:text-gray-300 block mb-8" %>
-
-  <div class="rounded-2xl p-6" style="background: #1F2937;">
-    <div class="flex items-center justify-between mb-6">
-      <h1 class="text-lg font-semibold text-white">
-        Dia <%= @checkin.day_number %> de <%= @challenge.duration_days %>
-      </h1>
-      <span class="text-xs text-gray-500">
-        <%= @checkin.created_at.strftime("%d/%m/%Y") %>
-      </span>
+  <div class="checkin-show-card">
+    <div class="checkin-show-header">
+      <h1 class="checkin-show-title">Dia <%= @checkin.day_number %> de <%= @challenge.duration_days %></h1>
+      <span class="checkin-show-date"><%= @checkin.created_at.strftime("%d/%m/%Y") %></span>
     </div>
 
-    <div class="space-y-4">
-      <div class="flex items-center gap-3 py-3" style="border-bottom: 0.5px solid #374151;">
-        <span class="text-sm text-gray-400">Status</span>
-        <span class="text-sm font-medium" style="color: #22C55E;">✓ Feito</span>
+    <div class="checkin-row">
+      <span class="checkin-row-label">Status</span>
+      <span class="checkin-row-value success">✓ Feito</span>
+    </div>
+
+    <% if @checkin.feeling.present? %>
+      <div class="checkin-row">
+        <span class="checkin-row-label">Como foi</span>
+        <span class="checkin-row-value-pill"><%= feeling_label(@checkin.feeling) %></span>
       </div>
+    <% end %>
 
-      <% if @checkin.feeling.present? %>
-        <div class="flex items-center gap-3 py-3" style="border-bottom: 0.5px solid #374151;">
-          <span class="text-sm text-gray-400">Como foi</span>
-          <span class="text-sm font-medium px-3 py-1 rounded-full"
-                style="background: rgba(108,77,255,0.15); color: #6C4DFF;">
-            <%= @checkin.feeling == 'hard' ? 'Difícil' : @checkin.feeling == 'ok' ? 'Ok' : 'Fácil' %>
-          </span>
-        </div>
-      <% end %>
+    <% if @checkin.note.present? %>
+      <div class="checkin-note-block">
+        <p class="checkin-note-label">Nota</p>
+        <p class="checkin-note-text"><%= @checkin.note %></p>
+      </div>
+    <% end %>
 
-      <% if @checkin.note.present? %>
-        <div class="py-3">
-          <p class="text-sm text-gray-400 mb-2">Nota</p>
-          <p class="text-sm text-gray-200 leading-relaxed"><%= @checkin.note %></p>
-        </div>
-      <% end %>
-
-      <% if @checkin.feeling.blank? && @checkin.note.blank? %>
-        <p class="text-sm text-gray-600 py-3">Nenhuma informação adicional registrada.</p>
-      <% end %>
-    </div>
+    <% if @checkin.feeling.blank? && @checkin.note.blank? %>
+      <p class="checkin-empty">Nenhuma informação adicional registrada.</p>
+    <% end %>
   </div>
-
 </div>

@@ -1,49 +1,44 @@
-<div class="max-w-lg mx-auto px-4 py-10">
-
-  <%= link_to "← Voltar", challenge_path(@reward.challenge),
-      class: "text-gray-500 text-sm hover:text-gray-300 block mb-8" %>
+<div class="reward-show">
+  <%= link_to "← Voltar", challenge_path(@reward.challenge), class: "reward-back" %>
 
   <% if @reward.locked? %>
-    <div class="text-center py-16">
-      <div class="text-6xl mb-6">🔒</div>
-      <h1 class="text-2xl font-bold text-white mb-2"><%= @reward.description %></h1>
-      <p class="text-gray-500">Complete o desafio para desbloquear.</p>
+    <div class="reward-state">
+      <div class="reward-state-icon">🔒</div>
+      <h1><%= @reward.description %></h1>
+      <p class="muted">Complete o desafio para desbloquear.</p>
 
-      <div class="rounded-2xl p-5 mt-8" style="background: #1F2937;">
-        <div class="flex justify-between text-sm text-gray-500 mb-2">
+      <div class="source">
+        <div class="source-row">
           <span><%= @reward.challenge.title %></span>
           <span><%= @reward.challenge.progress %> de <%= @reward.challenge.duration_days %> dias</span>
         </div>
-        <div class="w-full rounded-full h-2" style="background: #374151;">
-          <div class="h-2 rounded-full transition-all" style="width: <%= @reward.challenge.progress_percentage %>%; background: linear-gradient(90deg, #6C4DFF, #22C55E);"></div>
+        <div class="source-track">
+          <div class="source-fill" style="width: <%= @reward.challenge.progress_percentage %>%"></div>
         </div>
       </div>
     </div>
 
   <% elsif @reward.unlocked? %>
-    <div class="text-center py-16">
-      <div class="text-6xl mb-6">🎁</div>
-      <p class="text-sm font-semibold mb-2" style="color: #6C4DFF;">Recompensa desbloqueada</p>
-      <h1 class="text-2xl font-bold text-white mb-4"><%= @reward.description %></h1>
-      <p class="text-gray-400 mb-8">
-        Você completou <strong class="text-white"><%= @reward.challenge.title %></strong>.<br>
+    <div class="reward-state">
+      <div class="reward-state-icon">🎁</div>
+      <p class="reward-state-label unlocked">Recompensa desbloqueada</p>
+      <h1><%= @reward.description %></h1>
+      <p>
+        Você completou <strong style="color: var(--evolva-text);"><%= @reward.challenge.title %></strong>.<br>
         Você fez exatamente o que prometeu.
       </p>
 
       <%= button_to "Marcar como resgatado", redeem_reward_path(@reward),
           method: :patch,
-          class: "text-white font-semibold px-8 py-3 rounded-xl transition-colors cursor-pointer bg-[#6C4DFF] hover:bg-[#5A3DE6]" %>
+          class: "reward-redeem-btn" %>
     </div>
 
   <% elsif @reward.redeemed? %>
-    <div class="text-center py-16">
-      <div class="text-6xl mb-6">✅</div>
-      <p class="text-sm font-semibold mb-2" style="color: #22C55E;">Resgatado</p>
-      <h1 class="text-2xl font-bold text-white mb-4"><%= @reward.description %></h1>
-      <p class="text-sm text-gray-500">
-        Resgatado em <%= @reward.completed_at.strftime("%d/%m/%Y") %>
-      </p>
+    <div class="reward-state">
+      <div class="reward-state-icon">✅</div>
+      <p class="reward-state-label redeemed">Resgatado</p>
+      <h1><%= @reward.description %></h1>
+      <p class="muted">Resgatado em <%= @reward.completed_at.strftime("%d/%m/%Y") %></p>
     </div>
   <% end %>
 </div>
-

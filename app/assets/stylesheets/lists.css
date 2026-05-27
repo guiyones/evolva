@@ -1,0 +1,91 @@
+/* Index pages container */
+.list-page { max-width: 32rem; margin: 0 auto; padding: 2.5rem 1rem; }
+.list-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+.list-page-title { font-size: 1.5rem; font-weight: 700; color: var(--evolva-text); }
+
+.list-action-new {
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background: var(--evolva-purple);
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.list-action-new:hover { background: var(--evolva-purple-hover); }
+
+.list-empty { text-align: center; padding: 5rem 0; }
+.list-empty p { color: var(--evolva-muted); margin-bottom: 1rem; }
+.list-empty a { color: var(--evolva-purple); text-decoration: none; }
+
+.list-items > * + * { margin-top: 0.75rem; }
+
+/* Generic list card (challenges/index, quests/index) */
+.list-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+.list-card-title { font-size: 14px; font-weight: 600; color: var(--evolva-text); }
+.list-card-status { font-size: 12px; }
+.list-card-status-success { color: var(--evolva-green); }
+.list-card-status-active { color: var(--evolva-purple); }
+.list-card-status-muted { color: var(--evolva-muted); }
+
+.list-card-meta {
+  font-size: 12px;
+  color: var(--evolva-muted);
+  margin-bottom: 0.5rem;
+}
+.list-card-meta-quest { color: var(--evolva-purple); }
+.list-card-meta-row { display: flex; justify-content: space-between; }
+
+.list-card-bar {
+  width: 100%;
+  height: 0.25rem;
+  background: var(--evolva-border);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+.list-card-bar-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, var(--evolva-purple), var(--evolva-green));
+}
+
+/* History page */
+.history-section { margin-bottom: 2rem; }
+.history-section-title {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--evolva-muted);
+  margin-bottom: 0.75rem;
+}
+.history-card {
+  display: block;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  background: var(--evolva-card);
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.history-card.finished { opacity: 0.7; }
+.history-card-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.history-card-title { font-size: 14px; font-weight: 600; color: var(--evolva-green); }
+.history-card-title.finished { color: #9ca3af; }
+.history-card-quest { font-size: 12px; margin-top: 0.25rem; color: var(--evolva-purple); }
+.history-card-meta { font-size: 12px; color: var(--evolva-muted); margin-top: 0.25rem; }
+.history-card-reward { font-size: 12px; color: var(--evolva-muted); }
