@@ -1,0 +1,17 @@
+<%= link_to challenge_path(challenge), class: "history-card finished" do %>
+  <div class="history-card-row">
+    <div>
+      <p class="history-card-title finished">↩ <%= challenge.title %></p>
+      <% if (label = quest_label(challenge)) %>
+        <p class="history-card-quest"><%= label %></p>
+      <% end %>
+      <p class="history-card-meta">
+        <%= challenge.progress %> de <%= challenge.duration_days %> dias
+        · <%= challenge.completed_at&.strftime("%d/%m/%Y") %>
+      </p>
+      <% if (label = restart_label(challenge)) %>
+        <p class="history-card-meta"><%= label %></p>
+      <% end %>
+    </div>
+  </div>
+<% end %>

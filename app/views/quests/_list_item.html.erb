@@ -1,0 +1,17 @@
+<%= link_to quest_path(quest), class: "evolva-card" do %>
+  <div class="list-card-header">
+    <h2 class="list-card-title"><%= quest.title %></h2>
+    <span class="list-card-status <%= quest.completed? ? 'list-card-status-success' : 'list-card-status-active' %>">
+      <%= quest.completed? ? "✓ Concluída" : "Em andamento" %>
+    </span>
+  </div>
+
+  <div class="list-card-meta list-card-meta-row">
+    <span><%= quest.progress %> de <%= quest.total %> desafios</span>
+    <span><%= quest.progress_percentage %>%</span>
+  </div>
+
+  <div class="list-card-bar">
+    <div class="list-card-bar-fill" style="width: <%= quest.progress_percentage %>%"></div>
+  </div>
+<% end %>

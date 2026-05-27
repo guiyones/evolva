@@ -1,0 +1,17 @@
+<%= link_to challenge_path(challenge), class: "history-card" do %>
+  <div class="history-card-row">
+    <div>
+      <p class="history-card-title">✓ <%= challenge.title %></p>
+      <% if (label = quest_label(challenge)) %>
+        <p class="history-card-quest"><%= label %></p>
+      <% end %>
+      <p class="history-card-meta">
+        <%= challenge.duration_days %> de <%= challenge.duration_days %> dias
+        · <%= challenge.completed_at.strftime("%d/%m/%Y") %>
+      </p>
+    </div>
+    <% if challenge.reward&.redeemed? %>
+      <span class="history-card-reward">🎁 resgatado</span>
+    <% end %>
+  </div>
+<% end %>

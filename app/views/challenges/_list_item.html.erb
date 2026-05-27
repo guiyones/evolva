@@ -1,0 +1,20 @@
+<% label, modifier = challenge_status_text(challenge) %>
+<%= link_to challenge_path(challenge), class: "evolva-card" do %>
+  <div class="list-card-header">
+    <h2 class="list-card-title"><%= challenge.title %></h2>
+    <span class="list-card-status <%= modifier %>"><%= label %></span>
+  </div>
+
+  <% if challenge.quest.present? %>
+    <p class="list-card-meta">Jornada: <span class="list-card-meta-quest"><%= challenge.quest.title %></span></p>
+  <% end %>
+
+  <div class="list-card-meta list-card-meta-row">
+    <span><%= challenge.progress %> de <%= challenge.duration_days %> dias</span>
+    <span><%= challenge.progress_percentage %>%</span>
+  </div>
+
+  <div class="list-card-bar">
+    <div class="list-card-bar-fill" style="width: <%= challenge.progress_percentage %>%"></div>
+  </div>
+<% end %>
