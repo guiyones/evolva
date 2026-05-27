@@ -1,0 +1,22 @@
+<nav class="bottom-nav">
+  <%= link_to root_path, class: "nav-item #{'active' if current_page?(root_path)}" do %>
+    <%= image_tag "/icon.png?v=2", alt: "Evolva", class: "nav-logo" %>
+    <span>Home</span>
+  <% end %>
+  <%= link_to challenges_path, class: "nav-item #{'active' if current_page?(challenges_path)}" do %>
+    <span class="nav-icon">⚔️</span>
+    <span>Desafios</span>
+  <% end %>
+  <%= link_to quests_path, class: "nav-item #{'active' if current_page?(quests_path)}" do %>
+    <span class="nav-icon">📖</span>
+    <span>Jornadas</span>
+  <% end %>
+  <%= link_to history_path, class: "nav-item #{'active' if current_page?(history_path)}" do %>
+    <span class="nav-icon">📋</span>
+    <span>Histórico</span>
+  <% end %>
+  <%= link_to how_it_works_path, class: "nav-item #{'active' if current_page?(how_it_works_path)}" do %>
+    <span class="nav-icon">❓</span>
+    <span>Guia</span>
+  <% end %>
+</nav>

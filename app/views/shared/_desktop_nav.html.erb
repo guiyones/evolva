@@ -1,0 +1,15 @@
+<nav class="hidden md:flex items-center justify-between px-6 py-4 border-b border-gray-800">
+  <%= link_to root_path, class: "flex items-center gap-2" do %>
+    <%= image_tag "/icon.png?v=2", alt: "Evolva", class: "w-6 h-6 rounded-lg" %>
+    <span class="font-bold text-lg" style="color: var(--evolva-purple);">Evolva</span>
+  <% end %>
+  <div class="flex items-center gap-6">
+    <%= link_to "Home", root_path, class: "text-sm text-gray-400 hover:text-white transition-colors" %>
+    <%= link_to "Desafios", challenges_path, class: "text-sm text-gray-400 hover:text-white transition-colors" %>
+    <%= link_to "Jornadas", quests_path, class: "text-sm text-gray-400 hover:text-white transition-colors" %>
+    <%= link_to "Histórico", history_path, class: "text-sm text-gray-400 hover:text-white transition-colors" %>
+    <%= link_to "Como funciona", how_it_works_path, class: "text-sm text-gray-400 hover:text-white transition-colors" %>
+  </div>
+  <%= button_to "Sair", session_path, method: :delete,
+      class: "text-sm text-gray-400 hover:text-white transition-colors cursor-pointer" %>
+</nav>
