@@ -1,0 +1,8 @@
+<% { notice: notice, alert: alert }.compact_blank.each do |key, message| %>
+  <div class="max-w-lg mx-auto px-4 mt-4">
+    <div class="flash flash-<%= key %>" data-controller="dismissible">
+      <span><%= message %></span>
+      <button data-action="click->dismissible#dismiss" class="flash-close">✕</button>
+    </div>
+  </div>
+<% end %>

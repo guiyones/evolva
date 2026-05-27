@@ -1,0 +1,124 @@
+/* Forge home layout */
+.forge-home {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 4rem;
+}
+@media (min-width: 768px) {
+  .forge-home { max-width: 580px; }
+}
+
+/* Hero */
+.hero { margin-bottom: 1.5rem; }
+.hero-name { font-size: 28px; font-weight: 700; color: var(--evolva-text); margin-bottom: 4px; }
+.hero-tagline { font-size: 13px; color: var(--evolva-muted); margin-bottom: 1rem; }
+.hero-stats { display: flex; gap: 8px; flex-wrap: wrap; }
+.stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 40px;
+  border: 0.5px solid #1f2937;
+  background: #1f2937;
+  font-size: 12px;
+  font-weight: 500;
+}
+.stat-pill.streak { border-color: rgba(251, 146, 60, 0.3); color: #fb923c; }
+.stat-pill.challenges { border-color: rgba(108, 77, 255, 0.3); color: var(--evolva-purple); }
+.stat-pill.rewards { border-color: rgba(34, 197, 94, 0.3); color: var(--evolva-green); }
+
+/* Day progress */
+.day-progress-card {
+  background: #1f2937;
+  border: 0.5px solid var(--evolva-border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 1.5rem;
+}
+.day-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.day-progress-label { font-size: 13px; font-weight: 500; color: var(--evolva-text); }
+.day-progress-pct { font-size: 13px; font-weight: 600; color: var(--evolva-purple); }
+.day-progress-pct.complete { color: var(--evolva-green); }
+.day-progress-track {
+  height: 4px;
+  background: var(--evolva-border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.day-progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--evolva-purple), var(--evolva-green));
+  transition: width 0.3s;
+}
+
+/* Section */
+.section { margin-bottom: 1.5rem; }
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--evolva-muted);
+}
+.section-action { font-size: 12px; color: var(--evolva-purple); text-decoration: none; }
+.section-action:hover { color: var(--evolva-purple-hover); }
+
+/* Hoje card */
+.hoje-card {
+  background: #1f2937;
+  border: 0.5px solid var(--evolva-border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+  transition: border-color 0.2s;
+}
+.hoje-card:hover { border-color: var(--evolva-purple); }
+.hoje-card.done { opacity: 0.5; }
+.hoje-card-left { flex: 1; min-width: 0; }
+.hoje-card-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--evolva-text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.hoje-card-meta { font-size: 11px; color: var(--evolva-muted); margin-top: 3px; }
+.hoje-card-meta span { color: var(--evolva-purple); }
+.hoje-checkin-btn {
+  flex-shrink: 0;
+  padding: 5px 14px;
+  border-radius: 8px;
+  background: var(--evolva-purple);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+.hoje-checkin-btn:hover { background: var(--evolva-purple-hover); }
+.hoje-done-badge { flex-shrink: 0; font-size: 12px; color: #45618f; }
+
+/* Empty */
+.empty { text-align: center; padding: 24px 0; }
+.empty-text { font-size: 13px; color: #4b5563; margin-bottom: 8px; }
+.empty-link { font-size: 12px; color: var(--evolva-purple); text-decoration: none; }
+.empty-link:hover { color: var(--evolva-purple-hover); }

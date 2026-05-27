@@ -9,6 +9,10 @@ class User < ApplicationRecord
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
+  def display_name
+    name.presence || email_address.split("@").first.titleize
+  end
+
   def current_streak
     streak = 0
     date = Date.current

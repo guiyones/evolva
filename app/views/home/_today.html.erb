@@ -1,0 +1,22 @@
+<div class="section">
+  <div class="section-header">
+    <span class="section-label">Hoje</span>
+    <% if today_pending.empty? && today_done.any? %>
+      <span style="font-size: 12px; color: var(--evolva-green);">✓ Dia completo</span>
+    <% elsif today_pending.any? %>
+      <span style="font-size: 12px; color: var(--evolva-muted);">
+        <%= today_pending.size %> <%= "pendente".pluralize(today_pending.size) %>
+      </span>
+    <% end %>
+  </div>
+
+  <% if challenges.empty? %>
+    <div class="empty">
+      <p class="empty-text">Nenhum desafio ativo hoje.</p>
+    </div>
+  <% else %>
+    <% challenges.each do |challenge| %>
+      <%= render "home/today_card", challenge: challenge, done: today_checkins.include?(challenge.id) %>
+    <% end %>
+  <% end %>
+</div>

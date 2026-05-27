@@ -1,0 +1,22 @@
+<div class="hero">
+  <p class="hero-name"><%= Current.user.display_name %></p>
+  <p class="hero-tagline">Bem-vindo ao Evolva, hoje é um novo passo na sua evolução.</p>
+  <div class="hero-stats">
+    <div class="stat-pill streak">
+      <span>🔥</span>
+      <span><%= streak %> <%= "dia".pluralize(streak) %> <%= streak == 1 ? "seguido" : "seguidos" %></span>
+    </div>
+    <div class="stat-pill challenges">
+      <span>⚔️</span>
+      <% if shared_count > 0 %>
+        <span><%= solo_count %> solo · <%= shared_count %> <%= "compartilhado".pluralize(shared_count) %></span>
+      <% else %>
+        <span><%= active_count %> <%= "desafio".pluralize(active_count) %> <%= active_count == 1 ? "ativo" : "ativos" %></span>
+      <% end %>
+    </div>
+    <div class="stat-pill rewards">
+      <span>🏆</span>
+      <span><%= unlocked_count %> <%= "recompensa".pluralize(unlocked_count) %></span>
+    </div>
+  </div>
+</div>

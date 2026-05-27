@@ -1,0 +1,9 @@
+<div class="day-progress-card">
+  <div class="day-progress-header">
+    <span class="day-progress-label">Progresso do dia</span>
+    <span class="day-progress-pct <%= 'complete' if percentage == 100 %>"><%= percentage %>%</span>
+  </div>
+  <div class="day-progress-track">
+    <div class="day-progress-fill" style="width: <%= percentage %>%"></div>
+  </div>
+</div>
