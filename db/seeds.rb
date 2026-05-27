@@ -10,7 +10,7 @@ tags = [
   { name: "Meditação", icon: "🧘" },
   { name: "Criatividade", icon: "🎨" },
   { name: "Relacionamentos", icon: "❤️" },
-  { name: "Foco", icon: "🎯" },
+  { name: "Foco", icon: "🎯" }
 ]
 
 tags.each do |tag|
@@ -20,4 +20,3 @@ tags.each do |tag|
 end
 
 puts "#{Tag.count} tags criadas."
-
