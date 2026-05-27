@@ -1,0 +1,9 @@
+<div class="invite-panel is-hidden" data-invite-target="panel">
+  <p class="invite-panel-label">Compartilhe o link para convidar alguém:</p>
+  <div class="invite-row">
+    <div class="invite-link">
+      <p data-invite-target="link"><%= request.base_url %>/join/<%= challenge.invite_token %></p>
+    </div>
+    <button data-action="invite#copy" data-invite-target="copyButton" class="invite-copy-btn">Copiar</button>
+  </div>
+</div>

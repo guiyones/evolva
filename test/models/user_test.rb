@@ -15,4 +15,12 @@ class UserTest < ActiveSupport::TestCase
     user = User.new(name: "Maria", email_address: "x@example.com")
     assert_equal "Maria", user.display_name
   end
+
+  test "#initials uses first letter of name when present" do
+    assert_equal "M", User.new(name: "Maria", email_address: "x@example.com").initials
+  end
+
+  test "#initials falls back to first letter of email" do
+    assert_equal "Z", User.new(email_address: "zezinho@example.com").initials
+  end
 end

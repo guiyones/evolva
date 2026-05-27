@@ -1,0 +1,9 @@
+<div class="quest-header">
+  <%= quest_status_badge(quest) %>
+  <div class="challenge-header-actions">
+    <%= link_to "Editar", edit_quest_path(quest), class: "action-btn action-btn-edit" %>
+    <%= link_to "Apagar", quest_path(quest),
+        data: { turbo_method: :delete, turbo_confirm: "Tem certeza? Isso apaga a jornada e todos os desafios." },
+        class: "action-btn action-btn-delete" %>
+  </div>
+</div>

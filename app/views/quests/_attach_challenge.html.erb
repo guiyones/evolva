@@ -1,0 +1,26 @@
+<% available = Current.user.challenges.active.independent %>
+
+<div class="quest-attach-section" data-controller="invite">
+  <div class="quest-attach-actions">
+    <%= link_to "+ Criar novo desafio", new_challenge_path(quest_id: quest.id), class: "quest-attach-link" %>
+    <button data-action="invite#toggle" class="quest-attach-toggle">+ Usar existente</button>
+  </div>
+
+  <div class="quest-available-list is-hidden" data-invite-target="panel">
+    <% if available.any? %>
+      <% available.each do |challenge| %>
+        <%= button_to attach_challenge_quest_path(quest),
+            params: { challenge_id: challenge.id },
+            method: :post,
+            class: "quest-available-item" do %>
+          <div class="row">
+            <span><%= challenge.title %></span>
+            <span class="quest-available-item-meta"><%= challenge.progress %> / <%= challenge.duration_days %> dias</span>
+          </div>
+        <% end %>
+      <% end %>
+    <% else %>
+      <p class="quest-available-empty">Nenhum desafio solo disponível.</p>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<div class="quest-progress-block">
+  <div class="quest-progress-header">
+    <span style="color: #9ca3af;">Progresso</span>
+    <span style="color: var(--evolva-text); font-weight: 600;">
+      <%= quest.progress %> de <%= quest.total %> desafios
+    </span>
+  </div>
+  <div class="quest-progress-track">
+    <div class="quest-progress-fill" style="width: <%= quest.progress_percentage %>%"></div>
+  </div>
+</div>

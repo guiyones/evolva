@@ -1,0 +1,19 @@
+<div class="challenge-header">
+  <div class="challenge-header-meta">
+    <%= challenge_status_badge(challenge) %>
+    <% if challenge.active? && challenge.started_at.present? %>
+      <span class="challenge-day-indicator">📍 Dia <%= challenge.current_day %> de <%= challenge.duration_days %></span>
+    <% end %>
+  </div>
+  <div class="challenge-header-actions">
+    <% if challenge.solo? && challenge.active? %>
+      <button data-action="invite#toggle"
+              data-invite-target="trigger"
+              class="action-btn action-btn-share">👥</button>
+    <% end %>
+    <%= link_to "Editar", edit_challenge_path(challenge), class: "action-btn action-btn-edit" %>
+    <%= link_to "Apagar", challenge_path(challenge),
+        data: { turbo_method: :delete, turbo_confirm: "Tem certeza? Isso apaga o desafio e todo o histórico." },
+        class: "action-btn action-btn-delete" %>
+  </div>
+</div>

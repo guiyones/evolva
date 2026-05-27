@@ -1,0 +1,18 @@
+<div class="reward-block">
+  <p class="reward-block-label">Recompensa</p>
+  <%= link_to reward_path(reward), class: "reward-block-link" do %>
+    <div>
+      <p class="reward-block-title"><%= reward.description %></p>
+      <p class="reward-block-meta">
+        <% if reward.locked? %>
+          🔒 <%= shared ? "Aguardando todos completarem" : "Complete o desafio" %>
+        <% elsif reward.unlocked? %>
+          🎁 Desbloqueado — pronto para resgatar
+        <% else %>
+          ✅ Resgatado
+        <% end %>
+      </p>
+    </div>
+    <span class="reward-block-arrow">→</span>
+  <% end %>
+</div>
