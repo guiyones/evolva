@@ -1,0 +1,164 @@
+/* Quest show page */
+.quest-show { max-width: 32rem; margin: 0 auto; padding: 2.5rem 1rem; }
+
+.quest-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+.quest-status {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 9999px;
+}
+.quest-status-active { background: rgba(108, 77, 255, 0.15); color: var(--evolva-purple); }
+.quest-status-completed { background: rgba(34, 197, 94, 0.15); color: var(--evolva-green); }
+
+.quest-title-h1 { font-size: 1.5rem; font-weight: 700; color: var(--evolva-text); margin-bottom: 0.25rem; }
+.quest-description { color: #9ca3af; margin-bottom: 1.5rem; }
+
+.quest-progress-block {
+  background: var(--evolva-card);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+.quest-progress-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 0.75rem;
+}
+.quest-progress-track {
+  width: 100%;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: var(--evolva-border);
+  overflow: hidden;
+}
+.quest-progress-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, var(--evolva-purple), var(--evolva-green));
+  transition: width 0.3s;
+}
+
+.quest-challenges-block {
+  background: var(--evolva-card);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+.quest-challenges-label { font-size: 14px; color: #9ca3af; margin-bottom: 1rem; }
+.quest-challenges-list > * + * { margin-top: 0.75rem; }
+
+.quest-challenge-card {
+  display: block;
+  border-radius: 12px;
+  padding: 12px 14px;
+  text-decoration: none;
+  transition: border-color 0.2s, transform 0.15s;
+}
+.quest-challenge-card.completed {
+  background: rgba(34, 197, 94, 0.1);
+  border: 0.5px solid rgba(34, 197, 94, 0.2);
+}
+.quest-challenge-card.active {
+  background: rgba(108, 77, 255, 0.1);
+  border: 0.5px solid rgba(108, 77, 255, 0.3);
+}
+.quest-challenge-card.finished { background: rgba(55, 65, 81, 0.5); }
+.quest-challenge-card.planned { background: var(--evolva-border); }
+
+.quest-challenge-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.quest-challenge-title { font-size: 14px; font-weight: 600; }
+.quest-challenge-title.completed { color: var(--evolva-green); }
+.quest-challenge-title.active { color: var(--evolva-text); }
+.quest-challenge-title.muted { color: var(--evolva-muted); }
+
+.quest-challenge-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.quest-challenge-badge-focused { background: rgba(108, 77, 255, 0.15); color: var(--evolva-purple); }
+.quest-challenge-badge-muted { font-size: 12px; color: var(--evolva-muted); }
+.quest-challenge-badge-completed { font-size: 12px; color: var(--evolva-green); }
+
+.quest-challenge-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--evolva-muted);
+}
+
+.quest-attach-section {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 0.5px solid var(--evolva-border);
+}
+.quest-attach-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.quest-attach-link { font-size: 12px; color: var(--evolva-purple); text-decoration: none; }
+.quest-attach-toggle {
+  font-size: 12px;
+  color: var(--evolva-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.quest-available-list { margin-top: 12px; }
+.quest-available-list.is-hidden { display: none; }
+.quest-available-list > * + * { margin-top: 0.5rem; }
+.quest-available-item {
+  width: 100%;
+  text-align: left;
+  background: var(--evolva-dark);
+  border: 0.5px solid var(--evolva-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  color: var(--evolva-text);
+  font-size: 13px;
+}
+.quest-available-item .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.quest-available-item-meta { font-size: 11px; color: var(--evolva-muted); }
+.quest-available-empty { font-size: 12px; color: var(--evolva-muted); }
+
+.quest-reward-block {
+  background: var(--evolva-card);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+.quest-reward-label { font-size: 12px; color: var(--evolva-muted); margin-bottom: 4px; }
+.quest-reward-link { display: flex; align-items: center; justify-content: space-between; text-decoration: none; }
+.quest-reward-title { color: var(--evolva-text); font-weight: 600; }
+.quest-reward-meta { font-size: 12px; color: var(--evolva-muted); margin-top: 4px; }
+.quest-reward-arrow { color: #4b5563; }
+
+.quest-back-link {
+  display: block;
+  text-align: center;
+  color: var(--evolva-muted);
+  font-size: 14px;
+  margin-top: 1.5rem;
+  text-decoration: none;
+}
+.quest-back-link:hover { color: #d1d5db; }

@@ -13,6 +13,10 @@ class User < ApplicationRecord
     name.presence || email_address.split("@").first.titleize
   end
 
+  def initials
+    (name.presence&.first || email_address.first).upcase
+  end
+
   def current_streak
     streak = 0
     date = Date.current

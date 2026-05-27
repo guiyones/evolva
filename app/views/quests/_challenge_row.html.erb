@@ -1,0 +1,25 @@
+<% state = quest_challenge_state(challenge) %>
+<%= link_to challenge_path(challenge), class: "quest-challenge-card #{state}" do %>
+  <div class="quest-challenge-row">
+    <span class="quest-challenge-title <%= challenge.completed? ? 'completed' : challenge.active? ? 'active' : 'muted' %>">
+      <%= challenge.title %>
+    </span>
+    <% if challenge.completed? %>
+      <span class="quest-challenge-badge-completed">✓</span>
+    <% elsif challenge.focused? %>
+      <span class="quest-challenge-badge quest-challenge-badge-focused">🔵 Foco</span>
+    <% elsif challenge.active? %>
+      <span class="quest-challenge-badge-muted">Em andamento</span>
+    <% elsif challenge.planned? %>
+      <span class="quest-challenge-badge-muted">Planejado</span>
+    <% elsif challenge.finished? %>
+      <span class="quest-challenge-badge-muted">Encerrado</span>
+    <% end %>
+  </div>
+  <% unless challenge.planned? %>
+    <div class="quest-challenge-meta">
+      <span><%= challenge.progress %> / <%= challenge.duration_days %> dias</span>
+      <span><%= challenge.progress_percentage %>%</span>
+    </div>
+  <% end %>
+<% end %>

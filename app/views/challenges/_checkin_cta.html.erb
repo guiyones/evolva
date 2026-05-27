@@ -1,0 +1,10 @@
+<% checked_today = challenge.checkins.where(created_at: Date.today.all_day).exists? %>
+
+<% if checked_today %>
+  <div class="checkin-cta checkin-cta-done">✓ Hoje já concluído</div>
+<% elsif challenge.planned? %>
+  <%= link_to "Fazer primeiro check-in e iniciar", new_challenge_checkin_path(challenge), class: "checkin-cta" %>
+  <p class="checkin-cta-hint">O primeiro check-in inicia a contagem de dias do desafio</p>
+<% else %>
+  <%= link_to "Marcar hoje como concluído", new_challenge_checkin_path(challenge), class: "checkin-cta" %>
+<% end %>

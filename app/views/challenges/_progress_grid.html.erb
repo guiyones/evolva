@@ -1,0 +1,26 @@
+<% checkins_by_day = challenge.checkins.index_by(&:day_number) %>
+<% today_day = challenge.started_at.present? ? (Date.current - challenge.started_at.to_date).to_i + 1 : nil %>
+
+<div class="progress-block">
+  <div class="progress-block-header">
+    <span style="color: var(--evolva-muted);">Progresso</span>
+    <span style="color: var(--evolva-text); font-weight: 600;"><%= challenge.progress %> / <%= challenge.duration_days %></span>
+  </div>
+  <div class="progress-block-bar">
+    <div class="progress-block-fill" style="width: <%= challenge.progress_percentage %>%"></div>
+  </div>
+  <div class="progress-days">
+    <% (1..challenge.duration_days).each do |day| %>
+      <% checkin = checkins_by_day[day] %>
+      <% is_today = today_day == day %>
+      <% if checkin %>
+        <%= link_to challenge_checkin_path(challenge, checkin),
+            class: class_names("progress-day", "done", today: is_today) do %>
+          <%= day %>
+        <% end %>
+      <% else %>
+        <div class="<%= class_names("progress-day", "pending", today: is_today) %>"><%= day %></div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
