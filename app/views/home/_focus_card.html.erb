@@ -1,5 +1,5 @@
-<% current_challenge = quest.focused_challenge || quest.challenges.where(status: :planned).order(created_at: :asc).first %>
-<% checked_today = current_challenge.present? && current_challenge.checkins.where(created_at: Date.current.all_day).exists? %>
+<% current_challenge = quest.current_challenge %>
+<% checked_today = current_challenge&.focused_today? %>
 
 <div class="focus-card">
   <p class="focus-card-quest">📖 <%= quest.title %></p>

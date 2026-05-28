@@ -34,6 +34,10 @@ class Quest < ApplicationRecord
     challenges.joins(:checkins).order("checkins.created_at DESC").first
   end
 
+  def current_challenge
+    focused_challenge || challenges.planned.order(created_at: :asc).first
+  end
+
   def can_add_challenge?
     !completed?
   end
