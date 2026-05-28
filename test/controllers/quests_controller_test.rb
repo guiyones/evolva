@@ -64,4 +64,17 @@ class QuestsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to quest_path(quests(:completada))
     assert_nil users(:one).reload.focused_quest
   end
+
+  test "show has focus button when quest is not focused" do
+    get quest_path(quests(:leitura))
+    assert_response :success
+    assert_select "form[action=?]", focus_quest_path(quests(:leitura))
+  end
+
+  test "show has 'Em foco' badge when quest is focused" do
+    users(:one).update!(focused_quest: quests(:leitura))
+    get quest_path(quests(:leitura))
+    assert_response :success
+    assert_select ".quest-focus-badge", text: "Em foco"
+  end
 end

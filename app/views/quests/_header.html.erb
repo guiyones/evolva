@@ -1,6 +1,13 @@
 <div class="quest-header">
   <%= quest_status_badge(quest) %>
   <div class="challenge-header-actions">
+    <% if Current.user.focused_quest_id == quest.id %>
+      <span class="quest-focus-badge">Em foco</span>
+    <% elsif quest.active? %>
+      <%= button_to "Colocar em foco", focus_quest_path(quest),
+          method: :post,
+          class: "action-btn action-btn-focus" %>
+    <% end %>
     <%= link_to "Editar", edit_quest_path(quest), class: "action-btn action-btn-edit" %>
     <%= link_to "Apagar", quest_path(quest),
         data: { turbo_method: :delete, turbo_confirm: "Tem certeza? Isso apaga a jornada e todos os desafios." },
