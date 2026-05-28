@@ -28,4 +28,12 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "*", text: /Ler mais livros/
   end
+
+  test "renders celebration when focused quest is completed" do
+    users(:one).update_column(:focused_quest_id, quests(:completada).id)
+    sign_in_as users(:one)
+    get root_path
+    assert_response :success
+    assert_select "*", text: /Jornada concluída/
+  end
 end

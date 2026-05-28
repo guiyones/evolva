@@ -12,7 +12,7 @@
     <%= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
     <%= tag.link rel: "apple-touch-icon", href: "/icon-192.png" %>
     <%= tag.link rel: "icon", type: "image/png", href: "/icon-192.png" %>
-    <%= stylesheet_link_tag "application", "nav", "home", "cards", "challenge_show", "quest_show",
+    <%= stylesheet_link_tag "application", "nav", "home", "challenge_show", "quest_show",
         "forms", "lists", "new_challenge", "pages", "reward_show", "checkin", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
