@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   resources :quests, only: [ :index, :show, :new, :create, :edit, :update, :destroy ] do
     member do
       post :attach_challenge
+      post :focus
     end
   end
 

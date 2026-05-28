@@ -52,6 +52,16 @@ class QuestsController < ApplicationController
     end
   end
 
+  def focus
+    @quest = Current.user.quests.find(params[:id])
+
+    if Current.user.update(focused_quest: @quest)
+      redirect_to root_path, notice: "Jornada em foco."
+    else
+      redirect_to @quest, alert: "Não foi possível colocar essa jornada em foco."
+    end
+  end
+
   private
 
   def set_quest
