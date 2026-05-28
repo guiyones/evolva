@@ -1,0 +1,14 @@
+<div class="choose-focus">
+  <p class="choose-focus-title">Escolha uma jornada pra colocar em foco</p>
+  <p class="choose-focus-hint">A home vai mostrar apenas essa jornada.</p>
+
+  <div class="choose-focus-list">
+    <% quests.each do |quest| %>
+      <%= button_to focus_quest_path(quest),
+          method: :post,
+          class: "choose-focus-item" do %>
+        📖 <%= quest.title %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
