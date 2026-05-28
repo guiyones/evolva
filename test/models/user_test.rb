@@ -23,4 +23,11 @@ class UserTest < ActiveSupport::TestCase
   test "#initials falls back to first letter of email" do
     assert_equal "Z", User.new(email_address: "zezinho@example.com").initials
   end
+
+  test "user can have a focused_quest" do
+    user = users(:one)
+    quest = quests(:leitura)
+    user.update!(focused_quest: quest)
+    assert_equal quest, user.reload.focused_quest
+  end
 end
