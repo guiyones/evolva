@@ -20,30 +20,6 @@ class User < ApplicationRecord
     (name.presence&.first || email_address.first).upcase
   end
 
-  def current_streak
-    streak = 0
-    date = Date.current
-
-    loop do
-      has_checkin = challenges.joins(:checkins)
-        .where(checkins: { created_at: date.all_day })
-        .exists?
-      break unless has_checkin
-      streak += 1
-      date -= 1.day
-    end
-
-    streak
-  end
-
-  def active_challenges_count
-    challenges.active.count
-  end
-
-  def unlocked_rewards_count
-    rewards.unlocked.count
-  end
-
   private
 
   def focused_quest_owned_by_user_and_active
