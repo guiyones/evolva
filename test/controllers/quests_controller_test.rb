@@ -45,4 +45,36 @@ class QuestsControllerTest < ActionDispatch::IntegrationTest
       delete quest_path(quest)
     end
   end
+
+  test "focus sets focused_quest on current user" do
+    quest = quests(:leitura)
+    post focus_quest_path(quest)
+    assert_redirected_to root_path
+    assert_equal quest, users(:one).reload.focused_quest
+  end
+
+  test "focus forbids quest from another user" do
+    other_quest = users(:two).quests.create!(title: "Outra", status: :active)
+    post focus_quest_path(other_quest)
+    assert_response :not_found
+  end
+
+  test "focus on completed quest is rejected" do
+    post focus_quest_path(quests(:completada))
+    assert_redirected_to quest_path(quests(:completada))
+    assert_nil users(:one).reload.focused_quest
+  end
+
+  test "show has focus button when quest is not focused" do
+    get quest_path(quests(:leitura))
+    assert_response :success
+    assert_select "form[action=?]", focus_quest_path(quests(:leitura))
+  end
+
+  test "show has 'Em foco' badge when quest is focused" do
+    users(:one).update!(focused_quest: quests(:leitura))
+    get quest_path(quests(:leitura))
+    assert_response :success
+    assert_select ".quest-focus-badge", text: "Em foco"
+  end
 end

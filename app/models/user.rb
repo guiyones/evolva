@@ -6,6 +6,9 @@ class User < ApplicationRecord
   has_many :quests, dependent: :destroy
   has_many :challenge_participants, dependent: :destroy
   has_many :shared_challenges, through: :challenge_participants, source: :challenge
+  belongs_to :focused_quest, class_name: "Quest", optional: true
+
+  validate :focused_quest_owned_by_user_and_active
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
@@ -17,27 +20,15 @@ class User < ApplicationRecord
     (name.presence&.first || email_address.first).upcase
   end
 
-  def current_streak
-    streak = 0
-    date = Date.current
+  private
 
-    loop do
-      has_checkin = challenges.joins(:checkins)
-        .where(checkins: { created_at: date.all_day })
-        .exists?
-      break unless has_checkin
-      streak += 1
-      date -= 1.day
+  def focused_quest_owned_by_user_and_active
+    return if focused_quest.blank?
+
+    if focused_quest.user_id != id
+      errors.add(:focused_quest, "deve pertencer a você")
+    elsif !focused_quest.active?
+      errors.add(:focused_quest, "precisa estar ativa")
     end
-
-    streak
-  end
-
-  def active_challenges_count
-    challenges.active.count
-  end
-
-  def unlocked_rewards_count
-    rewards.unlocked.count
   end
 end

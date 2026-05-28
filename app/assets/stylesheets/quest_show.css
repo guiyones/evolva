@@ -162,3 +162,22 @@
   text-decoration: none;
 }
 .quest-back-link:hover { color: #d1d5db; }
+
+.quest-focus-badge {
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  background: rgba(108, 77, 255, 0.15);
+  color: var(--evolva-purple);
+}
+
+.action-btn-focus {
+  background: rgba(108, 77, 255, 0.15);
+  color: var(--evolva-purple);
+  border: none;
+  cursor: pointer;
+}
+.action-btn-focus:hover { background: rgba(108, 77, 255, 0.3); }

@@ -1,0 +1,46 @@
+<% current_challenge = quest.current_challenge %>
+<% checked_today = current_challenge&.focused_today? %>
+
+<div class="focus-card">
+  <p class="focus-card-quest">📖 <%= quest.title %></p>
+
+  <% if quest.completed? %>
+    <p class="focus-card-celebration">✓ Jornada concluída</p>
+    <% if quest.reward.present? %>
+      <%= link_to "Resgatar #{quest.reward.description}", reward_path(quest.reward),
+          class: "focus-card-cta" %>
+    <% end %>
+    <p class="focus-card-hint">Coloque outra jornada em foco na aba Jornadas.</p>
+
+  <% elsif current_challenge.present? %>
+    <p class="focus-card-challenge"><%= current_challenge.title %></p>
+    <% if current_challenge.active? && current_challenge.started_at.present? %>
+      <p class="focus-card-day">Dia <%= current_challenge.current_day %> de <%= current_challenge.duration_days %></p>
+    <% elsif current_challenge.planned? %>
+      <p class="focus-card-day">Planejado · <%= current_challenge.duration_days %> dias</p>
+    <% end %>
+
+    <div class="focus-card-track">
+      <div class="focus-card-fill" style="width: <%= current_challenge.progress_percentage %>%"></div>
+    </div>
+
+    <% if quest.reward.present? %>
+      <p class="focus-card-reward">🎁 <%= quest.reward.description %></p>
+    <% end %>
+
+    <% if checked_today %>
+      <div class="focus-card-cta is-done">✓ Feito hoje</div>
+    <% elsif current_challenge.planned? %>
+      <%= link_to "Fazer primeiro check-in", new_challenge_checkin_path(current_challenge),
+          class: "focus-card-cta" %>
+    <% else %>
+      <%= link_to "Check-in de hoje", new_challenge_checkin_path(current_challenge),
+          class: "focus-card-cta" %>
+    <% end %>
+
+  <% else %>
+    <p class="focus-card-empty">Sem desafio ativo nesta jornada.</p>
+    <%= link_to "Criar desafio", new_challenge_path(quest_id: quest.id),
+        class: "focus-card-cta" %>
+  <% end %>
+</div>
