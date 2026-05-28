@@ -8,6 +8,8 @@ class User < ApplicationRecord
   has_many :shared_challenges, through: :challenge_participants, source: :challenge
   belongs_to :focused_quest, class_name: "Quest", optional: true
 
+  validate :focused_quest_owned_by_user_and_active
+
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
   def display_name
@@ -40,5 +42,17 @@ class User < ApplicationRecord
 
   def unlocked_rewards_count
     rewards.unlocked.count
+  end
+
+  private
+
+  def focused_quest_owned_by_user_and_active
+    return if focused_quest.blank?
+
+    if focused_quest.user_id != id
+      errors.add(:focused_quest, "deve pertencer a você")
+    elsif !focused_quest.active?
+      errors.add(:focused_quest, "precisa estar ativa")
+    end
   end
 end
